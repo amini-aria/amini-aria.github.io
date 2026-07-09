@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resume — Mohammad Aria Amini</title>
-<meta name="description" content="Full resume of MohammadAria Amini — education, experience, publications, skills and languages.">
+<meta name="description" content="Full resume of Mohammad Aria Amini — education, experience, publications, skills and languages.">
 <link rel="icon" href="/assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,9 +41,10 @@
 <div class="page-header">
   <p class="page-header__eyebrow">Curriculum Vitae</p>
   <h1 class="page-header__title">Resume</h1>
+  <p class="page-header__updated mono" id="last-updated" data-path="resume/index.html"></p>
   <div class="resume-downloads">
     <a href="/assets/files/resume-en.pdf" class="btn btn--outline" download>Download English CV (PDF)</a>
-    <a href="/assets/files/resume-fa.pdf" class="btn btn--outline" download>(PDF) دریافت رزومۀ فارسی</a>
+    <a href="/assets/files/resume-fa.pdf" class="btn btn--outline" download>دریافت رزومه فارسی (PDF)</a>
   </div>
 </div>
 
@@ -51,9 +52,10 @@
 <div class="resume-surface">
 
   <!-- ══════════════════════════════════════════════════════════════
-       EASY-EDIT RESUME. Sections marked PLACEHOLDER use Lorem Ipsum
-       text only to hold the layout — replace with real content
-       whenever ready. Everything else is real.
+       EASY-EDIT RESUME. Sections marked PLACEHOLDER show an empty,
+       dashed entry (title / organization / date fields) ready to be
+       filled in — just replace the bracketed text. Everything else
+       is real content, kept in sync with the homepage by hand.
        ══════════════════════════════════════════════════════════════ -->
 
   <!-- ABOUT ================================================================ -->
@@ -132,21 +134,19 @@
   <!-- RESEARCH EXPERIENCE — PLACEHOLDER ===================================== -->
   <section class="resume__block">
     <p class="resume__block-title">Research Experience</p>
-    <p class="resume__lorem justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </p>
+    <div class="resume__entry resume__entry--placeholder">
+      <div class="resume__entry-head"><span class="resume__entry-role">[ Research role / title ]</span><span class="resume__entry-period">[ Start ] – [ End ]</span></div>
+      <p class="resume__entry-org">[ Institution / research group ]</p>
+    </div>
   </section>
 
   <!-- PUBLICATIONS (journal articles / conference papers) — PLACEHOLDER ==== -->
   <section class="resume__block">
     <p class="resume__block-title">Publications</p>
-    <p class="resume__lorem justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua.
-    </p>
+    <div class="resume__entry resume__entry--placeholder">
+      <div class="resume__entry-head"><span class="resume__entry-role">[ Article title ]</span><span class="resume__entry-period">[ Year ]</span></div>
+      <p class="resume__entry-org">[ Journal name, volume / issue ]</p>
+    </div>
   </section>
 
   <!-- BOOKS — real ============================================================ -->
@@ -173,38 +173,37 @@
   <!-- CONFERENCES — PLACEHOLDER ============================================== -->
   <section class="resume__block">
     <p class="resume__block-title">Conferences</p>
-    <p class="resume__lorem justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-    </p>
+    <div class="resume__entry resume__entry--placeholder">
+      <div class="resume__entry-head"><span class="resume__entry-role">[ Presentation / poster title ]</span><span class="resume__entry-period">[ Date ]</span></div>
+      <p class="resume__entry-org">[ Conference name, location ]</p>
+    </div>
   </section>
 
   <!-- RESEARCH PROJECTS — PLACEHOLDER ========================================= -->
   <section class="resume__block">
     <p class="resume__block-title">Research Projects</p>
-    <p class="resume__lorem justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Duis aute irure
-      dolor in reprehenderit in voluptate velit esse cillum dolore.
-    </p>
+    <div class="resume__entry resume__entry--placeholder">
+      <div class="resume__entry-head"><span class="resume__entry-role">[ Project title ]</span><span class="resume__entry-period">[ Start ] – [ End ]</span></div>
+      <p class="resume__entry-org">[ Funding body / affiliated institution ]</p>
+    </div>
   </section>
 
   <!-- TEACHING ACTIVITIES — PLACEHOLDER ======================================= -->
   <section class="resume__block">
     <p class="resume__block-title">Teaching Activities</p>
-    <p class="resume__lorem justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua.
-    </p>
+    <div class="resume__entry resume__entry--placeholder">
+      <div class="resume__entry-head"><span class="resume__entry-role">[ Course title / role ]</span><span class="resume__entry-period">[ Term / Year ]</span></div>
+      <p class="resume__entry-org">[ Institution ]</p>
+    </div>
   </section>
 
   <!-- HONORS & AWARDS — PLACEHOLDER ============================================ -->
   <section class="resume__block">
     <p class="resume__block-title">Honors &amp; Awards</p>
-    <p class="resume__lorem justify">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua.
-    </p>
+    <div class="resume__entry resume__entry--placeholder">
+      <div class="resume__entry-head"><span class="resume__entry-role">[ Award / honor title ]</span><span class="resume__entry-period">[ Year ]</span></div>
+      <p class="resume__entry-org">[ Awarding body ]</p>
+    </div>
   </section>
 
   <!-- SKILLS ================================================================ -->
@@ -265,7 +264,7 @@
     </div>
   </section>
 
-  <!-- VOLUNTEER ACTIVITIES — PLACEHOLDER (real membership type, number pending) -->
+  <!-- VOLUNTEER ACTIVITIES — real (membership type real, number pending) -->
   <section class="resume__block">
     <p class="resume__block-title">Volunteer Activities</p>
     <div class="resume__entry">

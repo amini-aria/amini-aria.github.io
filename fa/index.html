@@ -44,10 +44,19 @@
 
 <section class="hero">
   <img src="/assets/img/hero-lattice.svg" alt="" class="hero__bg" aria-hidden="true">
+  <div class="orb-field" aria-hidden="true">
+    <span class="orb orb--1"></span>
+    <span class="orb orb--2"></span>
+    <span class="orb orb--3"></span>
+    <span class="orb orb--4"></span>
+  </div>
 
   <div class="hero__card">
-    <div class="hero__portrait">
-      <img src="/assets/img/portrait.jpg" alt="تصویر محمدآریا امینی" width="128" height="128">
+    <div class="hero__portrait-wrap">
+      <div class="hero__portrait-halo" aria-hidden="true"></div>
+      <div class="hero__portrait">
+        <img src="/assets/img/portrait.jpg" alt="تصویر محمدآریا امینی" width="138" height="138">
+      </div>
     </div>
     <h1 class="hero__name">محمدآریا امینی</h1>
     <p class="hero__role">فارغ‌التحصیل کارشناسی زمین‌شناسی</p>
@@ -69,7 +78,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3L2 9l10 6 8-4.8V17h2V9z"/><path d="M6 12.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/></svg>
       </a>
       <a href="#" aria-label="ResearchGate" title="ResearchGate">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V9M4 6v.01M10 20v-7a3 3 0 016 0v7M14 9V4"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="2.3"/><circle cx="17" cy="7" r="2.3"/><circle cx="12" cy="17.5" r="2.3"/><path d="M8.9 8.4L15.1 8.4M9.4 9.2L11.3 15.3M14.6 9.2L12.7 15.3"/></svg>
       </a>
       <a href="#" aria-label="گیت‌هاب" title="گیت‌هاب">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2a10 10 0 00-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.9.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 015 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.57.69.48A10 10 0 0012 2z"/></svg>
@@ -111,30 +120,31 @@
       برای مکاتبات علمی، همکاری پژوهشی یا پرسش‌های تخصصی، می‌توانید از طریق هر
       یک از راه‌های زیر با من در ارتباط باشید.
     </p>
-    <a class="contact__email" href="mailto:mo.aria.am@gmail.com">mo.aria.am@gmail.com</a>
 
-    <div class="contact__list">
-      <div class="contact__row">
-        <span class="contact__row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 4L3 11l6 2m12-9l-4 17-6-6m10-11L9 13"/></svg></span>
-        <div>
-          <div class="contact__row-label">تلگرام</div>
-          <div class="contact__row-value">@aria_amini</div>
-        </div>
-      </div>
-      <div class="contact__row">
-        <span class="contact__row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg></span>
-        <div>
-          <div class="contact__row-label">اینستاگرام</div>
-          <div class="contact__row-value">@daily.aria</div>
-        </div>
-      </div>
-      <div class="contact__row">
-        <span class="contact__row-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21l1.7-4.2A8 8 0 1112 20a8 8 0 01-7-4"/><path d="M8.5 9.5c0 3.5 3 6.5 6.5 6.5"/></svg></span>
-        <div>
-          <div class="contact__row-label">واتس‌اپ</div>
-          <div class="contact__row-value">amini_aria</div>
-        </div>
-      </div>
+    <div class="contact__email-line">
+      <span class="contact__email-text">mo.aria.am@gmail.com</span>
+    </div>
+
+    <!-- هر روش ارتباطی یک دکمه‌ی کلیک‌پذیر است که مستقیم به همان اکانت می‌رود.
+         برای واتس‌اپ به یک شماره‌ی واقعی (با فرمت بین‌المللی، مثل 989xxxxxxxxx)
+         نیاز است تا لینک wa.me درست کار کند — هروقت داشتی، href رو جایگزین کن. -->
+    <div class="contact__buttons">
+      <a class="contact__btn contact__btn--email" href="mailto:mo.aria.am@gmail.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+        ایمیل
+      </a>
+      <a class="contact__btn" href="https://t.me/aria_amini" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 4L3 11l6 2m12-9l-4 17-6-6m10-11L9 13"/></svg>
+        تلگرام
+      </a>
+      <a class="contact__btn" href="https://instagram.com/daily.aria" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg>
+        اینستاگرام
+      </a>
+      <a class="contact__btn" href="#" target="_blank" rel="noopener" title="برای فعال شدن این لینک، شماره واتس‌اپ رو اضافه کن">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21l1.7-4.2A8 8 0 1112 20a8 8 0 01-7-4"/><path d="M8.5 9.5c0 3.5 3 6.5 6.5 6.5"/></svg>
+        واتس‌اپ
+      </a>
     </div>
   </div>
 </section>

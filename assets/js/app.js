@@ -54,4 +54,69 @@
       card.style.animationPlayState = "running";
     });
   }
+
+  /* ---------- Gregorian -> Jalali (Persian) calendar conversion ----------
+     Small self-contained implementation (no external library needed). */
+  function gregorianToJalali(gy, gm, gd) {
+    var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    var jy = (gy <= 1600) ? 0 : 979;
+    gy -= (gy <= 1600) ? 621 : 1600;
+    var gy2 = (gm > 2) ? (gy + 1) : gy;
+    var days = (365 * gy) + (Math.floor((gy2 + 3) / 4)) - (Math.floor((gy2 + 99) / 100)) +
+      (Math.floor((gy2 + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
+    jy += 33 * Math.floor(days / 12053);
+    days %= 12053;
+    jy += 4 * Math.floor(days / 1461);
+    days %= 1461;
+    if (days > 365) {
+      jy += Math.floor((days - 1) / 365);
+      days = (days - 1) % 365;
+    }
+    var jm, jd;
+    if (days < 186) {
+      jm = 1 + Math.floor(days / 31);
+      jd = 1 + (days % 31);
+    } else {
+      jm = 7 + Math.floor((days - 186) / 30);
+      jd = 1 + ((days - 186) % 30);
+    }
+    return [jy, jm, jd];
+  }
+
+  var jalaliMonths = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+  var faDigits = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+  function toFaDigits(n) {
+    return String(n).replace(/[0-9]/g, function (d) { return faDigits[+d]; });
+  }
+
+  /* ---------- Automatic "last updated" date, from GitHub commit history ---------- */
+  var updatedEl = document.getElementById("last-updated");
+  if (updatedEl) {
+    var repoPath = updatedEl.getAttribute("data-path") || "resume/index.html";
+    var lang = document.body.classList.contains("lang-fa") ? "fa" : "en";
+    var apiUrl = "https://api.github.com/repos/amini-aria/amini-aria.github.io/commits?path=" + repoPath + "&page=1&per_page=1";
+
+    fetch(apiUrl, { headers: { Accept: "application/vnd.github+json" } })
+      .then(function (res) { if (!res.ok) throw new Error("api error"); return res.json(); })
+      .then(function (data) {
+        if (!data || !data[0] || !data[0].commit) return;
+        var iso = data[0].commit.committer.date;
+        var d = new Date(iso);
+        var gy = d.getFullYear(), gm = d.getMonth() + 1, gd = d.getDate();
+
+        if (lang === "fa") {
+          var j = gregorianToJalali(gy, gm, gd);
+          var shamsi = toFaDigits(j[2]) + " " + jalaliMonths[j[1] - 1] + " " + toFaDigits(j[0]);
+          var miladi = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+          updatedEl.textContent = "آخرین ویرایش: " + shamsi + " (" + miladi + " میلادی)";
+        } else {
+          var en = d.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
+          updatedEl.textContent = "Last updated: " + en;
+        }
+      })
+      .catch(function () {
+        /* API unavailable (rate limit / offline) — fail silently, no broken UI */
+        updatedEl.textContent = "";
+      });
+  }
 })();
