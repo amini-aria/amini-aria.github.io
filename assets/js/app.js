@@ -3,15 +3,30 @@
 
   var burger = document.getElementById("burger");
   var links = document.getElementById("topnav-links");
+  var backdrop = document.getElementById("nav-backdrop");
+  var navClose = document.getElementById("nav-close");
+  function closeNav() {
+    if (links) links.classList.remove("is-open");
+    if (backdrop) backdrop.classList.remove("is-open");
+    if (burger) burger.setAttribute("aria-expanded", "false");
+    document.documentElement.style.overflow = "";
+  }
+  function openNav() {
+    if (links) links.classList.add("is-open");
+    if (backdrop) backdrop.classList.add("is-open");
+    if (burger) burger.setAttribute("aria-expanded", "true");
+    document.documentElement.style.overflow = "hidden";
+  }
   if (burger && links) {
     burger.addEventListener("click", function () {
-      var open = links.classList.toggle("is-open");
-      burger.setAttribute("aria-expanded", String(open));
+      if (links.classList.contains("is-open")) closeNav(); else openNav();
     });
     links.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () { links.classList.remove("is-open"); });
+      a.addEventListener("click", closeNav);
     });
   }
+  if (backdrop) backdrop.addEventListener("click", closeNav);
+  if (navClose) navClose.addEventListener("click", closeNav);
 
   var topbar = document.getElementById("topbar");
   if (topbar) {
@@ -159,4 +174,27 @@
         mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-error-text") + "</p>";
       });
   }
+  /* ---------- "Report an issue" mailto, pre-filled with device/browser info ---------- */
+  var reportLinks = document.querySelectorAll(".report-bug");
+  if (reportLinks.length) {
+    var info = [
+      "Page: " + window.location.href,
+      "Browser: " + navigator.userAgent,
+      "Screen: " + window.screen.width + "x" + window.screen.height,
+      "Viewport: " + window.innerWidth + "x" + window.innerHeight,
+      "Language: " + navigator.language
+    ].join("\n");
+    reportLinks.forEach(function (el) {
+      var isFa = document.body.classList.contains("lang-fa");
+      var subject = isFa ? "گزارش مشکل در amini-aria.github.io" : "Issue report — amini-aria.github.io";
+      var bodyIntro = isFa
+        ? "مشکل رو اینجا توضیح بده:\n\n\n---\nاطلاعات فنی (خودکار):\n"
+        : "Describe the issue here:\n\n\n---\nTechnical details (auto-filled):\n";
+      var mailto = "mailto:mo.aria.am@gmail.com"
+        + "?subject=" + encodeURIComponent(subject)
+        + "&body=" + encodeURIComponent(bodyIntro + info);
+      el.setAttribute("href", mailto);
+    });
+  }
+
 })();
