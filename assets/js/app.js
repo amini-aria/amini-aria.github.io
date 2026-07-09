@@ -20,18 +20,21 @@
     }, { passive: true });
   }
 
-  var revealTargets = document.querySelectorAll(".reveal");
-  if (revealTargets.length) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-    revealTargets.forEach(function (t) { io.observe(t); });
+  var revealObserver;
+  function observeReveals() {
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    }
+    document.querySelectorAll(".reveal:not(.is-visible)").forEach(function (t) { revealObserver.observe(t); });
   }
+  observeReveals();
 
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -115,8 +118,45 @@
         }
       })
       .catch(function () {
-        /* API unavailable (rate limit / offline) — fail silently, no broken UI */
         updatedEl.textContent = "";
+      });
+  }
+
+  /* ---------- Publications page: auto-mirror sections from the resume page ----------
+     Single source of truth stays the resume page. This just fetches its HTML
+     (same-origin) and clones the matching .resume__block sections in place,
+     so nothing has to be typed twice. */
+  var mirrorMount = document.getElementById("mirror-mount");
+  if (mirrorMount) {
+    var sourcePath = mirrorMount.getAttribute("data-source");
+    var titlesAttr = mirrorMount.getAttribute("data-titles") || "";
+    var wantedTitles = titlesAttr.split("|").map(function (s) { return s.trim(); });
+
+    fetch(sourcePath)
+      .then(function (res) { if (!res.ok) throw new Error("fetch failed"); return res.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var blocks = doc.querySelectorAll(".resume__block");
+        var found = 0;
+        blocks.forEach(function (block) {
+          var titleEl = block.querySelector(".resume__block-title");
+          if (!titleEl) return;
+          var title = titleEl.textContent.trim();
+          if (wantedTitles.indexOf(title) !== -1) {
+            var clone = block.cloneNode(true);
+            clone.classList.add("reveal");
+            mirrorMount.appendChild(clone);
+            found++;
+          }
+        });
+        if (found === 0) {
+          mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-empty-text") + "</p>";
+        } else {
+          observeReveals();
+        }
+      })
+      .catch(function () {
+        mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-error-text") + "</p>";
       });
   }
 })();
