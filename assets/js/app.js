@@ -4,17 +4,16 @@
   var burger = document.getElementById("burger");
   var links = document.getElementById("topnav-links");
   var backdrop = document.getElementById("nav-backdrop");
-  var navClose = document.getElementById("nav-close");
   function closeNav() {
     if (links) links.classList.remove("is-open");
     if (backdrop) backdrop.classList.remove("is-open");
-    if (burger) burger.setAttribute("aria-expanded", "false");
+    if (burger) { burger.classList.remove("is-open"); burger.setAttribute("aria-expanded", "false"); }
     document.documentElement.style.overflow = "";
   }
   function openNav() {
     if (links) links.classList.add("is-open");
     if (backdrop) backdrop.classList.add("is-open");
-    if (burger) burger.setAttribute("aria-expanded", "true");
+    if (burger) { burger.classList.add("is-open"); burger.setAttribute("aria-expanded", "true"); }
     document.documentElement.style.overflow = "hidden";
   }
   if (burger && links) {
@@ -26,7 +25,11 @@
     });
   }
   if (backdrop) backdrop.addEventListener("click", closeNav);
-  if (navClose) navClose.addEventListener("click", closeNav);
+  window.addEventListener("resize", closeNav);
+  /* Pages restored from the back/forward cache (common with cross-document
+     View Transitions) can otherwise keep a stale "is-open" state from
+     before navigation, making the menu appear stuck or unresponsive. */
+  window.addEventListener("pageshow", closeNav);
 
   var topbar = document.getElementById("topbar");
   if (topbar) {
@@ -174,26 +177,31 @@
         mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-error-text") + "</p>";
       });
   }
-  /* ---------- "Report an issue" mailto, pre-filled with device/browser info ---------- */
-  var reportLinks = document.querySelectorAll(".report-bug");
-  if (reportLinks.length) {
-    var info = [
-      "Page: " + window.location.href,
-      "Browser: " + navigator.userAgent,
-      "Screen: " + window.screen.width + "x" + window.screen.height,
-      "Viewport: " + window.innerWidth + "x" + window.innerHeight,
-      "Language: " + navigator.language
-    ].join("\n");
-    reportLinks.forEach(function (el) {
-      var isFa = document.body.classList.contains("lang-fa");
-      var subject = isFa ? "گزارش مشکل در amini-aria.github.io" : "Issue report — amini-aria.github.io";
-      var bodyIntro = isFa
-        ? "مشکل رو اینجا توضیح بده:\n\n\n---\nاطلاعات فنی (خودکار):\n"
-        : "Describe the issue here:\n\n\n---\nTechnical details (auto-filled):\n";
-      var mailto = "mailto:mo.aria.am@gmail.com"
-        + "?subject=" + encodeURIComponent(subject)
-        + "&body=" + encodeURIComponent(bodyIntro + info);
-      el.setAttribute("href", mailto);
+  /* ---------- Contact page: cursor-follow glow on each card ---------- */
+  if (!reduceMotion) {
+    document.querySelectorAll(".contact-card").forEach(function (el) {
+      el.addEventListener("mousemove", function (e) {
+        var rect = el.getBoundingClientRect();
+        el.style.setProperty("--gx", ((e.clientX - rect.left) / rect.width) * 100 + "%");
+        el.style.setProperty("--gy", ((e.clientY - rect.top) / rect.height) * 100 + "%");
+      });
+    });
+  }
+  /* ---------- Spotify playlist shutter ---------- */
+  var spotifyToggle = document.getElementById("spotify-toggle");
+  var spotifyDropdown = document.getElementById("spotify-dropdown");
+  function closeSpotify() {
+    if (spotifyDropdown) spotifyDropdown.classList.remove("is-open");
+    if (spotifyToggle) spotifyToggle.setAttribute("aria-expanded", "false");
+  }
+  if (spotifyToggle && spotifyDropdown) {
+    spotifyToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = spotifyDropdown.classList.toggle("is-open");
+      spotifyToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.addEventListener("click", function (e) {
+      if (!spotifyDropdown.contains(e.target)) closeSpotify();
     });
   }
 
