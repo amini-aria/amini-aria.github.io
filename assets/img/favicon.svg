@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#23417A"/>
+      <stop offset="50%" stop-color="#1E7A78"/>
+      <stop offset="100%" stop-color="#1C7A56"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="10" fill="#FAF8F3"/>
+  <polygon points="32,6 54,20 54,44 32,58 10,44 10,20" fill="none" stroke="url(#g)" stroke-width="2.5"/>
+  <path d="M32,6 L32,58 M10,20 L54,44 M54,20 L10,44" stroke="url(#g)" stroke-width="1" opacity="0.45"/>
+  <text x="32" y="38" font-family="Georgia, serif" font-size="19" font-weight="700" text-anchor="middle" fill="#1E2430">MA</text>
+</svg>
