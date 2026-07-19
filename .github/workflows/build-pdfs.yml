@@ -1,0 +1,46 @@
+name: Build resume PDFs
+
+# Regenerates assets/files/Aria-CV-En.pdf and Aria-CV-Fa.pdf directly from
+# resume/index.html and fa/resume/index.html, so the downloadable PDFs are
+# never out of sync with the live resume pages. Runs on every push that
+# touches the resume pages or the shared stylesheet, and commits the
+# regenerated PDFs back to the repo if anything changed.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "resume/**"
+      - "fa/resume/**"
+      - "assets/css/style.css"
+      - "assets/js/app.js"
+      - ".github/workflows/build-pdfs.yml"
+      - ".github/scripts/build-resume-pdfs.js"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdfs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install renderer
+        run: npm install puppeteer@22 serve-handler@6
+
+      - name: Render resume pages to PDF
+        run: node .github/scripts/build-resume-pdfs.js
+
+      - name: Commit updated PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/files/Aria-CV-En.pdf assets/files/Aria-CV-Fa.pdf
+          git diff --staged --quiet || git commit -m "chore: regenerate resume PDFs from live pages [skip ci]"
+          git push
