@@ -248,5 +248,7 @@
       window.scrollTo(0, Math.max(0, docH * ratio));
     });
   })();
+  /* Aria's Lab title typewriter, card rendering, and terminal log now live
+     in assets/js/lab.js (single source of truth for that section). */
 
 })();

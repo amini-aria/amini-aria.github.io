@@ -104,7 +104,7 @@
         <svg class="spotify-link__chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </button>
       <div class="spotify-panel" id="spotify-panel">
-        <div class="spotify-scrollbar-track" aria-hidden="true"><div class="spotify-scrollbar-thumb" id="spotify-scroll-thumb"></div></div><div class="spotify-panel__inner" id="spotify-scroll-inner">
+        <div class="spotify-scroll-wrap"><div class="spotify-scrollbar-track" aria-hidden="true"><div class="spotify-scrollbar-thumb" id="spotify-scroll-thumb"></div></div><div class="spotify-panel__inner" id="spotify-scroll-inner">
           <div class="spotify-panel__list">
           <a href="https://open.spotify.com/" target="_blank" rel="noopener">Progressive Rock</a>
           <a href="https://open.spotify.com/" target="_blank" rel="noopener">Progressive Metal</a>
@@ -118,8 +118,8 @@
           <a href="https://open.spotify.com/" target="_blank" rel="noopener">Classic</a>
         <a href="https://open.spotify.com/" target="_blank" rel="noopener">Old Iranian</a>
           </div>
-          <p class="spotify-panel__note spotify-panel__note--rtl">این پلی‌لیست‌ها براساس علاقه و سلیقه‌ی شخصی خودم ساخته شده‌اند. پس پیشاپیش از این تضاد با سلیقه‌ی شما عذر می‌خوام.</p>
-        </div>
+          </div></div>
+        <p class="spotify-panel__note spotify-panel__note--rtl">این پلی‌لیست‌ها براساس علاقه و سلیقه‌ی شخصی خودم ساخته شده‌اند.</p>
       </div>
     </div>
   </div>
@@ -127,6 +127,25 @@
   <div class="hero__scroll-hint">
     <span>اسکرول</span>
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
+  </div>
+</section>
+
+<!-- ===== آزمایشگاه آریا (ابزارها و بات‌های شخصی — عمداً کاملاً جدا از بقیه‌ی سایت) ===== -->
+<section class="lab-section" id="lab" dir="ltr">
+  <div class="lab-section__bg" aria-hidden="true"></div>
+  <div class="lab-section__inner">
+    <div class="lab-terminal">
+      <div class="lab-terminal__bar">
+        <span class="lab-terminal__dot lab-terminal__dot--r"></span>
+        <span class="lab-terminal__dot lab-terminal__dot--y"></span>
+        <span class="lab-terminal__dot lab-terminal__dot--g"></span>
+        <span class="lab-terminal__path">Aria Tools &mdash; bash</span>
+      </div>
+      <div class="lab-terminal__fixed" id="lab-terminal-fixed"></div>
+      <div class="lab-terminal__log" id="lab-terminal-log" aria-hidden="true"></div>
+    </div>
+
+    <div class="lab-grid" id="lab-grid"></div>
   </div>
 </section>
 
@@ -149,6 +168,7 @@
   </div>
 </footer>
 
+<script src="/assets/js/lab.js"></script>
 <script src="/assets/js/app.js"></script>
 </body>
 </html>

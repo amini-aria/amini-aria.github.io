@@ -756,63 +756,77 @@ body.lang-fa .contact-hero__title { font-size: clamp(1.6rem, 6.5vw, 3rem); white
   text-align: center;
 }
 
-/* ---- Contact buttons: built fresh. One wide email button on top (its own
-   distinct look), then two rows of three narrower buttons each. ---- */
-.cbtns { max-width: 420px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 0.9rem; }
-.cbtns__row { display: flex; gap: 0.9rem; align-items: flex-start; }
-.cbtn-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1 1 0; min-width: 0; }
+/* ---- Contact buttons: one wide, distinctly-styled email button on top,
+   then three rows of two narrower pill buttons (icon + label side by side
+   so each stays noticeably narrower than the email button). Built on CSS
+   Grid so every row-to-row gap is identical regardless of whether a
+   button has a caption underneath it. ---- */
+.cbtns { max-width: 340px; margin: 3rem auto 0; display: grid; grid-template-columns: 1fr; gap: 14px; }
+.cbtns__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cbtn-wrap { display: grid; grid-template-rows: auto auto; row-gap: 6px; align-content: start; }
 .cbtn__note {
+  display: block;
+  min-height: 1.1em;
   font-weight: 300; font-size: 0.62rem; letter-spacing: 0.02em;
   color: var(--ink-faint); text-align: center;
 }
 
 .cbtn {
   position: relative;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
-  width: 100%; height: 96px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.86);
-  border: 1px solid rgba(58,46,34,0.16);
-  box-shadow: 0 12px 28px -20px rgba(58,46,34,0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-.cbtn:hover { transform: translateY(-3px); border-color: var(--umber); box-shadow: 0 18px 36px -20px rgba(58,46,34,0.48); }
-.cbtn__icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--umber); color: #fff; flex-shrink: 0;
-}
-.cbtn__icon--flag { border-radius: 5px; overflow: hidden; background: none; }
-.cbtn__icon--flag img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.cbtn__label { font-family: var(--font-body); font-size: 0.84rem; font-weight: 400; color: var(--ink); }
-
-/* email: its own distinct wide look, not just a bigger version of the others */
-.cbtn--email {
-  flex-direction: row; justify-content: flex-start;
-  width: 100%; height: auto;
-  gap: 0.9rem;
-  padding: 0.9rem 1.4rem;
+  display: flex; flex-direction: row; align-items: center; gap: 0.65rem;
+  width: 100%;
+  padding: 0.7rem 0.85rem;
   border-radius: 14px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(58,46,34,0.12);
+  box-shadow: 0 8px 20px -16px rgba(58,46,34,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cbtn:hover { transform: translateY(-2px); border-color: var(--umber); background: #fff; box-shadow: 0 14px 28px -16px rgba(58,46,34,0.4); }
+}
+.cbtn__icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--umber-soft); color: var(--umber); flex-shrink: 0;
+}
+.cbtn__icon--flag { border-radius: 6px; overflow: hidden; background: none; }
+.cbtn__icon--flag img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cbtn__label { font-family: var(--font-body); font-size: 0.82rem; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* email: its own distinct look — dark card, larger icon chip, a slightly
+   more expressive label font — proportioned to line up exactly with the
+   width of the two-button rows beneath it (same grid, full column span) */
+.cbtn--email {
+  flex-direction: row;
+  width: 100%;
+  gap: 1rem;
+  padding: 1rem 1.3rem;
+  border-radius: 16px;
   background: var(--ink);
   border: none;
-  box-shadow: 0 16px 34px -20px rgba(58,46,34,0.55);
+  box-shadow: 0 14px 30px -18px rgba(58,46,34,0.5);
 }
-.cbtn--email:hover { transform: translateY(-3px); box-shadow: 0 22px 42px -20px rgba(58,46,34,0.6); }
-.cbtn--email .cbtn__icon { background: var(--sand-gold); color: var(--ink); }
-.cbtn--email .cbtn__text { display: flex; flex-direction: column; gap: 0.2rem; align-items: flex-start; }
-.cbtn--email .cbtn__label { font-size: 0.94rem; font-weight: 500; color: #fff; }
-.cbtn--email .cbtn__sub { font-family: var(--font-mono); font-size: 0.78rem; color: rgba(255,255,255,0.6); }
+@media (hover: hover) and (pointer: fine) {
+  .cbtn--email:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -18px rgba(58,46,34,0.55); }
+}
+.cbtn--email .cbtn__icon { width: 44px; height: 44px; border-radius: 13px; background: var(--sand-gold); color: var(--ink); }
+.cbtn--email .cbtn__text { display: flex; flex-direction: column; gap: 0.22rem; align-items: flex-start; }
+.cbtn--email .cbtn__label { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; color: #fff; white-space: normal; letter-spacing: 0.01em; }
+.cbtn--email .cbtn__sub { font-family: var(--font-mono); font-size: 0.78rem; color: rgba(255,255,255,0.62); }
 
 .cbtn--disabled {
   pointer-events: none;
-  background: rgba(230,230,230,0.7);
-  border-color: rgba(120,120,120,0.35);
+  background: rgba(230,230,230,0.65);
+  border-color: rgba(120,120,120,0.3);
 }
-.cbtn--disabled .cbtn__icon { background: #8a8a8a; }
+.cbtn--disabled .cbtn__icon { background: rgba(120,120,120,0.14); color: #8a8a8a; }
 .cbtn--disabled .cbtn__label { color: #8a8a8a; }
 .cbtn--disabled .cbtn__icon--flag { background: none; }
 
-
+@media (max-width: 420px) {
+  .cbtns { max-width: 320px; }
+}
 
 @media (max-width: 720px) {
   .contact-page { padding: 7rem 1.25rem 3rem; }
@@ -850,10 +864,12 @@ body.lang-fa .contact-hero__title { font-size: clamp(1.6rem, 6.5vw, 3rem); white
   overflow: hidden;
   transition: max-height 0.35s ease;
 }
-.spotify-dropdown.is-open .spotify-panel { max-height: 280px; }
+.spotify-dropdown.is-open .spotify-panel { max-height: 320px; }
+.spotify-scroll-wrap { position: relative; }
 .spotify-panel__inner {
-  max-height: 280px; overflow-y: scroll;
-  padding-inline-end: 14px;
+  max-height: 230px; overflow-y: scroll;
+  direction: ltr;
+  padding-right: 9px;
   scrollbar-width: none;
 }
 .spotify-panel__inner::-webkit-scrollbar { display: none; }
@@ -861,63 +877,278 @@ body.lang-fa .contact-hero__title { font-size: clamp(1.6rem, 6.5vw, 3rem); white
    platform (iOS Safari ignores CSS scrollbar styling and auto-hides its
    native one; this track/thumb pair is our own markup, always on) */
 .spotify-scrollbar-track {
-  position: absolute; top: 6px; right: 4px; bottom: 6px; width: 4px;
+  position: absolute; top: 4px; right: 2px; bottom: 4px; width: 3px;
   background: rgba(255,255,255,0.08);
   border-radius: 999px;
   pointer-events: none;
   z-index: 5;
 }
 .spotify-scrollbar-thumb {
-  position: absolute; right: 0; width: 4px;
+  position: absolute; right: 0; width: 3px;
   background: #1DB954;
   border-radius: 999px;
 }
 .spotify-panel__list {
-  display: flex; flex-direction: column;
-  padding: 0.2rem 0.6rem 0.4rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+  padding: 0.3rem 0.35rem 0.4rem;
   direction: ltr;
 }
 .spotify-panel__list a {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.38rem 0.7rem; border-radius: 8px;
+  display: flex; align-items: center; gap: 0.55rem;
+  padding: 0.5rem 0.75rem; border-radius: 10px;
+  background: rgba(29,185,84,0.07);
+  border: 1px solid rgba(29,185,84,0.15);
   color: #d7d7d7; font-family: var(--font-spotify); font-size: 0.82rem;
   text-align: left; direction: ltr;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .spotify-panel__list a::before {
   content: "";
   width: 7px; height: 7px; border-radius: 50%;
   background: #1DB954; flex-shrink: 0;
 }
-.spotify-panel__list a:hover { background: rgba(29,185,84,0.15); color: #1DB954; }
+.spotify-panel__list a:hover { background: rgba(29,185,84,0.18); color: #1DB954; border-color: rgba(29,185,84,0.4); }
 .spotify-panel__note {
-  margin: 0.3rem 0.6rem 0.7rem;
-  padding: 0.65rem 0.8rem;
-  border-radius: 12px;
-  background: #2a2a2a;
+  margin: 0.6rem 0.9rem 0.7rem;
+  padding: 0;
+  background: none;
+  border: none;
   color: #9a9a9a;
   font-size: 0.72rem;
   line-height: 1.5;
-  text-align: justify;
+  text-align: center;
 }
 .spotify-panel__note--ltr { direction: ltr; font-family: var(--font-spotify); }
 .spotify-panel__note--rtl { direction: rtl; font-family: var(--font-body); }
 
-/* ---- Site-wide scrollbar: thin, geology-themed (sediment-layer thumb) ---- */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--umber) var(--cream-deep);
+
+
+/* =========================================================================
+   ARIA'S LAB — deliberately its own universe: near-black, terminal-green
+   accent, a real fake-terminal with a fixed header and a live-scrolling
+   command log underneath. Always English (see assets/js/lab.js), so this
+   whole block forces LTR regardless of page language.
+   ========================================================================= */
+.lab-section {
+  position: relative;
+  overflow: hidden;
+  background: #0b0d10;
+  padding: 4.5rem var(--edge);
+  isolation: isolate;
+  direction: ltr;
+  text-align: left;
 }
-::-webkit-scrollbar { width: 9px; height: 9px; }
-::-webkit-scrollbar-track { background: var(--cream-deep); }
-::-webkit-scrollbar-thumb {
-  background:
-    repeating-linear-gradient(to bottom,
-      var(--umber) 0px, var(--umber) 5px,
-      var(--clay) 5px, var(--clay) 9px,
-      var(--olive) 9px, var(--olive) 13px,
-      var(--sand-gold) 13px, var(--sand-gold) 16px);
-  border-radius: 999px;
-  border: 2px solid var(--cream-deep);
+.lab-section__bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    radial-gradient(480px circle at 20% 30%, rgba(74,222,128,0.16), transparent 65%),
+    radial-gradient(circle at 1px 1px, rgba(74,222,128,0.14) 1px, transparent 1.6px);
+  background-size: 160% 160%, 28px 28px;
+  background-repeat: no-repeat, repeat;
+  animation: lab-bg-drift 22s ease-in-out infinite;
+  mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 78%);
+  will-change: background-position;
 }
-::-webkit-scrollbar-thumb:hover { border-width: 1px; }
+@keyframes lab-bg-drift {
+  0%   { background-position: 0% 20%, 0 0; }
+  50%  { background-position: 60% 65%, 14px 14px; }
+  100% { background-position: 0% 20%, 28px 28px; }
+}
+@media (max-width: 640px) {
+  /* keep it light on phones: drop the extra glow layer and slow the
+     remaining animation so it costs less to repaint */
+  .lab-section__bg {
+    background-image: radial-gradient(circle at 1px 1px, rgba(74,222,128,0.14) 1px, transparent 1.6px);
+    background-size: 28px 28px;
+    animation: lab-bg-drift-simple 26s linear infinite;
+  }
+  @keyframes lab-bg-drift-simple {
+    from { background-position: 0 0; }
+    to   { background-position: 28px 28px; }
+  }
+}
+.lab-section__inner { position: relative; z-index: 1; max-width: var(--max-w); margin-inline: auto; }
+
+/* ---- the terminal window ---- */
+.lab-terminal {
+  max-width: 640px; margin: 0 auto;
+  background: #101317;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+.lab-terminal__bar {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.lab-terminal__dot { width: 9px; height: 9px; border-radius: 50%; }
+.lab-terminal__dot--r { background: #ef4444; }
+.lab-terminal__dot--y { background: #f59e0b; }
+.lab-terminal__dot--g { background: #22c55e; }
+.lab-terminal__path {
+  margin-inline-start: 0.6rem;
+  font-family: var(--font-mono); font-size: 0.68rem; color: #6b7280; letter-spacing: 0.02em;
+}
+
+/* fixed header: never scrolls, never moves */
+.lab-terminal__fixed {
+  padding: 1.1rem 1.2rem 0.9rem;
+  border-bottom: 1px dashed rgba(255,255,255,0.08);
+}
+.lab-terminal__fixed .lab-prompt-line {
+  font-family: var(--font-mono); font-size: 0.78rem; color: #6b7280;
+  margin: 0 0 0.9rem;
+}
+.lab-terminal__fixed .lab-prompt-line .lab-prompt { color: #4ade80; }
+.lab-section__title {
+  font-family: var(--font-mono);
+  font-weight: 600; font-size: clamp(1.4rem, 4vw, 1.8rem);
+  color: #f4f4f5; letter-spacing: -0.01em; margin: 0 0 0.55rem;
+}
+.lab-section__title .lab-title__cursor {
+  display: inline-block; color: #4ade80; margin-inline-start: 2px;
+  animation: lab-cursor-blink 0.9s step-end infinite;
+}
+@keyframes lab-cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.lab-section__text { color: #9ca3af; font-size: 0.88rem; line-height: 1.6; margin: 0; max-width: 56ch; }
+
+/* live-scrolling log: fixed height/width, new lines rise from the bottom,
+   old ones fade out near the top — like `tail -f` */
+.lab-terminal__log {
+  height: 168px;
+  padding: 0.8rem 1.2rem;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  gap: 0.3rem;
+  overflow: hidden;
+  font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.55;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 100%);
+}
+.lab-log__line {
+  white-space: pre-wrap; word-break: break-all;
+  color: #9ca3af;
+  opacity: 0; transform: translateY(6px);
+  animation: lab-log-in 0.28s ease forwards;
+}
+@keyframes lab-log-in { to { opacity: 1; transform: translateY(0); } }
+.lab-log__line--cmd { color: #e5e7eb; }
+.lab-log__line--cmd .lab-prompt { color: #4ade80; }
+.lab-log__line--err { color: #f87171; }
+.lab-log__cursor {
+  display: inline-block; width: 6px; height: 1.05em; background: #4ade80;
+  vertical-align: text-bottom; margin-inline-start: 2px;
+  animation: lab-cursor-blink 0.9s step-end infinite;
+}
+
+/* ---- tool cards: narrower, shorter, denser than before ---- */
+.lab-grid {
+  margin-top: 2rem;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 0.7rem;
+  max-width: 640px; margin-inline: auto;
+}
+.lab-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  padding: 0.95rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e5e7eb;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lab-card--active:hover {
+    transform: translateY(-3px);
+    border-color: rgba(74,222,128,0.4);
+    background: linear-gradient(160deg, rgba(74,222,128,0.09), rgba(255,255,255,0.02));
+  }
+}
+/* touch devices: no vertical lift (it was pushing the card up and
+   overlapping the terminal above it) — just a quick, position-safe
+   colour response on tap */
+.lab-card--active:active {
+  border-color: rgba(74,222,128,0.4);
+  background: linear-gradient(160deg, rgba(74,222,128,0.12), rgba(255,255,255,0.02));
+}
+.lab-card__top { display: flex; align-items: center; justify-content: space-between; }
+.lab-card__icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(74,222,128,0.12); color: #4ade80;
+  flex-shrink: 0;
+}
+.lab-card__tag {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.05em;
+  color: #9ca3af; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px; padding: 0.15rem 0.5rem;
+}
+.lab-card__name { font-family: 'Inter', -apple-system, sans-serif; font-size: 0.9rem; font-weight: 600; color: #fff; margin: 0; }
+.lab-card__desc { font-size: 0.76rem; color: #9ca3af; line-height: 1.45; margin: 0; flex: 1; }
+
+.lab-card__foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.1rem; }
+.lab-card__status {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em;
+  color: #4ade80;
+}
+.lab-card__dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,0.6);
+  animation: lab-dot-pulse 1.8s ease-out infinite;
+}
+@keyframes lab-dot-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+  70%  { box-shadow: 0 0 0 5px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+.lab-card__status--off { color: #f87171; }
+.lab-card__status--off .lab-card__dot { background: #f87171; animation: none; box-shadow: none; }
+
+.lab-card__cta {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: var(--font-mono); font-size: 0.7rem; color: #4ade80;
+}
+.lab-card__cta svg { transition: transform 0.2s ease; }
+.lab-card--active:hover .lab-card__cta svg { transform: translateX(3px); }
+
+.lab-card--inactive {
+  border-style: dashed;
+  border-color: rgba(255,255,255,0.13);
+  background: transparent;
+  opacity: 0.8;
+}
+.lab-card--inactive:hover { transform: none; border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.02); }
+.lab-card--inactive .lab-card__icon { background: rgba(255,255,255,0.06); color: #9ca3af; }
+
+/* ---- mobile: dense, modern horizontal scroll-snap row instead of a stack ---- */
+@media (max-width: 640px) {
+  .lab-terminal { max-width: 100%; }
+  .lab-terminal__log { height: 140px; }
+  .lab-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.6rem;
+    padding-bottom: 0.3rem;
+    margin-left: calc(var(--edge) * -1);
+    margin-right: calc(var(--edge) * -1);
+    padding-left: var(--edge);
+    padding-right: var(--edge);
+    scrollbar-width: none;
+  }
+  .lab-grid::-webkit-scrollbar { display: none; }
+  .lab-card {
+    scroll-snap-align: start;
+    flex: 0 0 158px;
+    padding: 0.85rem 0.9rem;
+  }
+  .lab-card__name { font-size: 0.84rem; }
+  .lab-card__desc { font-size: 0.72rem; }
+}
