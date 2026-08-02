@@ -1,0 +1,59 @@
+name: Build resume documents
+
+# Regenerates assets/files/Aria-CV-En.docx/.pdf and Aria-CV-Fa.docx/.pdf
+# from scripts/resume_data.py using scripts/build_resume_docs.py. The PDF
+# is produced by converting the just-built .docx with LibreOffice headless,
+# so the two files are always identical in content — editing
+# scripts/resume_data.py and pushing is all that's needed to update both.
+#
+# The .docx files are intentionally never linked from the site UI (only
+# the .pdf download buttons are), but they live at the same path with a
+# .docx extension, so they're reachable by anyone who edits the URL.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/resume_data.py"
+      - "scripts/build_resume_docs.py"
+      - "scripts/jalali.py"
+      - "assets/fonts/**"
+      - ".github/workflows/build-resume-docs.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-resume-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install LibreOffice and python-docx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libreoffice
+          pip install python-docx
+
+      - name: Install Dana fonts (used by the Persian resume)
+        run: |
+          mkdir -p ~/.fonts
+          cp assets/fonts/Dana-*.ttf ~/.fonts/
+          fc-cache -f ~/.fonts
+
+      - name: Build resume documents
+        run: python3 scripts/build_resume_docs.py
+
+      - name: Commit updated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/files/Aria-CV-En.docx assets/files/Aria-CV-En.pdf \
+                  assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf
+          git diff --staged --quiet || git commit -m "chore: regenerate resume documents [skip ci]"
+          git push
