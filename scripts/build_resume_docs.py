@@ -48,9 +48,17 @@ from jalali import today_jalali_string  # noqa: E402
 OUT_DIR = Path(__file__).parent.parent / "assets" / "files"
 
 INK = RGBColor(0x1A, 0x1A, 0x1A)
-GREY = RGBColor(0x6E, 0x6E, 0x6E)
-LIGHT_GREY = RGBColor(0xA8, 0xA8, 0xA8)
+SECONDARY = RGBColor(0x4D, 0x4D, 0x4D)
 ACCENT_BLUE = RGBColor(0x1F, 0x4E, 0x79)
+
+# Four sizes only, matching academic-CV convention (name / section title /
+# body / small print) instead of a dozen near-duplicate increments — every
+# other visual distinction (primary vs. secondary content) comes from
+# color and weight/italic, not size.
+SIZE_NAME = 16
+SIZE_SECTION = 11.5
+SIZE_BODY = 10.5
+SIZE_SMALL = 8
 
 FONT_EN = "Times New Roman"
 
@@ -160,23 +168,23 @@ class ResumeBuilder:
         section = self.doc.sections[0]
         section.page_width = Cm(21.0)
         section.page_height = Cm(29.7)
-        section.top_margin = Cm(0.6)
-        section.bottom_margin = Cm(0.5)
+        section.top_margin = Cm(1.27)
+        section.bottom_margin = Cm(1.27)
         section.left_margin = Cm(1.4)
         section.right_margin = Cm(1.4)
-        section.footer_distance = Cm(0.3)
+        section.footer_distance = Cm(0.5)
         self.usable_width_cm = 21.0 - 1.4 - 1.4
 
         normal = self.doc.styles["Normal"]
         normal.font.name = self.font
-        normal.font.size = Pt(9.0)
+        normal.font.size = Pt(SIZE_BODY)
         normal.font.color.rgb = INK
         rpr = normal.element.get_or_add_rPr()
         szCs = rpr.find(qn("w:szCs"))
         if szCs is None:
             szCs = OxmlElement("w:szCs")
             rpr.append(szCs)
-        szCs.set(qn("w:val"), str(int(round(9.0 * 2))))
+        szCs.set(qn("w:val"), str(int(round(SIZE_BODY * 2))))
         rFonts = rpr.find(qn("w:rFonts"))
         if rFonts is None:
             rFonts = OxmlElement("w:rFonts")
@@ -205,7 +213,12 @@ class ResumeBuilder:
             return self.font
         return DANA.get(weight, DANA["regular"])
 
-    def _run(self, paragraph, text, weight="regular", italic=False, size=9.0, color=INK, condensed=False, force_ltr=False):
+    def _run(self, paragraph, text, weight="regular", italic=False, size=SIZE_BODY, color=INK, condensed=False, force_ltr=False):
+        if self.is_fa:
+            # Dana has no en-dash glyph; without this, LibreOffice silently
+            # falls back to DejaVu Sans for just that character, producing
+            # a visibly mixed font mid-run (e.g. inside date ranges).
+            text = text.replace("–", "-")
         run = paragraph.add_run(text)
         font_name = self._font_for(weight)
         run.font.name = font_name
@@ -246,7 +259,7 @@ class ResumeBuilder:
 
     def _section_title(self, text):
         p = self._para(space_before=3, space_after=1)
-        self._run(p, text.upper() if not self.is_fa else text, weight="demibold", size=9.3, color=ACCENT_BLUE)
+        self._run(p, text.upper() if not self.is_fa else text, weight="demibold", size=SIZE_SECTION, color=ACCENT_BLUE)
         pPr = p._p.get_or_add_pPr()
         pBdr = OxmlElement("w:pBdr")
         bottom = OxmlElement("w:bottom")
@@ -259,16 +272,18 @@ class ResumeBuilder:
         p.paragraph_format.space_after = Pt(3)
         return p
 
-    def _entry_head_line(self, left_text, right_text, left_weight, left_italic=False):
+    def _entry_head_line(self, left_text, right_text, left_weight, left_italic=False, left_color=INK):
         """Classic resume pattern: left-aligned text, right-aligned date,
         using a right tab stop rather than a table (safer for ATS parsers
         and screen readers alike). The date itself is set slightly
-        condensed for a tighter, more tabular look."""
+        condensed for a tighter, more tabular look. left_color lets a
+        caller mark the left text itself as secondary (e.g. a role line
+        under an org heading that's already the primary line)."""
         p = self._para(space_before=0, space_after=0)
         add_right_tab(p, self.usable_width_cm)
-        self._run(p, left_text, weight=left_weight, italic=left_italic, size=9.5)
+        self._run(p, left_text, weight=left_weight, italic=left_italic, size=SIZE_BODY, color=left_color)
         if right_text:
-            self._run(p, "\t" + right_text, weight="light", italic=False, size=8.4, color=GREY, condensed=True)
+            self._run(p, "\t" + right_text, weight="light", italic=False, size=SIZE_BODY, color=SECONDARY, condensed=True)
         return p
 
     def _bullet(self, text):
@@ -279,43 +294,43 @@ class ResumeBuilder:
         # side) for RTL Persian paragraphs too, unlike a trailing suffix
         # which would visually land on the wrong side
         marker = "\u2013 "
-        self._run(p, marker + text, weight="light", size=8.6, color=RGBColor(0x33, 0x33, 0x33))
+        self._run(p, marker + text, weight="light", size=SIZE_BODY)
 
     # ---- sections ------------------------------------------------------
 
     def header(self):
         d = self.data
         p = self._para(align=WD_ALIGN_PARAGRAPH.CENTER, space_after=0, space_before=0)
-        self._run(p, d["name"], weight="black", size=16, color=ACCENT_BLUE)
+        self._run(p, d["name"], weight="black", size=SIZE_NAME, color=ACCENT_BLUE)
 
         p = self._para(align=WD_ALIGN_PARAGRAPH.CENTER, space_after=1)
-        self._run(p, d["role"], weight="medium", italic=not self.is_fa, size=9.6, color=GREY)
+        self._run(p, d["role"], weight="medium", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
         p = self._para(align=WD_ALIGN_PARAGRAPH.CENTER, space_after=3)
         parts = d["contact_parts"]
         for i, part in enumerate(parts):
             if i > 0:
-                self._run(p, "   |   ", weight="light", size=8.1, color=GREY)
+                self._run(p, "   |   ", weight="light", size=SIZE_BODY, color=SECONDARY)
             if part.get("url"):
                 add_hyperlink(
                     p, part["text"], part["url"],
-                    font=self._font_for("light"), size=8.1, color=GREY,
+                    font=self._font_for("light"), size=SIZE_BODY, color=SECONDARY,
                     weight_bold=False, rtl=self.is_fa,
                 )
             else:
-                self._run(p, part["text"], weight="light", size=8.1, color=GREY)
+                self._run(p, part["text"], weight="light", size=SIZE_BODY, color=SECONDARY)
 
     def about(self):
         self._section_title("About" if not self.is_fa else "\u062f\u0631\u0628\u0627\u0631\u0647\u200c\u0645\u0646")
         p = self._para(space_after=3)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        self._run(p, self.data["about"], weight="regular", size=9.1)
+        self._run(p, self.data["about"], weight="regular", size=SIZE_BODY)
 
     def interests(self):
         self._section_title("Interests" if not self.is_fa else "\u0639\u0644\u0627\u0642\u0647\u200c\u0645\u0646\u062f\u06cc\u200c\u0647\u0627")
         p = self._para(space_after=3)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        self._run(p, self.data["interests"], weight="regular", size=9.1)
+        self._run(p, self.data["interests"], weight="regular", size=SIZE_BODY)
 
     def education(self):
         self._section_title("Education" if not self.is_fa else "\u062a\u062d\u0635\u06cc\u0644\u0627\u062a")
@@ -323,7 +338,7 @@ class ResumeBuilder:
             self._entry_head_line(e["degree"], e["period"], left_weight="demibold")
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, e["org"], weight="light", italic=not self.is_fa, size=8.5, color=GREY)
+            self._run(p, e["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
             for note in e["notes"]:
                 self._bullet(note)
 
@@ -336,34 +351,34 @@ class ResumeBuilder:
             # same org heading (e.g. two positions held at one university)
             # instead of a single role/period pair.
             p = self._para(space_before=3, space_after=0)
-            self._run(p, e["org"], weight="demibold", size=9.2)
+            self._run(p, e["org"], weight="demibold", size=SIZE_BODY)
             if "roles" in e:
                 for r in e["roles"]:
-                    self._entry_head_line(r["role"], r["period"], left_weight="light", left_italic=not self.is_fa)
+                    self._entry_head_line(r["role"], r["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
             else:
-                self._entry_head_line(e["role"], e["period"], left_weight="light", left_italic=not self.is_fa)
+                self._entry_head_line(e["role"], e["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
 
     def books(self):
         self._section_title("Books" if not self.is_fa else "\u06a9\u062a\u0627\u0628\u200c\u0647\u0627")
         for b in self.data["books"]:
             p = self._para(space_before=2, space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, b["citation"], weight="regular", size=8.9)
+            self._run(p, b["citation"], weight="regular", size=SIZE_BODY)
             p2 = self._para(space_after=0)
-            self._run(p2, b["role"], weight="light", italic=not self.is_fa, size=8.3, color=GREY)
+            self._run(p2, b["role"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
             p3 = self._para(space_after=0)
             isbn_label = "ISBN: " if not self.is_fa else "\u0634\u0627\u0628\u06a9: "
-            self._run(p3, isbn_label, weight="light", size=7.8, color=LIGHT_GREY)
+            self._run(p3, isbn_label, weight="light", size=SIZE_SMALL, color=SECONDARY)
             # the ISBN's digit groups must read left-to-right even inside a
             # right-to-left Persian paragraph, so this run is never RTL-flagged
-            self._run(p3, b.get("isbn", ""), weight="light", size=7.8, color=LIGHT_GREY, force_ltr=True)
+            self._run(p3, b.get("isbn", ""), weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
 
     def _chip_group(self, groups):
         for label, items in groups.items():
             p = self._para(space_before=1, space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, label + ":  ", weight="demibold", size=8.8)
-            self._run(p, "  \u2022  ".join(items), weight="regular", size=8.8)
+            self._run(p, label + ":  ", weight="demibold", size=SIZE_BODY)
+            self._run(p, "  \u2022  ".join(items), weight="regular", size=SIZE_BODY)
 
     def skills(self):
         self._section_title("Skills" if not self.is_fa else "\u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627")
@@ -378,7 +393,7 @@ class ResumeBuilder:
         parts = [f'{l["name"]} \u2013 {l["level"]}' for l in self.data["languages"]]
         p = self._para(space_after=3)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        self._run(p, "   |   ".join(parts), weight="regular", size=8.8)
+        self._run(p, "   |   ".join(parts), weight="regular", size=SIZE_BODY)
 
     def memberships(self):
         title = "Professional Memberships" if not self.is_fa else "\u0639\u0636\u0648\u06cc\u062a\u200c\u0647\u0627\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"
@@ -387,7 +402,7 @@ class ResumeBuilder:
             self._entry_head_line(m["role"], m["period"], left_weight="demibold")
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, m["org"], weight="light", italic=not self.is_fa, size=8.5, color=GREY)
+            self._run(p, m["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
     def volunteer(self):
         title = "Volunteer Activities" if not self.is_fa else "\u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u062f\u0627\u0648\u0637\u0644\u0628\u0627\u0646\u0647"
@@ -396,7 +411,7 @@ class ResumeBuilder:
             self._entry_head_line(v["role"], v["period"], left_weight="demibold")
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, v["org"], weight="light", italic=not self.is_fa, size=8.5, color=GREY)
+            self._run(p, v["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
     def footer(self):
         section = self.doc.sections[0]
@@ -412,7 +427,7 @@ class ResumeBuilder:
         else:
             label = "Last updated: "
             stamp = date.today().strftime("%B %-d, %Y") if sys.platform != "win32" else date.today().strftime("%B %#d, %Y")
-        self._run(p, label + stamp, weight="light", size=6.5, color=LIGHT_GREY, italic=False)
+        self._run(p, label + stamp, weight="light", size=SIZE_SMALL, color=SECONDARY, italic=False)
 
     def build(self):
         self.header()
