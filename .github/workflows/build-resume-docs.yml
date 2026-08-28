@@ -34,10 +34,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install LibreOffice and python-docx
+      - name: Install LibreOffice, python-docx, and the UNO scripting bridge
         run: |
           sudo apt-get update
-          sudo apt-get install -y libreoffice
+          sudo apt-get install -y libreoffice python3-uno
           pip install python-docx
 
       - name: Install real Times New Roman (used by the English resume)
@@ -66,6 +66,11 @@ jobs:
 
       - name: Build resume documents
         run: python3 scripts/build_resume_docs.py
+
+      - name: Embed fonts into the .docx files
+        # Must run under the system python3 (not the actions/setup-python
+        # one) — that's where apt's python3-uno installed the `uno` bindings.
+        run: /usr/bin/python3 scripts/embed_docx_fonts.py assets/files/Aria-CV-En.docx assets/files/Aria-CV-Fa.docx
 
       - name: Commit updated files
         run: |
