@@ -1029,16 +1029,28 @@ body.lang-fa .contact-hero__title { font-size: clamp(1.6rem, 6.5vw, 3rem); white
    platform (iOS Safari ignores CSS scrollbar styling and auto-hides its
    native one; this track/thumb pair is our own markup, always on) */
 .spotify-scrollbar-track {
-  position: absolute; top: 4px; right: 2px; bottom: 4px; width: 3px;
-  background: rgba(255,255,255,0.08);
+  position: absolute; top: 4px; right: 3px; bottom: 4px; width: 5px;
+  background: rgba(255,255,255,0.06);
   border-radius: 999px;
-  pointer-events: none;
   z-index: 5;
+  transition: background 0.2s ease, width 0.2s ease, right 0.2s ease;
 }
 .spotify-scrollbar-thumb {
-  position: absolute; right: 0; width: 3px;
+  position: absolute; right: 0; width: 5px;
   background: #1DB954;
   border-radius: 999px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+}
+.spotify-scroll-wrap:hover .spotify-scrollbar-track,
+.spotify-scrollbar-track:hover {
+  width: 7px; right: 2px;
+  background: rgba(255,255,255,0.1);
+}
+.spotify-scrollbar-thumb:hover,
+.spotify-scrollbar-thumb.is-dragging {
+  opacity: 1;
+  box-shadow: 0 0 0 4px rgba(29,185,84,0.18);
 }
 .spotify-scrollbar-track { cursor:pointer; touch-action:none; }
 .spotify-scrollbar-thumb { cursor:grab; touch-action:none; }
