@@ -46,6 +46,18 @@ jobs:
           cp assets/fonts/Dana-*.ttf ~/.fonts/
           fc-cache -f ~/.fonts
 
+      - name: Archive the previous resume documents as a backup
+        run: |
+          mkdir -p backup/resume-docs
+          ts=$(date -u +%Y%m%d-%H%M%S)
+          for f in assets/files/Aria-CV-En.docx assets/files/Aria-CV-En.pdf \
+                   assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf; do
+            if [ -f "$f" ]; then
+              base=$(basename "$f")
+              cp "$f" "backup/resume-docs/${base%.*}-${ts}.${base##*.}"
+            fi
+          done
+
       - name: Build resume documents
         run: python3 scripts/build_resume_docs.py
 
@@ -54,6 +66,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/files/Aria-CV-En.docx assets/files/Aria-CV-En.pdf \
-                  assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf
+                  assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf \
+                  backup/resume-docs
           git diff --staged --quiet || git commit -m "chore: regenerate resume documents [skip ci]"
           git push
