@@ -15,6 +15,7 @@ on:
       - "assets/js/app.js"
       - "assets/js/lab.js"
       - "scripts/update_asset_versions.py"
+      - ".github/workflows/update-asset-versions.yml"
   workflow_dispatch: {}
 
 permissions:
@@ -39,5 +40,15 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html resume/index.html publications/index.html contact/index.html \
                   fa/index.html fa/resume/index.html fa/publications/index.html fa/contact/index.html
-          git diff --staged --quiet || git commit -m "chore: bump asset cache-busting versions [skip ci]"
+          git diff --staged --quiet && exit 0
+          git commit -m "chore: bump asset cache-busting versions [skip ci]"
+          # Another workflow (e.g. build-resume-docs) can push to main
+          # between our checkout and this push -- retry with a rebase
+          # instead of failing outright on a non-fast-forward rejection.
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git fetch origin main
+            git rebase origin/main
+            sleep $((RANDOM % 5 + 1))
+          done
           git push
