@@ -18,10 +18,16 @@ center so they can be linearly interpolated point-by-point:
     step: that's the aperture, a real and recognizable feature, not
     an artifact to hide.
 
-Plus HERO_AMMONITE_INNER (one tighter inner turn of the same spiral,
-suggesting the coiled inner whorl) and HERO_AMMONITE_RIBS (growth ribs
-radiating from it to the boundary) — detail that fades in once the
-frame has actually become the ammonite shape.
+Plus HERO_AMMONITE_WHORLS (three more turns of the same spiral,
+scaled down by GROWTH_RATIO each time — a real log spiral's earlier
+whorls are mathematically just itself shifted by -2*pi, so this is
+the same curve reused, not a separate shape) and HERO_AMMONITE_RIBS
+(radial lines from near the center out to the outer boundary,
+crossing all the whorls) — detail that fades in once the frame has
+actually become the ammonite shape. This combination — a tightly
+wound multi-turn spiral with full-length radiating ribs — matches the
+reference the user provided directly (an ammonite fossil SVG cut-file
+design), rather than a scientifically literal single-whorl rendering.
 
 Usage:
     python3 gen_hero_ammonite.py
@@ -41,21 +47,24 @@ SEAM = 0.4                # radians blended across the aperture seam
 
 
 def blob_radius(theta):
-    r = 38.0
-    r += 3.0 * math.sin(3 * theta + 0.6)
-    r += 1.7 * math.sin(5 * theta + 2.1)
-    r += 1.0 * math.sin(2 * theta + 4.0)
+    """Additive-only waviness (each term in [0, amplitude], never
+    negative) so the radius never dips below the base value at any
+    angle -- including straight up, where a dip would crop into the
+    top of the portrait photo. Kept gentle: this shape only needs to
+    read as "softly alive", not dramatically organic."""
+    r = 40.0
+    r += 2.0 * (math.sin(3 * theta + 0.6) + 1) / 2
+    r += 1.0 * (math.sin(5 * theta + 2.1) + 1) / 2
     return r
 
 
 def blob_radius_b(theta):
-    """A second organic variant, same style, different phases/weights --
+    """A second variant, same additive-only style, different phases --
     continuously cross-fading between this and blob_radius() at rest is
     what makes the frame read as alive rather than a static wavy outline."""
-    r = 38.0
-    r += 2.6 * math.sin(3 * theta + 2.4)
-    r += 2.1 * math.sin(4 * theta + 0.3)
-    r += 1.3 * math.sin(6 * theta + 3.1)
+    r = 40.0
+    r += 1.6 * (math.sin(3 * theta + 2.4) + 1) / 2
+    r += 1.4 * (math.sin(4 * theta + 0.3) + 1) / 2
     return r
 
 
@@ -89,46 +98,47 @@ def main():
     a0 = TARGET_MAX_RADIUS / raw_max
     spiral_radius = make_spiral_radius(a0, b)
 
-    mean_ammo = sum(ammonite_radius(t, spiral_radius) for t in thetas) / N
-    mean_blob = sum(blob_radius(t) for t in thetas) / N
-    blob_scale = mean_ammo / mean_blob
-
-    blob_pts = [pt(blob_radius(t) * blob_scale, t) for t in thetas]
-    blob_pts_b = [pt(blob_radius_b(t) * blob_scale, t) for t in thetas]
+    # The blob is sized on its own terms (to properly cover the portrait
+    # photo, close to TARGET_MAX_RADIUS) rather than scaled to match the
+    # ammonite's much smaller mean radius — an earlier version forced them
+    # to the same mean size, which shrank the resting blob enough to crop
+    # into the photo (most visibly at the top of the head). The morph
+    # legitimately contracts as the frame coils into the ammonite shape;
+    # that reads as transformation, not a bug.
+    blob_pts = [pt(blob_radius(t), t) for t in thetas]
+    blob_pts_b = [pt(blob_radius_b(t), t) for t in thetas]
     ammo_pts = [pt(ammonite_radius(t, spiral_radius), t) for t in thetas]
 
-    # inner whorl: one tighter turn of the same curve, offset inward
-    inner_pts = []
-    t = 0.0
-    while t < 2 * math.pi * 0.96:
-        inner_pts.append(pt(ammonite_radius(t, spiral_radius) * 0.55, t))
-        t += 0.06
-    inner_path = "M{},{} ".format(*inner_pts[0]) + " ".join(
-        "L{},{}".format(*p) for p in inner_pts[1:]
-    )
+    # three more turns of the same spiral, each scaled down by
+    # GROWTH_RATIO — draws as a tightly-wound, multi-turn coil
+    def whorl_path(scale, n_points=160):
+        pts = []
+        for i in range(n_points + 1):
+            t = 2 * math.pi * i / n_points
+            pts.append(pt(ammonite_radius(t, spiral_radius) * scale, t))
+        return "M{},{} ".format(*pts[0]) + " ".join("L{},{}".format(*p) for p in pts[1:])
 
-    # growth ribs: dense radiating strokes from near the center out to the
-    # boundary, matching the fine engraved-fossil reference the user linked
-    # (many closely-spaced radial ribs across the whole coil, not a sparse
-    # few) — a real ammonite surface feature, not decoration.
+    whorls = [whorl_path(1 / GROWTH_RATIO), whorl_path(1 / GROWTH_RATIO**2), whorl_path(1 / GROWTH_RATIO**3)]
+
+    # radial ribs from near the center out to the outer edge, crossing all
+    # the whorls -- matches the reference cut-file design directly, rather
+    # than being confined to a single whorl's band.
+    N_RIBS = 26
     ribs = []
-    t = 0.14
-    while t < 2 * math.pi - 0.08:
-        r_out = ammonite_radius(t, spiral_radius) * 0.96
-        r_in = ammonite_radius(t, spiral_radius) * 0.16
-        p_out = pt(r_out, t)
-        p_in = pt(r_in, t)
-        dx, dy = -math.sin(t), math.cos(t)
-        mid = (round((p_out[0] + p_in[0]) / 2 - dx * 1.1, 2), round((p_out[1] + p_in[1]) / 2 - dy * 1.1, 2))
-        ribs.append("M{},{} Q{},{} {},{}".format(p_in[0], p_in[1], mid[0], mid[1], p_out[0], p_out[1]))
-        t += 0.105
+    for i in range(N_RIBS):
+        t = (2 * math.pi * i / N_RIBS) + 0.1
+        r_full = ammonite_radius(t, spiral_radius)
+        r_out = r_full * 0.97
+        r_in = max(1.5, r_full * 0.06)
+        p_out, p_in = pt(r_out, t), pt(r_in, t)
+        ribs.append("M{},{} L{},{}".format(*p_in, *p_out))
 
     lines = [
         "/* Generated by scripts/gen_hero_ammonite.py — do not hand-edit. */",
         "var HERO_MORPH_BLOB = " + json.dumps(blob_pts) + ";",
         "var HERO_MORPH_BLOB_B = " + json.dumps(blob_pts_b) + ";",
         "var HERO_MORPH_AMMONITE = " + json.dumps(ammo_pts) + ";",
-        "var HERO_AMMONITE_INNER = " + json.dumps(inner_path) + ";",
+        "var HERO_AMMONITE_WHORLS = " + json.dumps(whorls) + ";",
         "var HERO_AMMONITE_RIBS = " + json.dumps(ribs) + ";",
         "",
     ]

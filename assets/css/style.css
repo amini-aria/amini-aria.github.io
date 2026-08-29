@@ -275,15 +275,15 @@ body.lang-fa .lang-pill {
 .hero__portrait-wrap {
   position: relative;
   z-index: 4;
-  width: 190px; height: 190px;
+  width: 240px; height: 240px;
   margin-inline: auto;
   margin-bottom: 1.5rem;
 }
 .hero__portrait-halo {
-  position: absolute; inset: -22px;
+  position: absolute; inset: -28px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--clay) 0%, var(--umber) 55%, transparent 75%);
-  filter: blur(20px);
+  filter: blur(22px);
   animation: halo-breathe 6s ease-in-out infinite;
 }
 @keyframes halo-breathe {
@@ -297,7 +297,7 @@ body.lang-fa .lang-pill {
    are literally the same boundary — not two separately-animated things. */
 .hero__portrait-svg {
   position: absolute; top: 50%; left: 50%;
-  width: 150px; height: 150px;
+  width: 190px; height: 190px;
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 16px 26px rgba(58,46,34,0.4));
   overflow: visible;
@@ -309,8 +309,10 @@ body.lang-fa .lang-pill {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-.ammonite-inner { fill: none; stroke: currentColor; stroke-width: 0.7; opacity: 0.6; }
-.ammonite-rib { fill: none; stroke: currentColor; stroke-width: 0.5; stroke-linecap: round; opacity: 0.8; }
+.ammonite-whorl { fill: none; stroke: currentColor; stroke-width: 0.9; }
+.ammonite-whorl:nth-of-type(1) { stroke-width: 1.1; }
+.ammonite-whorl:nth-of-type(3) { stroke-width: 0.6; }
+.ammonite-rib { fill: none; stroke: currentColor; stroke-width: 0.45; stroke-linecap: round; opacity: 0.9; }
 .hero__portrait-frame {
   fill: none;
   stroke: var(--umber);
@@ -749,22 +751,22 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
 .contact-stack {
   position: relative;
   height: 300px;
-  max-width: 640px;
-  margin: 4.5rem auto 2.5rem;
+  max-width: 700px;
+  margin: 3rem auto 2.5rem;
 }
 .contact-card {
   position: absolute;
   top: 50%; left: 50%;
-  width: 200px;
-  padding: 1.3rem 1.4rem;
-  border-radius: 20px;
+  width: 240px;
+  padding: 1.5rem 1.6rem;
+  border-radius: 22px;
   background: var(--surface);
   border: 1px solid rgba(58,46,34,0.1);
   box-shadow: 0 22px 40px -22px rgba(58,46,34,0.4);
-  display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-start;
+  display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start;
   text-align: start;
   color: var(--ink);
-  --tx: var(--tx-base);
+  --tx: calc(var(--tx-base) * var(--spread, 1));
   transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) rotate(var(--rot));
   transform-origin: center;
   transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease, z-index 0s;
@@ -772,13 +774,13 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
   cursor: pointer;
 }
 .contact-card__icon {
-  width: 38px; height: 38px; border-radius: 11px;
+  width: 44px; height: 44px; border-radius: 13px;
   display: flex; align-items: center; justify-content: center;
   background: var(--umber-soft); color: var(--umber);
   margin-bottom: 0.2rem;
 }
-.contact-card__label { font-family: var(--font-display); font-weight: 600; font-size: 1.02rem; }
-.contact-card__sub { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-dim); }
+.contact-card__label { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
+.contact-card__sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-dim); }
 @media (hover: hover) and (pointer: fine) {
   .contact-card:hover {
     transform: translate(-50%, -50%) translate(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35)) rotate(calc(var(--rot) * 0.3)) scale(1.05);
@@ -791,7 +793,11 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
   box-shadow: 0 36px 60px -20px rgba(58,46,34,0.55);
   z-index: 60;
 }
-body.lang-fa .contact-card { --tx: calc(var(--tx-base) * -1); }
+body.lang-fa .contact-card { --tx: calc(var(--tx-base) * -1 * var(--spread, 1)); }
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .contact-card { --spread: 0.62; }
+}
 
 .contact-more {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem;
