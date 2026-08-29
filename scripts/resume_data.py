@@ -66,8 +66,8 @@ RESUME_EN = {
     "experience": [
         {"org": "Varjavand Intelligent Creative Software & Hardware Services Co.", "role": "Chief Executive Officer (CEO) and Chairman of the Board", "period": "Jul 2025 \u2013 Present"},
         {"org": "Arian Zamin Publishing House", "roles": [
-            {"role": "Editorial Specialist and Publications Researcher", "period": "Mar 2023 \u2013 Apr 2026"},
             {"role": "Director", "period": "Apr 2026 \u2013 Present"},
+            {"role": "Editorial Specialist and Publications Researcher", "period": "Mar 2023 \u2013 Apr 2026"},
         ]},
         {"org": "Shahid Beheshti University, Tehran, Iran", "roles": [
             {"role": "Research Collaborator", "period": "Feb 2025 \u2013 Present"},
@@ -93,6 +93,7 @@ RESUME_EN = {
     "languages": [
         {"name": "Persian", "level": "Native"},
         {"name": "English", "level": "Professional Working Proficiency"},
+        {"name": "French", "level": "Learning"},
     ],
     # role is the heading here (org below) — unchanged format
     "memberships": [
@@ -152,8 +153,8 @@ RESUME_FA = {
     "experience": [
         {"org": "\u0634\u0631\u06a9\u062a \u062e\u062f\u0645\u0627\u062a \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0648 \u0633\u062e\u062a\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0647\u0648\u0634\u0645\u0646\u062f \u0627\u0641\u0632\u0627\u0631 \u062e\u0644\u0627\u0642 (\u0648\u064e\u0631\u062c\u0627\u0648\u064e\u0646\u062f)", "role": "\u0645\u062f\u06cc\u0631\u0639\u0627\u0645\u0644 \u0648 \u0631\u0626\u06cc\u0633 \u0647\u06cc\u0626\u062a \u0645\u062f\u06cc\u0631\u0647", "period": "\u062a\u06cc\u0631 \u06f1\u06f4\u06f0\u06f4 \u2013 \u0627\u06a9\u0646\u0648\u0646"},
         {"org": "\u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a \u0622\u0631\u06cc\u0646 \u0632\u0645\u06cc\u0646", "roles": [
-            {"role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0648 \u067e\u0698\u0648\u0647\u0634\u06af\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0627\u0633\u0641\u0646\u062f \u06f1\u06f4\u06f0\u06f1 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5"},
             {"role": "\u0645\u062f\u06cc\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5 \u2013 \u0627\u06a9\u0646\u0648\u0646"},
+            {"role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0648 \u067e\u0698\u0648\u0647\u0634\u06af\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0627\u0633\u0641\u0646\u062f \u06f1\u06f4\u06f0\u06f1 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5"},
         ]},
         {"org": "\u062f\u0627\u0646\u0634\u06af\u0627\u0647 \u0634\u0647\u06cc\u062f \u0628\u0647\u0634\u062a\u06cc\u060c \u062a\u0647\u0631\u0627\u0646", "roles": [
             {"role": "\u0647\u0645\u06a9\u0627\u0631 \u067e\u0698\u0648\u0647\u0634\u06cc", "period": "\u0628\u0647\u0645\u0646 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0627\u06a9\u0646\u0648\u0646"},
@@ -179,6 +180,7 @@ RESUME_FA = {
     "languages": [
         {"name": "\u0641\u0627\u0631\u0633\u06cc", "level": "\u0632\u0628\u0627\u0646 \u0645\u0627\u062f\u0631\u06cc"},
         {"name": "\u0627\u0646\u06af\u0644\u06cc\u0633\u06cc", "level": "\u062a\u0648\u0627\u0646\u0627\u06cc\u06cc \u06a9\u0627\u0631\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"},
+        {"name": "\u0641\u0631\u0627\u0646\u0633\u0648\u06cc", "level": "\u062f\u0631 \u062d\u0627\u0644 \u06cc\u0627\u062f\u06af\u06cc\u0631\u06cc"},
     ],
     "memberships": [
         {"role": "\u062f\u0628\u06cc\u0631 \u0648 \u0645\u062f\u06cc\u0631 \u0648\u0628\u200c\u0633\u0627\u06cc\u062a", "period": "\u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f2 \u2013 \u0627\u06a9\u0646\u0648\u0646", "org": "\u0627\u0646\u062c\u0645\u0646 \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u0627\u06cc\u0631\u0627\u0646"},
