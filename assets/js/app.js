@@ -189,14 +189,25 @@
         mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-error-text") + "</p>";
       });
   }
-  /* ---------- Contact page: cursor-follow glow on each card ---------- */
-  if (!reduceMotion) {
-    document.querySelectorAll(".contact-card").forEach(function (el) {
-      el.addEventListener("mousemove", function (e) {
-        var rect = el.getBoundingClientRect();
-        el.style.setProperty("--gx", ((e.clientX - rect.left) / rect.width) * 100 + "%");
-        el.style.setProperty("--gy", ((e.clientY - rect.top) / rect.height) * 100 + "%");
+  /* ---------- Contact page: overlapping card stack ----------
+     Each card carries its own resting rotation/offset (--rot/--tx-base/
+     --ty, set inline per card in the HTML). A click brings that one card
+     fully forward (.is-front) above the rest of the pile, replacing
+     whichever card was in front before. */
+  var contactCards = document.querySelectorAll(".contact-card");
+  if (contactCards.length) {
+    contactCards.forEach(function (el) {
+      el.addEventListener("click", function () {
+        contactCards.forEach(function (c) { c.classList.remove("is-front"); });
+        el.classList.add("is-front");
       });
+      if (!reduceMotion) {
+        el.addEventListener("mousemove", function (e) {
+          var rect = el.getBoundingClientRect();
+          el.style.setProperty("--gx", ((e.clientX - rect.left) / rect.width) * 100 + "%");
+          el.style.setProperty("--gy", ((e.clientY - rect.top) / rect.height) * 100 + "%");
+        });
+      }
     });
   }
   /* ---------- Spotify playlist shutter ---------- */
