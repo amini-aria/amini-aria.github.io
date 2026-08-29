@@ -29,29 +29,20 @@ RESUME_EN = {
         {"text": "aria-amini.ir", "url": "https://aria-amini.ir"},
     ],
     "about": (
-        "I am Mohammad Aria Amini, a researcher, scientific author, and editor specializing in "
-        "Earth Sciences. Alongside conducting research and authoring scientific books and "
-        "publications, I work in scientific computing, data processing and analysis, and "
-        "High-Performance Computing (HPC) for computationally intensive scientific workloads. I "
-        "also have experience in software development, Linux systems, server administration, and "
-        "computational infrastructure, with a strong interest in integrating geoscience with "
-        "modern computing technologies."
+        "I am Mohammad Aria Amini, a Bachelor's graduate in Geology and a researcher, writer, and "
+        "scientific editor in the field of Earth sciences. I am interested in research, scientific "
+        "writing and editing, and continuously developing my knowledge and professional skills in "
+        "Earth sciences."
     ),
     "interests": (
-        "My research and professional interests lie at the intersection of Earth Sciences and "
-        "emerging technologies. I am interested in various fields of geology, scientific writing "
-        "and editing, the history of Earth Sciences, and the publication of scholarly works. I "
-        "also have a strong interest in scientific computing, including computational methods for "
-        "pure mathematics, molecular chemistry, and geoscience, as well as High-Performance "
-        "Computing (HPC), scientific programming, and the application of computational approaches "
-        "to solving research problems. In addition, I am interested in Artificial Intelligence "
-        "(AI) and Machine Learning (ML) and their applications in geoscience and related "
-        "disciplines, as well as Linux systems, server administration, and computational "
-        "infrastructure. Furthermore, I use a range of specialized geoscience and geospatial "
-        "software in research projects, including ArcGIS, QGIS, Petrel, ENVI, and ERDAS IMAGINE, "
-        "along with other tools for Geographic Information Systems (GIS), Remote Sensing (RS), and "
-        "geological modeling. I am continuously expanding my knowledge and expertise in these "
-        "technologies and their scientific applications."
+        "My research and professional interests primarily lie in the field of Earth sciences, with "
+        "a particular focus on geochemistry, petroleum geology, and topics related to subsurface "
+        "resources. I am interested in studying various areas of geology, particularly geological "
+        "and geochemical processes, rocks and minerals, petroleum systems, and the application of "
+        "geological data to the understanding and assessment of subsurface resources. I am also "
+        "interested in applying modern data processing, analytical methods, and computational "
+        "technologies to Earth science research, and I continuously seek to expand my knowledge "
+        "and skills in these areas."
     ),
     "education": [
         {
@@ -123,31 +114,22 @@ RESUME_FA = {
         {"text": "aria-amini.ir", "url": "https://aria-amini.ir"},
     ],
     "about": (
-        "من محمدآریا امینی، پژوهشگر، نویسنده و ویراستار علمی در حوزهٔ علوم "
-        "زمین هستم. در کنار پژوهش و نگارش کتاب‌ها و نوشتارهای علمی، در "
-        "زمینهٔ پردازش و تحلیل داده‌ها، برنامه‌نویسی علمی و رایانش با "
-        "کارایی بالا (HPC) برای انجام پردازش‌ها و محاسبات علمی نیز "
-        "فعالیت می‌کنم. همچنین در توسعهٔ نرم‌افزار، سامانه‌های "
-        "لینوکسی، مدیریت سرورها و زیرساخت‌های رایانشی تجربه دارم "
-        "و همواره می‌کوشم دانش زمین‌شناسی را با فناوری‌های نوین "
-        "درهم آمیزم."
+        "من محمدآریا امینی، فارغ‌التحصیل مقطع کارشناسی در رشته زمین‌شناسی و "
+        "پژوهشگر، نویسنده و ویراستار علمی در حوزه علوم زمین هستم. به "
+        "فعالیت‌های پژوهشی، نگارش و ویرایش علمی و یادگیری در زمینه‌های "
+        "مختلف علوم زمین علاقه‌مندم و در مسیر توسعه دانش و مهارت‌های "
+        "حرفه‌ای خود فعالیت می‌کنم."
     ),
     "interests": (
-        "علاقه‌مندی‌های پژوهشی و حرفه‌ای من در پیوند میان علوم زمین "
-        "و فناوری‌های نوین شکل گرفته است. به پژوهش در شاخه‌های گوناگون "
-        "زمین‌شناسی، نگارش و ویراستاری علمی، تاریخ علوم زمین و انتشار "
-        "آثار پژوهشی علاقه‌مندم. همچنین به پردازش و تحلیل "
-        "داده‌های ریاضیات محض، شیمی مولکولی و زمین‌شناسی، رایانش با "
-        "کارایی بالا (HPC)، برنامه‌نویسی علمی و به‌کارگیری روش‌های محاسباتی "
-        "در حل مسائل پژوهشی گرایش ویژه‌ای دارم. در کنار این زمینه‌ها، به "
-        "هوش مصنوعی و یادگیری ماشین در علوم زمین و شاخه‌های مرتبط با "
-        "آن، سامانه‌های لینوکسی، مدیریت سرورها و زیرساخت‌های رایانشی "
-        "نیز علاقه‌مندم. افزون بر این، در برخی از پروژه‌های پژوهشی از "
-        "نرم‌افزارهای تخصصی زمین‌شناسی و علوم مکانی، از جمله ArcGIS، "
-        "QGIS، Petrel، ENVI و ERDAS IMAGINE و دیگر نرم‌افزارهای مرتبط با سامانه‌های "
-        "اطلاعات جغرافیایی (GIS)، سنجش از دور (Remote Sensing) و مدل‌سازی "
-        "زمین‌شناسی بهره می‌برم و همواره در پی گسترش دانش و مهارت "
-        "خود در این ابزارها هستم."
+        "علاقه‌مندی‌های پژوهشی و حرفه‌ای من عمدتاً در زمینه علوم زمین، با "
+        "تمرکز بیشتر بر ژئوشیمی، زمین‌شناسی نفت و موضوعات مرتبط با منابع "
+        "زیرزمینی شکل گرفته است. به مطالعه و پژوهش در زمینه‌های مختلف "
+        "زمین‌شناسی، به‌ویژه بررسی فرایندهای زمین‌شناسی و ژئوشیمیایی، "
+        "سنگ‌ها و کانی‌ها، سیستم‌های نفتی و کاربرد داده‌های زمین‌شناسی در "
+        "شناخت و ارزیابی منابع زیرزمینی علاقه‌مندم. همچنین به استفاده از "
+        "روش‌های نوین پردازش و تحلیل داده و فناوری‌های محاسباتی در "
+        "پژوهش‌های علوم زمین علاقه دارم و همواره در تلاش برای گسترش دانش "
+        "و مهارت خود در این زمینه‌ها هستم."
     ),
     "education": [
         {
