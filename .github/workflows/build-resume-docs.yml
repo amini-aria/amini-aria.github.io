@@ -16,6 +16,7 @@ on:
     paths:
       - "scripts/resume_data.py"
       - "scripts/build_resume_docs.py"
+      - "scripts/embed_docx_fonts.py"
       - "scripts/jalali.py"
       - "assets/fonts/**"
       - ".github/workflows/build-resume-docs.yml"

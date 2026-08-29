@@ -63,8 +63,14 @@ def _embed(ctx, path):
     url = "file://" + os.path.abspath(path)
     doc = desktop.loadComponentFromURL(url, "_blank", 0, (_prop("Hidden", True),))
     try:
-        doc.setPropertyValue("EmbedFonts", True)
-        doc.setPropertyValue("EmbedOnlyUsedFonts", True)
+        # EmbedFonts lives on the document's Settings service, not on the
+        # document object itself — setting it there raises
+        # UnknownPropertyException.
+        settings = doc.createInstance("com.sun.star.document.Settings")
+        settings.setPropertyValue("EmbedFonts", True)
+        settings.setPropertyValue("EmbedOnlyUsedFonts", True)
+        settings.setPropertyValue("EmbedLatinScriptFonts", True)
+        settings.setPropertyValue("EmbedComplexScriptFonts", True)
         doc.store()
     finally:
         doc.close(False)
