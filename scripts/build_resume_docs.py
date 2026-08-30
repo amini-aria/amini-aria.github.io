@@ -405,6 +405,24 @@ class ResumeBuilder:
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, pt["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
+    def teaching(self):
+        self._section_title("Teaching Activities" if not self.is_fa else "فعالیت‌های تدریس")
+        for t in self.data["teaching"]:
+            self._entry_head_line(t["title"], t["period"], left_weight="demibold")
+            p = self._para(space_after=0)
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            self._run(p, t["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            p2 = self._para(space_after=2)
+            self._run(p2, t["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+
+    def honors(self):
+        self._section_title("Honors & Awards" if not self.is_fa else "افتخارات و جوایز")
+        for h in self.data["honors"]:
+            self._entry_head_line(h["title"], h["period"], left_weight="demibold")
+            p = self._para(space_after=0)
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            self._run(p, h["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+
     def _chip_group(self, groups):
         for label, items in groups.items():
             p = self._para(space_before=1, space_after=0)
@@ -470,6 +488,8 @@ class ResumeBuilder:
         self.books()
         self.conferences()
         self.patents()
+        self.teaching()
+        self.honors()
         self.skills()
         self.software()
         self.languages()

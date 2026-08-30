@@ -13,8 +13,8 @@ build_resume_docs.py, or just push — the GitHub Action does it for you)
 so the downloadable files keep matching what's on the site.
 
 Only real, filled-in content lives here — sections that are still
-bracketed placeholders on the site (Research Experience, Teaching,
-Honors & Awards, Certifications) are intentionally left out
+bracketed placeholders on the site (Research Experience,
+Certifications) are intentionally left out
 of the downloadable files entirely, since an ATS-optimized resume
 should never show empty/placeholder sections. Publications is not on
 the site at all right now (ISI articles aren't printed yet), so it has
@@ -125,6 +125,21 @@ RESUME_EN = {
             "title": "System and Method for Depth-Aware Identification and Zonation of Productive (Net Pay) Intervals in Oil Wells Using Multi-Model Probabilistic Fusion of Well-Log Data",
             "status": "Under Review",
             "org": "Iranian Patent Application · Sole Inventor",
+        },
+    ],
+    "teaching": [
+        {
+            "title": "Research Week Events & Workshops Series",
+            "period": "Jan 2026 – Feb 2026",
+            "org": "Shahid Beheshti University, Tehran",
+            "note": "Instructor · Workshop: Introduction to Parallel Processing Systems and Linux-Based High-Performance Computing Environments",
+        },
+    ],
+    "honors": [
+        {
+            "title": "Top Young Earth Sciences Researcher",
+            "period": "2024",
+            "org": "Geological Society of Iran",
         },
     ],
     "skills": {
@@ -255,6 +270,21 @@ RESUME_FA = {
             "title": "سامانه و روش هوشمند شناسایی و زون‌بندی زون‌های تولیدی (Net Pay/Pay Zone) در چاه‌های نفت بر پایه همجوشی احتمالاتی چندمدلی و تحلیل عمقی داده‌های لاگ",
             "status": "در دست داوری",
             "org": "درخواست ثبت اختراع ایران · مخترع منفرد",
+        },
+    ],
+    "teaching": [
+        {
+            "title": "مجموعه رویدادها و کارگاه‌های هفته پژوهش",
+            "period": "دی ۱۴۰۴ – بهمن ۱۴۰۴",
+            "org": "دانشگاه شهید بهشتی، تهران",
+            "note": "مدرس · عنوان کارگاه: آشنایی با محیط سامانه‌های پردازش موازی و پردازش سریع مبتنی بر لینوکس",
+        },
+    ],
+    "honors": [
+        {
+            "title": "برترین پژوهشگر جوان علوم زمین",
+            "period": "۱۴۰۳",
+            "org": "انجمن زمین‌شناسی ایران",
         },
     ],
     "skills": {
