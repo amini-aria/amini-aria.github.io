@@ -386,14 +386,16 @@ class ResumeBuilder:
             self._run(p2, c["tag"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
             p3 = self._para(space_after=2)
             self._run(p3, c["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
-            self._run(p3, "  ·  " + id_label, weight="light", size=SIZE_SMALL, color=SECONDARY)
-            self._run(p3, c["doc_id"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
-            self._run(p3, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
-            add_hyperlink(
-                p3, link_label, c["url"],
-                font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
-                weight_bold=False, rtl=self.is_fa,
-            )
+            if c.get("doc_id"):
+                self._run(p3, "  ·  " + id_label, weight="light", size=SIZE_SMALL, color=SECONDARY)
+                self._run(p3, c["doc_id"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
+            if c.get("url"):
+                self._run(p3, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                add_hyperlink(
+                    p3, link_label, c["url"],
+                    font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                    weight_bold=False, rtl=self.is_fa,
+                )
 
     def _chip_group(self, groups):
         for label, items in groups.items():
