@@ -143,25 +143,57 @@ RESUME_EN = {
         },
     ],
     "skills": {
-        "Programming Languages": ["Python", "JavaScript", "PHP", "C#", "SQL"],
-        "Other Skills": ["Scientific Editing", "Academic Publishing", "LaTeX", "Git", "Docker"],
-    },
-    "software": {
-        "Geological Software": ["ArcGIS", "QGIS", "RockWorks", "Surfer"],
-        "Web Technologies": ["HTML5", "CSS3", "Bootstrap", "WordPress", "Laravel"],
+        "Earth Sciences & Petroleum Geology": ["Petroleum Geology", "Geochemistry", "Petrography & Thin-Section Analysis", "Geological Mapping", "Geological Data Interpretation", "Sedimentology & Stratigraphy", "Structural Geology & Tectonics"],
+        "Geoscience-Specific Software & Tools": ["ArcGIS / ArcGIS Pro", "QGIS", "Google Earth Engine", "ENVI", "RockWorks", "Petrel"],
+        "Programming, Computing & Data Analysis": ["Python", "MATLAB", "C#", "JavaScript", "PHP", "Bash / Shell Scripting", "Data Analysis & Visualization", "Geoscientific Data Modeling & Analysis", "Large-Scale Data Processing", "High-Performance Computing (HPC)"],
+        "Infrastructure, Systems & Networking": ["Linux", "Linux System Administration", "Server Administration", "Computer Networking", "Network Infrastructure Management", "Virtualization & Virtual Machine Management", "Data Center Infrastructure", "Server & Compute Resource Management"],
+        "General Software & Productivity Tools": ["Microsoft Office (Word, Excel, PowerPoint)", "Git", "GitHub", "Command-Line Environments", "Technical Documentation"],
     },
     "languages": [
         {"name": "Persian", "level": "Native"},
-        {"name": "English", "level": "Professional Working Proficiency"},
+        {
+            "name": "English", "level": "Professional Working Proficiency",
+            "tests": [
+                {"name": "GRE General Test", "date_range": "Dec 11, 2024 – Dec 11, 2029", "summary": "Verbal Reasoning 166/170 · Quantitative Reasoning 166/170 · Analytical Writing 4.0/6.0 (63rd percentile)"},
+                {"name": "TOEFL iBT", "date_range": "Jan 1, 2025", "summary": "Total Score 102/120 · Reading 30/30 · Listening 27/30 · Writing 28/30 · Speaking 17/30"},
+            ],
+        },
         {"name": "French", "level": "Learning"},
     ],
     # role is the heading here (org below) — unchanged format
     "memberships": [
-        {"role": "Secretary and Website Administrator", "period": "Apr 2023 \u2013 Present", "org": "Iranian Geological Society"},
+        {"role": "Executive Secretary and Website Manager of the Iranian Geological Society", "period": "Apr 2023 – Present", "org": "Iranian Geological Society"},
         {"role": "Member of the Organizing Committee", "period": "", "org": "Five National Geological Congresses of the Iranian Geological Society"},
     ],
     "volunteer": [
-        {"role": "Member, Iran Organ Donation Association", "period": "", "org": "Membership number to be added"},
+        {
+            "role": "Volunteer Supporting Mahak Hospital and Rehabilitation Complex & Patients", "period": "Mar 2023 – Present",
+            "org": "MAHAK Charity — The Society to Support Children Suffering from Cancer",
+            "notes": ["Disaster and Humanitarian Relief · MAHAK ID: 020175959 · MAHAK Membership No.: 10704"],
+        },
+        {
+            "role": "Organ Donation Ambassador", "period": "Apr 2023 – Present",
+            "org": "Iranian Society of Organ Donation",
+            "notes": ["Health"],
+        },
+        {
+            "role": "Organ Donation Volunteer", "period": "Aug 2019 – Present",
+            "org": "Iranian Society of Organ Donation",
+            "notes": ["Disaster and Humanitarian Relief · Membership No.: 3751462 (ehda.ir)"],
+        },
+        {
+            "role": "Volunteer", "period": "Apr 2023 – Present",
+            "org": "Iranian Red Crescent Society Innovation Center",
+            "notes": ["Disaster and Humanitarian Relief"],
+        },
+        {
+            "role": "Benevolent Member", "period": "Apr 2023 – Present",
+            "org": "Raad Charity",
+            "notes": [
+                "Veteran Support & Physical Disability Support · Membership No.: 421297",
+                "Raad Charity is a private charitable organization dedicated to supporting and empowering people with physical disabilities.",
+            ],
+        },
     ],
     "certifications": {
         "specializations": [
@@ -353,24 +385,56 @@ RESUME_FA = {
         },
     ],
     "skills": {
-        "\u0632\u0628\u0627\u0646\u200c\u0647\u0627\u06cc \u0628\u0631\u0646\u0627\u0645\u0647\u200c\u0646\u0648\u06cc\u0633\u06cc": ["Python", "JavaScript", "PHP", "C#", "SQL"],
-        "\u0633\u0627\u06cc\u0631 \u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627": ["\u0648\u06cc\u0631\u0627\u06cc\u0634 \u0639\u0644\u0645\u06cc", "\u0646\u0634\u0631 \u0622\u06a9\u0627\u062f\u0645\u06cc\u06a9", "LaTeX", "Git", "Docker"],
-    },
-    "software": {
-        "\u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631\u0647\u0627\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc": ["ArcGIS", "QGIS", "RockWorks", "Surfer"],
-        "\u0641\u0646\u0627\u0648\u0631\u06cc\u200c\u0647\u0627\u06cc \u0648\u0628": ["HTML5", "CSS3", "Bootstrap", "WordPress", "Laravel"],
+        "علوم زمین و زمین‌شناسی نفت": ["Petroleum Geology", "Geochemistry", "Petrography & Thin-Section Analysis", "Geological Mapping", "Geological Data Interpretation", "Sedimentology & Stratigraphy", "Structural Geology & Tectonics"],
+        "نرم‌افزارها و ابزارهای تخصصی علوم زمین": ["ArcGIS / ArcGIS Pro", "QGIS", "Google Earth Engine", "ENVI", "RockWorks", "Petrel"],
+        "برنامه‌نویسی، محاسبات و تحلیل داده": ["Python", "MATLAB", "C#", "JavaScript", "PHP", "Bash / Shell Scripting", "Data Analysis & Visualization", "Geoscientific Data Modeling & Analysis", "Large-Scale Data Processing", "High-Performance Computing (HPC)"],
+        "زیرساخت، سیستم‌ها و شبکه": ["Linux", "Linux System Administration", "Server Administration", "Computer Networking", "Network Infrastructure Management", "Virtualization & Virtual Machine Management", "Data Center Infrastructure", "Server & Compute Resource Management"],
+        "نرم‌افزارهای عمومی و ابزارهای بهره‌وری": ["Microsoft Office (Word, Excel, PowerPoint)", "Git", "GitHub", "Command-Line Environments", "Technical Documentation"],
     },
     "languages": [
-        {"name": "\u0641\u0627\u0631\u0633\u06cc", "level": "\u0632\u0628\u0627\u0646 \u0645\u0627\u062f\u0631\u06cc"},
-        {"name": "\u0627\u0646\u06af\u0644\u06cc\u0633\u06cc", "level": "\u062a\u0648\u0627\u0646\u0627\u06cc\u06cc \u06a9\u0627\u0631\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"},
-        {"name": "\u0641\u0631\u0627\u0646\u0633\u0648\u06cc", "level": "\u062f\u0631 \u062d\u0627\u0644 \u06cc\u0627\u062f\u06af\u06cc\u0631\u06cc"},
+        {"name": "فارسی", "level": "زبان مادری"},
+        {
+            "name": "انگلیسی", "level": "توانایی کاری حرفه‌ای",
+            "tests": [
+                {"name": "آزمون GRE General Test", "date_range": "۲۱ آذر ۱۴۰۳ – ۲۱ آذر ۱۴۰۸", "summary": "استدلال کلامی ۱۶۶ از ۱۷۰ · استدلال کمّی ۱۶۶ از ۱۷۰ · نگارش تحلیلی ۴.۰ از ۶.۰ (صدک ۶۳)"},
+                {"name": "آزمون TOEFL iBT", "date_range": "۱۲ دی ۱۴۰۳", "summary": "نمره کل ۱۰۲ از ۱۲۰ · درک مطلب ۳۰ از ۳۰ · شنیداری ۲۷ از ۳۰ · نگارش ۲۸ از ۳۰ · مکالمه ۱۷ از ۳۰"},
+            ],
+        },
+        {"name": "فرانسوی", "level": "در حال یادگیری"},
     ],
     "memberships": [
-        {"role": "\u062f\u0628\u06cc\u0631 \u0648 \u0645\u062f\u06cc\u0631 \u0648\u0628\u200c\u0633\u0627\u06cc\u062a", "period": "\u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f2 \u2013 \u0627\u06a9\u0646\u0648\u0646", "org": "\u0627\u0646\u062c\u0645\u0646 \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u0627\u06cc\u0631\u0627\u0646"},
-        {"role": "\u0639\u0636\u0648 \u06a9\u0645\u06cc\u062a\u0647 \u0628\u0631\u06af\u0632\u0627\u0631\u06cc", "period": "", "org": "\u067e\u0646\u062c \u0647\u0645\u0627\u06cc\u0634 \u0645\u0644\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u0627\u0646\u062c\u0645\u0646 \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u0627\u06cc\u0631\u0627\u0646"},
+        {"role": "دبیر اجرایی انجمن و مدیر وبسایت انجمن زمین‌شناسی ایران", "period": "فروردین ۱۴۰۲ – اکنون", "org": "انجمن زمین‌شناسی ایران"},
+        {"role": "عضو کمیته برگزاری", "period": "", "org": "پنج همایش ملی زمین‌شناسی انجمن زمین‌شناسی ایران"},
     ],
     "volunteer": [
-        {"role": "\u0639\u0636\u0648 \u0627\u0647\u062f\u0627\u06cc \u0639\u0636\u0648 \u0627\u06cc\u0631\u0627\u0646", "period": "", "org": "\u0634\u0645\u0627\u0631\u0647 \u0639\u0636\u0648\u06cc\u062a \u0645\u062a\u0639\u0627\u0642\u0628\u0627\u064b \u0627\u0636\u0627\u0641\u0647 \u0645\u06cc\u200c\u0634\u0648\u062f"},
+        {
+            "role": "داوطلب همکاری با مجتمع بیمارستانی و توانبخشی کودکان سرطانی محک", "period": "مارس ۲۰۲۳ – تاکنون",
+            "org": "مؤسسه خیریه محک (MAHAK Charity)",
+            "notes": ["امدادرسانی در بحران و کمک‌های بشردوستانه · شناسه محک: ۰۲۰۱۷۵۹۵۹ · شماره عضویت محک: ۱۰۷۰۴"],
+        },
+        {
+            "role": "سفیر اهدای عضو", "period": "فروردین ۱۴۰۲ – تاکنون",
+            "org": "انجمن اهدای عضو ایرانیان (Iranian Society of Organ Donation)",
+            "notes": ["سلامت"],
+        },
+        {
+            "role": "داوطلب اهدای عضو", "period": "مرداد ۱۳۹۸ – تاکنون",
+            "org": "انجمن اهدای عضو ایرانیان (Iranian Society of Organ Donation)",
+            "notes": ["امدادرسانی در بحران و کمک‌های بشردوستانه · شماره عضویت: ۳۷۵۱۴۶۲ (ehda.ir)"],
+        },
+        {
+            "role": "داوطلب", "period": "فروردین ۱۴۰۲ – تاکنون",
+            "org": "مرکز نوآوری جمعیت هلال احمر جمهوری اسلامی ایران (Iranian Red Crescent Society Innovation Center)",
+            "notes": ["امدادرسانی در بحران و کمک‌های بشردوستانه"],
+        },
+        {
+            "role": "عضو نیکوکار", "period": "فروردین ۱۴۰۲ – تاکنون",
+            "org": "مؤسسه خیریه رعد (Raad Charity)",
+            "notes": [
+                "حمایت از جانبازان و افراد دارای معلولیت جسمی · شماره عضویت: ۴۲۱۲۹۷",
+                "مؤسسه رعد یک نهاد خیریه خصوصی است که با هدف حمایت از جامعه افراد دارای معلولیت جسمی فعالیت می‌کند.",
+            ],
+        },
     ],
     "certifications": {
         "specializations": [

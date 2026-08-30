@@ -566,6 +566,19 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .lang-bar__track { height: 5px; background: var(--hairline); border-radius: 999px; overflow: hidden; }
 .lang-bar__fill { height: 100%; background: linear-gradient(to right, var(--umber), var(--olive)); }
 
+.lang-scores { margin-top: 0.5rem; }
+.lang-scores__toggle { cursor: pointer; font-family: var(--font-mono); color: var(--umber); font-size: 0.76rem; list-style: none; }
+.lang-scores__toggle::-webkit-details-marker { display: none; }
+.lang-scores__toggle::marker { content: ""; }
+.lang-scores__toggle::before { content: "+ "; }
+.lang-scores[open] > .lang-scores__toggle::before { content: "\2212 "; }
+.lang-scores__body { margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed var(--hairline); display: flex; flex-direction: column; gap: 0.3rem; }
+.lang-scores__test-title { font-size: 0.82rem; font-weight: 600; margin: 0.4rem 0 0.2rem; }
+.lang-scores__test-title:first-child { margin-top: 0; }
+.lang-scores__date { font-weight: 400; color: var(--ink-dim); font-size: 0.74rem; margin-inline-start: 0.4rem; }
+.lang-scores__row { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.8rem; color: var(--ink-dim); }
+.lang-scores__row span:last-child { color: var(--ink); font-family: var(--font-mono); }
+
 /* certificates */
 .cert-card {
   border: 1px solid var(--hairline); border-radius: 10px;

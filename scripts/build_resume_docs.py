@@ -434,19 +434,24 @@ class ResumeBuilder:
             self._run(p, "  \u2022  ".join(items), weight="regular", size=SIZE_BODY)
 
     def skills(self):
-        self._section_title("Skills" if not self.is_fa else "\u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627")
+        title = "Technical & Specialized Skills" if not self.is_fa else "\u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627\u06cc \u0641\u0646\u06cc \u0648 \u062a\u062e\u0635\u0635\u06cc"
+        self._section_title(title)
         self._chip_group(self.data["skills"])
-
-    def software(self):
-        self._section_title("Software" if not self.is_fa else "\u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631\u0647\u0627")
-        self._chip_group(self.data["software"])
 
     def languages(self):
         self._section_title("Languages" if not self.is_fa else "\u0632\u0628\u0627\u0646\u200c\u0647\u0627")
         parts = [f'{l["name"]} \u2013 {l["level"]}' for l in self.data["languages"]]
-        p = self._para(space_after=3)
+        p = self._para(space_after=1)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         self._run(p, "   |   ".join(parts), weight="regular", size=SIZE_BODY)
+        for l in self.data["languages"]:
+            for t in l.get("tests", []):
+                p2 = self._para(space_after=0)
+                p2.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+                self._run(p2, t["name"] + "  ", weight="demibold", size=SIZE_SMALL, color=SECONDARY)
+                self._run(p2, t["date_range"] + "  \u00b7  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                self._run(p2, t["summary"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+        self.doc.paragraphs[-1].paragraph_format.space_after = Pt(3)
 
     def memberships(self):
         title = "Professional Memberships" if not self.is_fa else "\u0639\u0636\u0648\u06cc\u062a\u200c\u0647\u0627\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"
@@ -458,13 +463,17 @@ class ResumeBuilder:
             self._run(p, m["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
     def volunteer(self):
-        title = "Volunteer Activities" if not self.is_fa else "\u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u062f\u0627\u0648\u0637\u0644\u0628\u0627\u0646\u0647"
+        title = "Voluntary & Social Activities" if not self.is_fa else "\u0633\u0648\u0627\u0628\u0642 \u062f\u0627\u0648\u0637\u0644\u0628\u0627\u0646\u0647 \u0648 \u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u0627\u062c\u062a\u0645\u0627\u0639\u06cc"
         self._section_title(title)
         for v in self.data["volunteer"]:
             self._entry_head_line(v["role"], v["period"], left_weight="demibold")
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, v["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            notes = v.get("notes", [])
+            for i, note in enumerate(notes):
+                p2 = self._para(space_after=2 if i == len(notes) - 1 else 0)
+                self._run(p2, note, weight="light", size=SIZE_SMALL, color=SECONDARY)
 
     def certifications(self):
         title = "Courses, Certificates & Licenses" if not self.is_fa else "دوره‌ها، گواهی‌ها و مجوزها"
@@ -535,7 +544,6 @@ class ResumeBuilder:
         self.teaching()
         self.honors()
         self.skills()
-        self.software()
         self.languages()
         self.memberships()
         self.volunteer()
