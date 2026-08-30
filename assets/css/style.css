@@ -107,6 +107,7 @@ body.lang-fa .skills-group__label,
 body.lang-fa .hero__scroll-hint span,
 body.lang-fa .pub-card__role,
 body.lang-fa .cert-card__link,
+body.lang-fa .resume__entry-tag,
 body.lang-fa .lang-pill {
   letter-spacing: 0 !important;
   text-transform: none !important;
@@ -537,6 +538,8 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .resume__entry-notes { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
 .resume__entry-notes li { position: relative; padding-inline-start: 1.1rem; color: var(--ink-dim); font-size: 0.9rem; }
 .resume__entry-notes li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.6em; width: 5px; height: 5px; border-radius: 1px; background: var(--olive); }
+.resume__entry-tag { color: var(--umber); font-family: var(--font-mono); font-size: 0.76rem; margin-top: 0.4rem; display: inline-block; }
+.resume__entry-link { font-family: var(--font-mono); font-size: 0.74rem; color: var(--olive); text-decoration: underline; text-underline-offset: 2px; }
 
 .resume__entry--placeholder {
   border: 1px dashed rgba(58,46,34,0.28);
