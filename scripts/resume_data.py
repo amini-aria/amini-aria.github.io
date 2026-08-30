@@ -13,8 +13,8 @@ build_resume_docs.py, or just push — the GitHub Action does it for you)
 so the downloadable files keep matching what's on the site.
 
 Only real, filled-in content lives here — sections that are still
-bracketed placeholders on the site (Research Experience, Patents,
-Teaching, Honors & Awards, Certifications) are intentionally left out
+bracketed placeholders on the site (Research Experience, Teaching,
+Honors & Awards, Certifications) are intentionally left out
 of the downloadable files entirely, since an ATS-optimized resume
 should never show empty/placeholder sections. Publications is not on
 the site at all right now (ISI articles aren't printed yet), so it has
@@ -118,6 +118,13 @@ RESUME_EN = {
             "note": "Co-authored with Shohreh Salkhordeh · 15 pages · Persian",
             "doc_id": "GSI42_161",
             "url": "https://civilica.com/doc/1963822/",
+        },
+    ],
+    "patents": [
+        {
+            "title": "System and Method for Depth-Aware Identification and Zonation of Productive (Net Pay) Intervals in Oil Wells Using Multi-Model Probabilistic Fusion of Well-Log Data",
+            "status": "Under Review",
+            "org": "Iranian Patent Application · Sole Inventor",
         },
     ],
     "skills": {
@@ -241,6 +248,13 @@ RESUME_FA = {
             "note": "\u0646\u0648\u06cc\u0633\u0646\u062f\u06af\u0627\u0646: \u0645\u062d\u0645\u062f\u0622\u0631\u06cc\u0627 \u0627\u0645\u06cc\u0646\u06cc\u060c \u0634\u0647\u0631\u0647 \u0633\u0627\u0644\u062e\u0648\u0631\u062f\u0647 \u00b7 \u06f1\u06f5 \u0635\u0641\u062d\u0647 \u00b7 \u0632\u0628\u0627\u0646: \u0641\u0627\u0631\u0633\u06cc",
             "doc_id": "GSI42_161",
             "url": "https://civilica.com/doc/1963822/",
+        },
+    ],
+    "patents": [
+        {
+            "title": "سامانه و روش هوشمند شناسایی و زون‌بندی زون‌های تولیدی (Net Pay/Pay Zone) در چاه‌های نفت بر پایه همجوشی احتمالاتی چندمدلی و تحلیل عمقی داده‌های لاگ",
+            "status": "در دست داوری",
+            "org": "درخواست ثبت اختراع ایران · مخترع منفرد",
         },
     ],
     "skills": {

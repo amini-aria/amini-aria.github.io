@@ -397,6 +397,14 @@ class ResumeBuilder:
                     weight_bold=False, rtl=self.is_fa,
                 )
 
+    def patents(self):
+        self._section_title("Patents" if not self.is_fa else "اختراعات")
+        for pt in self.data["patents"]:
+            self._entry_head_line(pt["title"], pt["status"], left_weight="demibold")
+            p = self._para(space_after=2)
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            self._run(p, pt["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+
     def _chip_group(self, groups):
         for label, items in groups.items():
             p = self._para(space_before=1, space_after=0)
@@ -461,6 +469,7 @@ class ResumeBuilder:
         self.experience()
         self.books()
         self.conferences()
+        self.patents()
         self.skills()
         self.software()
         self.languages()
