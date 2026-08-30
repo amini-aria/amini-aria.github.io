@@ -140,6 +140,7 @@ RESUME_EN = {
             "title": "Top Young Earth Sciences Researcher",
             "period": "2024",
             "org": "Geological Society of Iran",
+            "note": 'Awarded for the paper "Petrographic, Mineralization, and Alteration Study of the Choudarchay Copper Vein Deposit"',
         },
     ],
     "skills": {
@@ -285,6 +286,7 @@ RESUME_FA = {
             "title": "برترین پژوهشگر جوان علوم زمین",
             "period": "۱۴۰۳",
             "org": "انجمن زمین‌شناسی ایران",
+            "note": "به پاس مقاله «بررسی پتروگرافی، کانه‌زایی و دگرسانی ذخایر کانسار رگه‌های مس چودرچای»",
         },
     ],
     "skills": {

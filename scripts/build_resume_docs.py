@@ -422,6 +422,9 @@ class ResumeBuilder:
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, h["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            if h.get("note"):
+                p2 = self._para(space_after=2)
+                self._run(p2, h["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
 
     def _chip_group(self, groups):
         for label, items in groups.items():
