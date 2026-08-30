@@ -589,7 +589,6 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 a.cert-chip:hover { border-color: var(--sand-gold); transform: translateY(-1px); }
-.cert-chip--unlinked { color: inherit; }
 .cert-chip__title { font-size: 0.82rem; font-weight: 500; line-height: 1.3; }
 .cert-chip__org { font-size: 0.72rem; color: var(--ink-dim); }
 
