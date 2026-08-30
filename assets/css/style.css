@@ -580,6 +580,19 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .cert-card__desc { color: var(--ink-dim); font-size: 0.88rem; margin-top: 0.4rem; }
 .cert-card__link { font-family: var(--font-mono); font-size: 0.74rem; color: var(--olive); margin-top: 0.5rem; display: inline-block; }
 
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.9rem; }
+.cert-chip {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  border: 1px solid var(--hairline); border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  background: var(--cream);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+a.cert-chip:hover { border-color: var(--sand-gold); transform: translateY(-1px); }
+.cert-chip--unlinked { color: inherit; }
+.cert-chip__title { font-size: 0.82rem; font-weight: 500; line-height: 1.3; }
+.cert-chip__org { font-size: 0.72rem; color: var(--ink-dim); }
+
 /* publications — subtle depth, accent bar; authored work stands apart */
 .pub-card {
   position: relative;
