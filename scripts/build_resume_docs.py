@@ -466,6 +466,47 @@ class ResumeBuilder:
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, v["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
+    def certifications(self):
+        title = "Courses, Certificates & Licenses" if not self.is_fa else "دوره‌ها، گواهی‌ها و مجوزها"
+        self._section_title(title)
+        view_cert = "View certificate" if not self.is_fa else "مشاهده گواهی"
+        for spec in self.data["certifications"]["specializations"]:
+            p = self._para(space_before=2, space_after=0)
+            self._run(p, spec["title"], weight="demibold", size=SIZE_BODY)
+            p2 = self._para(space_after=1)
+            self._run(p2, spec["meta"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+            for c in spec["courses"]:
+                p3 = self._para(space_after=0)
+                p3.paragraph_format.left_indent = Cm(0.5)
+                self._run(p3, "– " + c["title"] + "   ", weight="light", size=SIZE_SMALL)
+                self._run(p3, c["period"] + " · ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                self._run(p3, c["id"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
+                self._run(p3, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                add_hyperlink(
+                    p3, view_cert, c["url"],
+                    font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                    weight_bold=False, rtl=self.is_fa,
+                )
+            p4 = self._para(space_before=1, space_after=3)
+            p4.paragraph_format.left_indent = Cm(0.5)
+            add_hyperlink(
+                p4, spec["cred_label"], spec["cred_url"],
+                font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                weight_bold=False, rtl=self.is_fa,
+            )
+        for c in self.data["certifications"]["courses"]:
+            p = self._para(space_after=0)
+            self._run(p, c["title"] + "   ", weight="regular", size=SIZE_SMALL)
+            self._run(p, c["org"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            self._run(p, c["period"] + " · ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            self._run(p, c["id"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
+            self._run(p, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            add_hyperlink(
+                p, view_cert, c["url"],
+                font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                weight_bold=False, rtl=self.is_fa,
+            )
+
     def footer(self):
         section = self.doc.sections[0]
         footer = section.footer
@@ -498,6 +539,7 @@ class ResumeBuilder:
         self.languages()
         self.memberships()
         self.volunteer()
+        self.certifications()
         self.footer()
         return self.doc
 

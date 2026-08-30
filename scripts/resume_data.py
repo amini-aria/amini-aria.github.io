@@ -13,12 +13,11 @@ build_resume_docs.py, or just push — the GitHub Action does it for you)
 so the downloadable files keep matching what's on the site.
 
 Only real, filled-in content lives here — sections that are still
-bracketed placeholders on the site (Research Experience,
-Certifications) are intentionally left out
-of the downloadable files entirely, since an ATS-optimized resume
-should never show empty/placeholder sections. Publications is not on
-the site at all right now (ISI articles aren't printed yet), so it has
-no entry here either.
+bracketed placeholders on the site (Research Experience) are
+intentionally left out of the downloadable files entirely, since an
+ATS-optimized resume should never show empty/placeholder sections.
+Publications is not on the site at all right now (ISI articles aren't
+printed yet), so it has no entry here either.
 """
 
 RESUME_EN = {
@@ -164,6 +163,70 @@ RESUME_EN = {
     "volunteer": [
         {"role": "Member, Iran Organ Donation Association", "period": "", "org": "Membership number to be added"},
     ],
+    "certifications": {
+        "specializations": [
+            {
+                "title": "Petroleum Engineering with AI Applications",
+                "meta": "Coursera Specialization · 5 courses",
+                "courses": [
+                    {"title": "Hydrocarbon Exploration and Production", "period": "2025", "id": "EVKUGMGT45RP", "url": "https://www.coursera.org/account/accomplishments/records/EVKUGMGT45RP"},
+                    {"title": "From Wellhead to Refinery: Midstream Oil and Gas Processing", "period": "2025", "id": "RO8QDU44OUOL", "url": "https://www.coursera.org/account/accomplishments/records/RO8QDU44OUOL"},
+                    {"title": "Natural Gas Production and Processing", "period": "2025", "id": "IGS15UQQFRV4", "url": "https://www.coursera.org/account/accomplishments/records/IGS15UQQFRV4"},
+                    {"title": "AI & ML Applications in Oil and Gas Industry", "period": "2025", "id": "O4Y2QT274ZI3", "url": "https://www.coursera.org/account/accomplishments/records/O4Y2QT274ZI3"},
+                    {"title": "Utilities, Safety & Environmental Care in Oil & Gas Industry", "period": "2025", "id": "UQWIYV2XAVAV", "url": "https://www.coursera.org/account/accomplishments/records/UQWIYV2XAVAV"},
+                ],
+                "cred_label": "View Specialization Certificate",
+                "cred_url": "https://www.coursera.org/account/accomplishments/specialization/B4YTG7OK3VTG",
+            },
+            {
+                "title": "Google Digital Marketing & E-commerce Professional Certificate",
+                "meta": "Coursera Professional Certificate · 7 courses",
+                "courses": [
+                    {"title": "Foundations of Digital Marketing and E-commerce", "period": "2024", "id": "ADAC17OAAUTM", "url": "https://www.coursera.org/account/accomplishments/records/ADAC17OAAUTM"},
+                    {"title": "Attract and Engage Customers with Digital Marketing", "period": "2024", "id": "BYDLT1NC85UY", "url": "https://www.coursera.org/account/accomplishments/records/BYDLT1NC85UY"},
+                    {"title": "From Likes to Leads: Interact with Customers Online", "period": "2024", "id": "OY3RTJ0FB1O9", "url": "https://www.coursera.org/account/accomplishments/records/OY3RTJ0FB1O9"},
+                    {"title": "Think Outside the Inbox: Email Marketing", "period": "2025", "id": "J8KTD6HZ13TU", "url": "https://www.coursera.org/account/accomplishments/records/J8KTD6HZ13TU"},
+                    {"title": "Assess for Success: Marketing Analytics and Measurement", "period": "2025", "id": "Z4TCNOZKS8MI", "url": "https://www.coursera.org/account/accomplishments/records/Z4TCNOZKS8MI"},
+                    {"title": "Make the Sale: Build, Launch, and Manage E-commerce Stores", "period": "2025", "id": "TOTMC7EZJCGQ", "url": "https://www.coursera.org/account/accomplishments/records/TOTMC7EZJCGQ"},
+                    {"title": "Satisfaction Guaranteed: Develop Customer Loyalty Online", "period": "2025", "id": "7IHL2H68QMKE", "url": "https://www.coursera.org/account/accomplishments/records/7IHL2H68QMKE"},
+                ],
+                "cred_label": "View Professional Certificate",
+                "cred_url": "https://www.coursera.org/account/accomplishments/professional-cert/FUR8P4I0Q1JT",
+            },
+            {
+                "title": "Introduction to Environmental Science",
+                "meta": "Coursera Specialization · 3 courses",
+                "courses": [
+                    {"title": "Environmental Science", "period": "2024", "id": "67L7TVDOHCS4", "url": "https://www.coursera.org/account/accomplishments/records/67L7TVDOHCS4"},
+                    {"title": "Population, Food, and Soil", "period": "2024", "id": "E1UHZEYRKK2T", "url": "https://www.coursera.org/account/accomplishments/records/E1UHZEYRKK2T"},
+                    {"title": "Energy and Environment", "period": "2024", "id": "TAEBBTUG4LV3", "url": "https://www.coursera.org/account/accomplishments/records/TAEBBTUG4LV3"},
+                ],
+                "cred_label": "View Specialization Certificate",
+                "cred_url": "https://www.coursera.org/account/accomplishments/specialization/6YGL16PGMYOE",
+            },
+        ],
+        "courses": [
+            {"title": "Unity: Design & Deform Meshes for 3D Geometry Control", "org": "EDUCBA", "period": "2025", "id": "PAOC4O9D4ALK", "url": "https://www.coursera.org/account/accomplishments/records/PAOC4O9D4ALK"},
+            {"title": "Sustainable Neighborhoods", "org": "Johns Hopkins University", "period": "2025", "id": "PD3013GV4N42", "url": "https://www.coursera.org/account/accomplishments/records/PD3013GV4N42"},
+            {"title": "Sustainable Transportation Networks and Streetscapes", "org": "Johns Hopkins University", "period": "2025", "id": "BQ9NUFWQ8JHO", "url": "https://www.coursera.org/account/accomplishments/records/BQ9NUFWQ8JHO"},
+            {"title": "Wind Energy", "org": "Technical University of Denmark (DTU)", "period": "2025", "id": "BF3120EB7YPC", "url": "https://www.coursera.org/account/accomplishments/records/BF3120EB7YPC"},
+            {"title": "Sustainable Regional Principles, Planning and Transportation", "org": "Johns Hopkins University", "period": "2025", "id": "HIHAH8WSFR95", "url": "https://www.coursera.org/account/accomplishments/records/HIHAH8WSFR95"},
+            {"title": "Positive Psychiatry and Mental Health", "org": "The University of Sydney", "period": "2025", "id": "LQ39UU674WEF", "url": "https://www.coursera.org/account/accomplishments/records/LQ39UU674WEF"},
+            {"title": "Firm Level Economics: Markets and Allocations", "org": "University of Illinois Urbana-Champaign", "period": "2024", "id": "XICPQ5ZM9KSV", "url": "https://www.coursera.org/account/accomplishments/records/XICPQ5ZM9KSV"},
+            {"title": "Introduction to Web Development", "org": "University of California, Davis", "period": "2024", "id": "OISIZ0VHN9AP", "url": "https://www.coursera.org/account/accomplishments/records/OISIZ0VHN9AP"},
+            {"title": "How to Write and Publish a Scientific Paper", "org": "École Polytechnique", "period": "2024", "id": "TRG7BMSS8Q9I", "url": "https://www.coursera.org/account/accomplishments/records/TRG7BMSS8Q9I"},
+            {"title": "Our Earth: Its Climate, History, and Processes", "org": "University of Manchester", "period": "2023", "id": "6Y537YJ5QH9J", "url": "https://www.coursera.org/account/accomplishments/records/6Y537YJ5QH9J"},
+            {"title": "Firm Level Economics: Consumer and Producer Behavior", "org": "University of Illinois Urbana-Champaign", "period": "2024", "id": "1JH025ZXSAFZ", "url": "https://www.coursera.org/account/accomplishments/records/1JH025ZXSAFZ"},
+            {"title": "Extinctions: Past, Present, & Future", "org": "Emory University", "period": "2023", "id": "EK5WJUBLEB92", "url": "https://www.coursera.org/account/accomplishments/records/EK5WJUBLEB92"},
+            {"title": "Electric Power Systems", "org": "University at Buffalo", "period": "2023", "id": "QFFR5N2AQ26W", "url": "https://www.coursera.org/account/accomplishments/records/QFFR5N2AQ26W"},
+            {"title": "Build a Full Website using WordPress", "org": "Coursera", "period": "2023", "id": "FLH3PRW9CBDC", "url": "https://www.coursera.org/account/accomplishments/records/FLH3PRW9CBDC"},
+            {"title": "Introduction to GIS Mapping", "org": "University of Toronto", "period": "2023", "id": "RXDSMTEBNYCY", "url": "https://www.coursera.org/account/accomplishments/records/RXDSMTEBNYCY"},
+            {"title": "Solar Energy Basics", "org": "The State University of New York", "period": "2023", "id": "PTMSZ9B6KQ8F", "url": "https://www.coursera.org/account/accomplishments/records/PTMSZ9B6KQ8F"},
+            {"title": "COVID-19 Contact Tracing", "org": "Johns Hopkins University", "period": "2023", "id": "CTXPE9DBBSWB", "url": "https://www.coursera.org/account/accomplishments/records/CTXPE9DBBSWB"},
+            {"title": "Oil & Gas Industry Operations and Markets", "org": "Duke University", "period": "2023", "id": "G7DYSPR7M3RR", "url": "https://www.coursera.org/account/accomplishments/records/G7DYSPR7M3RR"},
+            {"title": "High Stakes Leadership: Leading in Times of Crisis", "org": "University of Michigan", "period": "2023", "id": "XWTEBYE99LJU", "url": "https://www.coursera.org/account/accomplishments/records/XWTEBYE99LJU"},
+        ],
+    },
 }
 
 RESUME_FA = {
@@ -309,4 +372,68 @@ RESUME_FA = {
     "volunteer": [
         {"role": "\u0639\u0636\u0648 \u0627\u0647\u062f\u0627\u06cc \u0639\u0636\u0648 \u0627\u06cc\u0631\u0627\u0646", "period": "", "org": "\u0634\u0645\u0627\u0631\u0647 \u0639\u0636\u0648\u06cc\u062a \u0645\u062a\u0639\u0627\u0642\u0628\u0627\u064b \u0627\u0636\u0627\u0641\u0647 \u0645\u06cc\u200c\u0634\u0648\u062f"},
     ],
+    "certifications": {
+        "specializations": [
+            {
+                "title": "Petroleum Engineering with AI Applications",
+                "meta": "\u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc \u0648 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u06a9\u0648\u0631\u0633\u0631\u0627 \u00b7 \u06f5 \u062f\u0648\u0631\u0647",
+                "courses": [
+                    {"title": "Hydrocarbon Exploration and Production", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "EVKUGMGT45RP", "url": "https://www.coursera.org/account/accomplishments/records/EVKUGMGT45RP"},
+                    {"title": "From Wellhead to Refinery: Midstream Oil and Gas Processing", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "RO8QDU44OUOL", "url": "https://www.coursera.org/account/accomplishments/records/RO8QDU44OUOL"},
+                    {"title": "Natural Gas Production and Processing", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "IGS15UQQFRV4", "url": "https://www.coursera.org/account/accomplishments/records/IGS15UQQFRV4"},
+                    {"title": "AI & ML Applications in Oil and Gas Industry", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "O4Y2QT274ZI3", "url": "https://www.coursera.org/account/accomplishments/records/O4Y2QT274ZI3"},
+                    {"title": "Utilities, Safety & Environmental Care in Oil & Gas Industry", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "UQWIYV2XAVAV", "url": "https://www.coursera.org/account/accomplishments/records/UQWIYV2XAVAV"},
+                ],
+                "cred_label": "\u0645\u0634\u0627\u0647\u062f\u0647 \u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc",
+                "cred_url": "https://www.coursera.org/account/accomplishments/specialization/B4YTG7OK3VTG",
+            },
+            {
+                "title": "Google Digital Marketing & E-commerce Professional Certificate",
+                "meta": "\u06af\u0648\u0627\u0647\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u06a9\u0648\u0631\u0633\u0631\u0627 \u00b7 \u06f7 \u062f\u0648\u0631\u0647",
+                "courses": [
+                    {"title": "Foundations of Digital Marketing and E-commerce", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "ADAC17OAAUTM", "url": "https://www.coursera.org/account/accomplishments/records/ADAC17OAAUTM"},
+                    {"title": "Attract and Engage Customers with Digital Marketing", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "BYDLT1NC85UY", "url": "https://www.coursera.org/account/accomplishments/records/BYDLT1NC85UY"},
+                    {"title": "From Likes to Leads: Interact with Customers Online", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "OY3RTJ0FB1O9", "url": "https://www.coursera.org/account/accomplishments/records/OY3RTJ0FB1O9"},
+                    {"title": "Think Outside the Inbox: Email Marketing", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "J8KTD6HZ13TU", "url": "https://www.coursera.org/account/accomplishments/records/J8KTD6HZ13TU"},
+                    {"title": "Assess for Success: Marketing Analytics and Measurement", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "Z4TCNOZKS8MI", "url": "https://www.coursera.org/account/accomplishments/records/Z4TCNOZKS8MI"},
+                    {"title": "Make the Sale: Build, Launch, and Manage E-commerce Stores", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "TOTMC7EZJCGQ", "url": "https://www.coursera.org/account/accomplishments/records/TOTMC7EZJCGQ"},
+                    {"title": "Satisfaction Guaranteed: Develop Customer Loyalty Online", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "7IHL2H68QMKE", "url": "https://www.coursera.org/account/accomplishments/records/7IHL2H68QMKE"},
+                ],
+                "cred_label": "\u0645\u0634\u0627\u0647\u062f\u0647 \u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc",
+                "cred_url": "https://www.coursera.org/account/accomplishments/professional-cert/FUR8P4I0Q1JT",
+            },
+            {
+                "title": "Introduction to Environmental Science",
+                "meta": "\u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc \u0648 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u06a9\u0648\u0631\u0633\u0631\u0627 \u00b7 \u06f3 \u062f\u0648\u0631\u0647",
+                "courses": [
+                    {"title": "Environmental Science", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "67L7TVDOHCS4", "url": "https://www.coursera.org/account/accomplishments/records/67L7TVDOHCS4"},
+                    {"title": "Population, Food, and Soil", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "E1UHZEYRKK2T", "url": "https://www.coursera.org/account/accomplishments/records/E1UHZEYRKK2T"},
+                    {"title": "Energy and Environment", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "TAEBBTUG4LV3", "url": "https://www.coursera.org/account/accomplishments/records/TAEBBTUG4LV3"},
+                ],
+                "cred_label": "\u0645\u0634\u0627\u0647\u062f\u0647 \u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc",
+                "cred_url": "https://www.coursera.org/account/accomplishments/specialization/6YGL16PGMYOE",
+            },
+        ],
+        "courses": [
+            {"title": "Unity: Design & Deform Meshes for 3D Geometry Control", "org": "EDUCBA", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "PAOC4O9D4ALK", "url": "https://www.coursera.org/account/accomplishments/records/PAOC4O9D4ALK"},
+            {"title": "Sustainable Neighborhoods", "org": "Johns Hopkins University", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "PD3013GV4N42", "url": "https://www.coursera.org/account/accomplishments/records/PD3013GV4N42"},
+            {"title": "Sustainable Transportation Networks and Streetscapes", "org": "Johns Hopkins University", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "BQ9NUFWQ8JHO", "url": "https://www.coursera.org/account/accomplishments/records/BQ9NUFWQ8JHO"},
+            {"title": "Wind Energy", "org": "Technical University of Denmark (DTU)", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "BF3120EB7YPC", "url": "https://www.coursera.org/account/accomplishments/records/BF3120EB7YPC"},
+            {"title": "Sustainable Regional Principles, Planning and Transportation", "org": "Johns Hopkins University", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "HIHAH8WSFR95", "url": "https://www.coursera.org/account/accomplishments/records/HIHAH8WSFR95"},
+            {"title": "Positive Psychiatry and Mental Health", "org": "The University of Sydney", "period": "\u06f2\u06f0\u06f2\u06f5", "id": "LQ39UU674WEF", "url": "https://www.coursera.org/account/accomplishments/records/LQ39UU674WEF"},
+            {"title": "Firm Level Economics: Markets and Allocations", "org": "University of Illinois Urbana-Champaign", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "XICPQ5ZM9KSV", "url": "https://www.coursera.org/account/accomplishments/records/XICPQ5ZM9KSV"},
+            {"title": "Introduction to Web Development", "org": "University of California, Davis", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "OISIZ0VHN9AP", "url": "https://www.coursera.org/account/accomplishments/records/OISIZ0VHN9AP"},
+            {"title": "How to Write and Publish a Scientific Paper", "org": "\u00c9cole Polytechnique", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "TRG7BMSS8Q9I", "url": "https://www.coursera.org/account/accomplishments/records/TRG7BMSS8Q9I"},
+            {"title": "Our Earth: Its Climate, History, and Processes", "org": "University of Manchester", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "6Y537YJ5QH9J", "url": "https://www.coursera.org/account/accomplishments/records/6Y537YJ5QH9J"},
+            {"title": "Firm Level Economics: Consumer and Producer Behavior", "org": "University of Illinois Urbana-Champaign", "period": "\u06f2\u06f0\u06f2\u06f4", "id": "1JH025ZXSAFZ", "url": "https://www.coursera.org/account/accomplishments/records/1JH025ZXSAFZ"},
+            {"title": "Extinctions: Past, Present, & Future", "org": "Emory University", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "EK5WJUBLEB92", "url": "https://www.coursera.org/account/accomplishments/records/EK5WJUBLEB92"},
+            {"title": "Electric Power Systems", "org": "University at Buffalo", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "QFFR5N2AQ26W", "url": "https://www.coursera.org/account/accomplishments/records/QFFR5N2AQ26W"},
+            {"title": "Build a Full Website using WordPress", "org": "Coursera", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "FLH3PRW9CBDC", "url": "https://www.coursera.org/account/accomplishments/records/FLH3PRW9CBDC"},
+            {"title": "Introduction to GIS Mapping", "org": "University of Toronto", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "RXDSMTEBNYCY", "url": "https://www.coursera.org/account/accomplishments/records/RXDSMTEBNYCY"},
+            {"title": "Solar Energy Basics", "org": "The State University of New York", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "PTMSZ9B6KQ8F", "url": "https://www.coursera.org/account/accomplishments/records/PTMSZ9B6KQ8F"},
+            {"title": "COVID-19 Contact Tracing", "org": "Johns Hopkins University", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "CTXPE9DBBSWB", "url": "https://www.coursera.org/account/accomplishments/records/CTXPE9DBBSWB"},
+            {"title": "Oil & Gas Industry Operations and Markets", "org": "Duke University", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "G7DYSPR7M3RR", "url": "https://www.coursera.org/account/accomplishments/records/G7DYSPR7M3RR"},
+            {"title": "High Stakes Leadership: Leading in Times of Crisis", "org": "University of Michigan", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "XWTEBYE99LJU", "url": "https://www.coursera.org/account/accomplishments/records/XWTEBYE99LJU"},
+        ],
+    },
 }
