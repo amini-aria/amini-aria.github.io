@@ -13,10 +13,12 @@ build_resume_docs.py, or just push — the GitHub Action does it for you)
 so the downloadable files keep matching what's on the site.
 
 Only real, filled-in content lives here — sections that are still
-bracketed placeholders on the site (Research Experience, Publications,
-Conferences, Teaching, Honors & Awards, Certifications) are intentionally
-left out of the downloadable files entirely, since an ATS-optimized resume
-should never show empty/placeholder sections.
+bracketed placeholders on the site (Research Experience, Patents,
+Teaching, Honors & Awards, Certifications) are intentionally left out
+of the downloadable files entirely, since an ATS-optimized resume
+should never show empty/placeholder sections. Publications is not on
+the site at all right now (ISI articles aren't printed yet), so it has
+no entry here either.
 """
 
 RESUME_EN = {
@@ -81,6 +83,35 @@ RESUME_EN = {
         {"citation": "Fathi, T. (2026). Petroleum Contamination Hydrogeology: Geological, Environmental, Legal Aspects, and Models for the Remediation of Contaminated Groundwater.", "role": "Scientific Editor", "isbn": ""},
         {"citation": "Momenzadeh, M. (2025). The Mythical City of Zabol: The Burnt City.", "role": "Editor", "isbn": "978-600-6058-44-3"},
         {"citation": "Salmati, R. (2025). A Comprehensive Guide to Geological Mapping at Scales of 1:50,000 and Larger.", "role": "Editor", "isbn": "978-600-6058-42-9"},
+    ],
+    "conferences": [
+        {
+            "title": "Differences in Garnet Classification Based on Color",
+            "period": "2024",
+            "org": "43rd Earth Sciences Congress (National Conference)",
+            "tag": "Conference Paper",
+            "note": "Co-authored with Ziba Delpasand and Fariborz Masoudi · 10 pages · Persian",
+            "doc_id": "GSI43_151",
+            "url": "https://civilica.com/doc/2419015/",
+        },
+        {
+            "title": "Petrographic, Mineralization, and Alteration Study of the Choudarchay Copper Vein Deposit",
+            "period": "2024",
+            "org": "43rd Earth Sciences Congress (National Conference)",
+            "tag": "Oral Presentation",
+            "note": "Sole author · 13 pages · Persian",
+            "doc_id": "GSI43_064",
+            "url": "https://civilica.com/doc/2418928/",
+        },
+        {
+            "title": "Economic Geology of Copper and Associated Elements in the South Rayen Area, with a Focus on Gadar-e-Siah",
+            "period": "2023",
+            "org": "42nd Earth Sciences Congress (National Conference)",
+            "tag": "Oral Presentation",
+            "note": "Co-authored with Shohreh Salkhordeh · 15 pages · Persian",
+            "doc_id": "GSI42_161",
+            "url": "https://civilica.com/doc/1963822/",
+        },
     ],
     "skills": {
         "Programming Languages": ["Python", "JavaScript", "PHP", "C#", "SQL"],
@@ -168,6 +199,35 @@ RESUME_FA = {
         {"citation": "\u0641\u062a\u062d\u06cc\u060c \u062a. (\u06f1\u06f4\u06f0\u06f5). \u0647\u06cc\u062f\u0631\u0648\u0698\u0626\u0648\u0644\u0648\u0698\u06cc \u0622\u0644\u0648\u062f\u06af\u06cc \u0646\u0641\u062a\u06cc: \u062c\u0646\u0628\u0647\u200c\u0647\u0627\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc\u060c \u0632\u06cc\u0633\u062a\u200c\u0645\u062d\u06cc\u0637\u06cc\u060c \u062d\u0642\u0648\u0642\u06cc \u0648 \u0645\u062f\u0644\u200c\u0647\u0627\u06cc \u067e\u0627\u06a9\u200c\u0633\u0627\u0632\u06cc \u0622\u0628\u200c\u0647\u0627\u06cc \u0632\u06cc\u0631\u0632\u0645\u06cc\u0646\u06cc \u0622\u0644\u0648\u062f\u0647.", "role": "\u0648\u06cc\u0631\u0627\u0633\u062a\u0627\u0631 \u0639\u0644\u0645\u06cc", "isbn": ""},
         {"citation": "\u0645\u0648\u0645\u0646\u200c\u0632\u0627\u062f\u0647\u060c \u0645. (\u06f1\u06f4\u06f0\u06f4). \u0634\u0647\u0631 \u0627\u0641\u0633\u0627\u0646\u0647\u200c\u0627\u06cc \u0632\u0627\u0628\u0644: \u0634\u0647\u0631 \u0633\u0648\u062e\u062a\u0647.", "role": "\u0648\u06cc\u0631\u0627\u0633\u062a\u0627\u0631", "isbn": ""},
         {"citation": "\u0633\u0644\u0645\u0627\u062a\u06cc\u060c \u0631. (\u06f1\u06f4\u06f0\u06f4). \u0631\u0627\u0647\u0646\u0645\u0627\u06cc \u062c\u0627\u0645\u0639 \u0646\u0642\u0634\u0647\u200c\u0628\u0631\u062f\u0627\u0631\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u062f\u0631 \u0645\u0642\u06cc\u0627\u0633 \u06f1:\u06f5\u06f0\u06f0\u06f0\u06f0 \u0648 \u0628\u0632\u0631\u06af\u200c\u062a\u0631.", "role": "\u0648\u06cc\u0631\u0627\u0633\u062a\u0627\u0631", "isbn": ""},
+    ],
+    "conferences": [
+        {
+            "title": "\u062a\u0641\u0627\u0648\u062a \u0637\u0628\u0642\u0647\u200c\u0628\u0646\u062f\u06cc \u06af\u0627\u0631\u0646\u062a \u0628\u0631 \u0645\u0628\u0646\u0627\u06cc \u0631\u0646\u06af",
+            "period": "\u06f1\u06f4\u06f0\u06f3",
+            "org": "\u0686\u0647\u0644 \u0648 \u0633\u0648\u0645\u06cc\u0646 \u06af\u0631\u062f\u0647\u0645\u0627\u06cc\u06cc (\u0647\u0645\u0627\u06cc\u0634 \u0645\u0644\u06cc) \u0639\u0644\u0648\u0645 \u0632\u0645\u06cc\u0646",
+            "tag": "\u0645\u0642\u0627\u0644\u0647 \u06a9\u0646\u0641\u0631\u0627\u0646\u0633\u06cc",
+            "note": "\u0646\u0648\u06cc\u0633\u0646\u062f\u06af\u0627\u0646: \u0632\u06cc\u0628\u0627 \u062f\u0644\u067e\u0633\u0646\u062f\u060c \u0641\u0631\u06cc\u0628\u0631\u0632 \u0645\u0633\u0639\u0648\u062f\u06cc\u060c \u0645\u062d\u0645\u062f\u0622\u0631\u06cc\u0627 \u0627\u0645\u06cc\u0646\u06cc \u00b7 \u06f1\u06f0 \u0635\u0641\u062d\u0647 \u00b7 \u0632\u0628\u0627\u0646: \u0641\u0627\u0631\u0633\u06cc",
+            "doc_id": "GSI43_151",
+            "url": "https://civilica.com/doc/2419015/",
+        },
+        {
+            "title": "\u0628\u0631\u0631\u0633\u06cc \u067e\u062a\u0631\u0648\u06af\u0631\u0627\u0641\u06cc\u060c \u06a9\u0627\u0646\u0647\u200c\u0632\u0627\u06cc\u06cc \u0648 \u062f\u06af\u0631\u0633\u0627\u0646\u06cc \u0630\u062e\u0627\u06cc\u0631 \u06a9\u0627\u0646\u0633\u0627\u0631 \u0631\u06af\u0647\u200c\u0647\u0627\u06cc \u0645\u0633 \u0686\u0648\u062f\u0631\u0686\u0627\u06cc",
+            "period": "\u06f1\u06f4\u06f0\u06f3",
+            "org": "\u0686\u0647\u0644 \u0648 \u0633\u0648\u0645\u06cc\u0646 \u06af\u0631\u062f\u0647\u0645\u0627\u06cc\u06cc (\u0647\u0645\u0627\u06cc\u0634 \u0645\u0644\u06cc) \u0639\u0644\u0648\u0645 \u0632\u0645\u06cc\u0646",
+            "tag": "\u0633\u062e\u0646\u0631\u0627\u0646\u06cc",
+            "note": "\u0646\u0648\u06cc\u0633\u0646\u062f\u0647: \u0645\u062d\u0645\u062f\u0622\u0631\u06cc\u0627 \u0627\u0645\u06cc\u0646\u06cc \u00b7 \u06f1\u06f3 \u0635\u0641\u062d\u0647 \u00b7 \u0632\u0628\u0627\u0646: \u0641\u0627\u0631\u0633\u06cc",
+            "doc_id": "GSI43_064",
+            "url": "https://civilica.com/doc/2418928/",
+        },
+        {
+            "title": "\u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u0627\u0642\u062a\u0635\u0627\u062f\u06cc \u0645\u0633 \u0648 \u0639\u0646\u0627\u0635\u0631 \u0647\u0645\u0631\u0627\u0647 \u062f\u0631 \u0645\u062d\u062f\u0648\u062f\u0647 \u062c\u0646\u0648\u0628 \u0631\u0627\u06cc\u0646 \u0628\u0627 \u0646\u06af\u0631\u0634\u06cc \u0628\u0631 \u06af\u062f\u0627\u0631 \u0633\u06cc\u0627\u0647",
+            "period": "\u06f1\u06f4\u06f0\u06f2",
+            "org": "\u0686\u0647\u0644 \u0648 \u062f\u0648\u0645\u06cc\u0646 \u06af\u0631\u062f\u0647\u0645\u0627\u06cc\u06cc (\u0647\u0645\u0627\u06cc\u0634 \u0645\u0644\u06cc) \u0639\u0644\u0648\u0645 \u0632\u0645\u06cc\u0646",
+            "tag": "\u0633\u062e\u0646\u0631\u0627\u0646\u06cc",
+            "note": "\u0646\u0648\u06cc\u0633\u0646\u062f\u06af\u0627\u0646: \u0645\u062d\u0645\u062f\u0622\u0631\u06cc\u0627 \u0627\u0645\u06cc\u0646\u06cc\u060c \u0634\u0647\u0631\u0647 \u0633\u0627\u0644\u062e\u0648\u0631\u062f\u0647 \u00b7 \u06f1\u06f5 \u0635\u0641\u062d\u0647 \u00b7 \u0632\u0628\u0627\u0646: \u0641\u0627\u0631\u0633\u06cc",
+            "doc_id": "GSI42_161",
+            "url": "https://civilica.com/doc/1963822/",
+        },
     ],
     "skills": {
         "\u0632\u0628\u0627\u0646\u200c\u0647\u0627\u06cc \u0628\u0631\u0646\u0627\u0645\u0647\u200c\u0646\u0648\u06cc\u0633\u06cc": ["Python", "JavaScript", "PHP", "C#", "SQL"],

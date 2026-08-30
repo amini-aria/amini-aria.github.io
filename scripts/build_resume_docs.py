@@ -373,6 +373,28 @@ class ResumeBuilder:
             # right-to-left Persian paragraph, so this run is never RTL-flagged
             self._run(p3, b.get("isbn", ""), weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
 
+    def conferences(self):
+        self._section_title("Conferences" if not self.is_fa else "کنفرانس‌ها")
+        id_label = "National Sci-Doc ID: " if not self.is_fa else "شناسه ملی سند علمی: "
+        link_label = "View on Civilica" if not self.is_fa else "مشاهده در سیویلیکا"
+        for c in self.data["conferences"]:
+            self._entry_head_line(c["title"], c["period"], left_weight="demibold")
+            p = self._para(space_after=0)
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            self._run(p, c["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            p2 = self._para(space_after=0)
+            self._run(p2, c["tag"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            p3 = self._para(space_after=2)
+            self._run(p3, c["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+            self._run(p3, "  ·  " + id_label, weight="light", size=SIZE_SMALL, color=SECONDARY)
+            self._run(p3, c["doc_id"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
+            self._run(p3, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            add_hyperlink(
+                p3, link_label, c["url"],
+                font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                weight_bold=False, rtl=self.is_fa,
+            )
+
     def _chip_group(self, groups):
         for label, items in groups.items():
             p = self._para(space_before=1, space_after=0)
@@ -436,6 +458,7 @@ class ResumeBuilder:
         self.education()
         self.experience()
         self.books()
+        self.conferences()
         self.skills()
         self.software()
         self.languages()
