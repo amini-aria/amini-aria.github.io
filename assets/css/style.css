@@ -754,6 +754,7 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
   height: 300px;
   max-width: 700px;
   margin: 3rem auto 2.5rem;
+  perspective: 1400px;
 }
 .contact-card {
   position: absolute;
@@ -768,9 +769,9 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
   text-align: start;
   color: var(--ink);
   --tx: calc(var(--tx-base) * var(--spread, 1));
-  transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) rotate(var(--rot));
+  transform: translate3d(-50%, -50%, 0) translate(var(--tx), var(--ty)) rotate(var(--rot));
   transform-origin: center;
-  transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease, z-index 0s;
+  transition: transform 0.45s cubic-bezier(.22,.85,.3,1), box-shadow 0.45s ease, z-index 0s;
   z-index: var(--z);
   cursor: pointer;
 }
@@ -782,15 +783,35 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
 }
 .contact-card__label { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
 .contact-card__sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-dim); }
+.contact-card__badge {
+  position: absolute;
+  inset-block-start: -0.6rem;
+  inset-inline-start: -0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--olive);
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px -6px rgba(58,46,34,0.5);
+  transform: rotate(6deg);
+}
+body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; transform: rotate(-6deg); }
 @media (hover: hover) and (pointer: fine) {
+  /* translateZ (with the stack's perspective) makes the hovered card
+     actually approach the viewer instead of just growing in place, so it
+     reads as lifting off the pile rather than clipping flatly through
+     the other cards on its way to the front. */
   .contact-card:hover {
-    transform: translate(-50%, -50%) translate(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35)) rotate(calc(var(--rot) * 0.3)) scale(1.05);
+    transform: translate3d(-50%, -50%, 60px) translate(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35)) rotate(calc(var(--rot) * 0.3)) scale(1.05);
     box-shadow: 0 30px 55px -22px rgba(58,46,34,0.5);
     z-index: 40;
   }
 }
 .contact-card.is-front {
-  transform: translate(-50%, -50%) scale(1.08);
+  transform: translate3d(-50%, -50%, 140px) scale(1.08);
   box-shadow: 0 36px 60px -20px rgba(58,46,34,0.55);
   z-index: 60;
 }
