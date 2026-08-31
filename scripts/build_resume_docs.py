@@ -272,15 +272,19 @@ class ResumeBuilder:
         p.paragraph_format.space_after = Pt(3)
         return p
 
-    def _entry_head_line(self, left_text, right_text, left_weight, left_italic=False, left_color=INK):
+    def _entry_head_line(self, left_text, right_text, left_weight, left_italic=False, left_color=INK, kicker=None):
         """Classic resume pattern: left-aligned text, right-aligned date,
         using a right tab stop rather than a table (safer for ATS parsers
         and screen readers alike). The date itself is set slightly
         condensed for a tighter, more tabular look. left_color lets a
         caller mark the left text itself as secondary (e.g. a role line
-        under an org heading that's already the primary line)."""
+        under an org heading that's already the primary line). kicker, if
+        given, is a small secondary-colored label (e.g. "Paper:") printed
+        just before left_text, to disambiguate what kind of title follows."""
         p = self._para(space_before=0, space_after=0)
         add_right_tab(p, self.usable_width_cm)
+        if kicker:
+            self._run(p, kicker + "  ", weight="demibold", size=SIZE_SMALL, color=SECONDARY)
         self._run(p, left_text, weight=left_weight, italic=left_italic, size=SIZE_BODY, color=left_color)
         if right_text:
             self._run(p, "\t" + right_text, weight="light", italic=False, size=SIZE_BODY, color=SECONDARY, condensed=True)
@@ -360,25 +364,28 @@ class ResumeBuilder:
 
     def books(self):
         self._section_title("Books" if not self.is_fa else "\u06a9\u062a\u0627\u0628\u200c\u0647\u0627")
+        default_isbn_label = "ISBN: " if not self.is_fa else "\u0634\u0627\u0628\u06a9: "
         for b in self.data["books"]:
             p = self._para(space_before=2, space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, b["citation"], weight="regular", size=SIZE_BODY)
-            p2 = self._para(space_after=0)
+            self._run(p, b["citation"], weight="demibold", size=SIZE_BODY)
+            p2 = self._para(space_after=2)
             self._run(p2, b["role"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
-            p3 = self._para(space_after=0)
-            isbn_label = "ISBN: " if not self.is_fa else "\u0634\u0627\u0628\u06a9: "
-            self._run(p3, isbn_label, weight="light", size=SIZE_SMALL, color=SECONDARY)
-            # the ISBN's digit groups must read left-to-right even inside a
-            # right-to-left Persian paragraph, so this run is never RTL-flagged
-            self._run(p3, b.get("isbn", ""), weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
+            if b.get("isbn"):
+                self._run(p2, "   \u00b7   ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                isbn_label = b.get("isbn_label", default_isbn_label)
+                self._run(p2, isbn_label, weight="light", size=SIZE_SMALL, color=SECONDARY)
+                # the ISBN's digit groups must read left-to-right even inside a
+                # right-to-left Persian paragraph, so this run is never RTL-flagged
+                self._run(p2, b["isbn"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
 
     def conferences(self):
         self._section_title("Conferences" if not self.is_fa else "کنفرانس‌ها")
         id_label = "National Sci-Doc ID: " if not self.is_fa else "شناسه ملی سند علمی: "
         link_label = "View on Civilica" if not self.is_fa else "مشاهده در سیویلیکا"
+        kicker = "Paper:" if not self.is_fa else "مقاله:"
         for c in self.data["conferences"]:
-            self._entry_head_line(c["title"], c["period"], left_weight="demibold")
+            self._entry_head_line(c["title"], c["period"], left_weight="demibold", kicker=kicker)
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, c["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
@@ -393,7 +400,7 @@ class ResumeBuilder:
                 self._run(p3, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
                 add_hyperlink(
                     p3, link_label, c["url"],
-                    font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                    font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                     weight_bold=False, rtl=self.is_fa,
                 )
 
@@ -440,10 +447,13 @@ class ResumeBuilder:
 
     def languages(self):
         self._section_title("Languages" if not self.is_fa else "\u0632\u0628\u0627\u0646\u200c\u0647\u0627")
-        parts = [f'{l["name"]} \u2013 {l["level"]}' for l in self.data["languages"]]
         p = self._para(space_after=1)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        self._run(p, "   |   ".join(parts), weight="regular", size=SIZE_BODY)
+        for i, l in enumerate(self.data["languages"]):
+            if i > 0:
+                self._run(p, "   |   ", weight="light", size=SIZE_BODY)
+            self._run(p, l["name"], weight="demibold", size=SIZE_BODY)
+            self._run(p, f' \u2013 {l["level"]}', weight="regular", size=SIZE_BODY)
         for l in self.data["languages"]:
             for t in l.get("tests", []):
                 p2 = self._para(space_after=0)
@@ -493,14 +503,14 @@ class ResumeBuilder:
                 self._run(p3, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
                 add_hyperlink(
                     p3, view_cert, c["url"],
-                    font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                    font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                     weight_bold=False, rtl=self.is_fa,
                 )
             p4 = self._para(space_before=1, space_after=3)
             p4.paragraph_format.left_indent = Cm(0.5)
             add_hyperlink(
                 p4, spec["cred_label"], spec["cred_url"],
-                font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                 weight_bold=False, rtl=self.is_fa,
             )
         for c in self.data["certifications"]["courses"]:
@@ -512,7 +522,7 @@ class ResumeBuilder:
             self._run(p, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
             add_hyperlink(
                 p, view_cert, c["url"],
-                font=self._font_for("light"), size=SIZE_SMALL, color=SECONDARY,
+                font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                 weight_bold=False, rtl=self.is_fa,
             )
 
@@ -543,10 +553,10 @@ class ResumeBuilder:
         self.patents()
         self.teaching()
         self.honors()
-        self.skills()
         self.languages()
         self.memberships()
         self.volunteer()
+        self.skills()
         self.certifications()
         self.footer()
         return self.doc

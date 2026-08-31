@@ -108,6 +108,7 @@ body.lang-fa .hero__scroll-hint span,
 body.lang-fa .pub-card__role,
 body.lang-fa .cert-card__link,
 body.lang-fa .resume__entry-tag,
+body.lang-fa .resume__entry-kicker,
 body.lang-fa .lang-pill {
   letter-spacing: 0 !important;
   text-transform: none !important;
@@ -530,6 +531,8 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .resume__entry { margin-bottom: 1rem; }
 .resume__entry:last-child { margin-bottom: 0; }
 .resume__entry-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.resume__entry-title-wrap { display: inline-flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }
+.resume__entry-kicker { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; color: var(--olive); text-transform: uppercase; letter-spacing: 0.04em; }
 .resume__entry-role { font-size: 1rem; font-weight: 600; font-family: var(--font-display); }
 .resume__entry-period { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; white-space: nowrap; }
 .resume__entry-org { color: var(--ink-dim); margin-top: 0.2rem; font-size: 0.92rem; }
@@ -643,7 +646,7 @@ body.lang-fa .cert-chip__id {
 html[dir="rtl"] .pub-card { border-radius: 10px 4px 4px 10px; }
 .pub-card__citation { color: var(--ink); max-width: 62ch; font-size: 0.94rem; }
 .pub-card__role { color: var(--umber); font-family: var(--font-mono); font-size: 0.76rem; margin-top: 0.5rem; display: inline-block; }
-.pub-card__isbn { display: block; color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.68rem; margin-top: 0.2rem; }
+.pub-card__isbn { display: inline-block; color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.68rem; margin-top: 0.5rem; margin-inline-start: 0.7rem; padding-inline-start: 0.7rem; border-inline-start: 1px solid var(--hairline); }
 .pub-card__isbn-code { unicode-bidi: isolate; }
 
 .pub-card--authored {
