@@ -122,34 +122,70 @@
     return String(n).replace(/[0-9]/g, function (d) { return faDigits[+d]; });
   }
 
-  /* ---------- Automatic "last updated" date, from GitHub commit history ---------- */
-  var updatedEl = document.getElementById("last-updated");
-  if (updatedEl) {
-    var repoPath = updatedEl.getAttribute("data-path") || "resume/index.html";
+  /* ---------- Automatic "last updated" date, from GitHub commit history ----------
+     Every element carrying data-updated-path gets filled in, so the resume
+     page header and the Resume button in the homepage hero read the same
+     commit date without either one hard-coding it. data-updated-style picks
+     the wording: the full sentence for the page header, a compact form for
+     the button. The answer is cached per session, so moving between the two
+     pages costs one API call rather than one per page view. */
+  var updatedEls = document.querySelectorAll("[data-updated-path]");
+  if (updatedEls.length) {
     var lang = document.body.classList.contains("lang-fa") ? "fa" : "en";
-    var apiUrl = "https://api.github.com/repos/amini-aria/amini-aria.github.io/commits?path=" + repoPath + "&page=1&per_page=1";
 
-    fetch(apiUrl, { headers: { Accept: "application/vnd.github+json" } })
-      .then(function (res) { if (!res.ok) throw new Error("api error"); return res.json(); })
-      .then(function (data) {
-        if (!data || !data[0] || !data[0].commit) return;
-        var iso = data[0].commit.committer.date;
-        var d = new Date(iso);
-        var gy = d.getFullYear(), gm = d.getMonth() + 1, gd = d.getDate();
+    var renderUpdated = function (el, iso) {
+      var d = new Date(iso);
+      var compact = el.getAttribute("data-updated-style") === "compact";
 
-        if (lang === "fa") {
-          var j = gregorianToJalali(gy, gm, gd);
-          var shamsi = toFaDigits(j[2]) + " " + jalaliMonths[j[1] - 1] + " " + toFaDigits(j[0]);
-          var miladi = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-          updatedEl.textContent = "آخرین ویرایش: " + shamsi + " (" + miladi + " میلادی)";
+      if (lang === "fa") {
+        var j = gregorianToJalali(d.getFullYear(), d.getMonth() + 1, d.getDate());
+        var shamsi = toFaDigits(j[2]) + " " + jalaliMonths[j[1] - 1] + " " + toFaDigits(j[0]);
+        if (compact) {
+          el.textContent = "آخرین ویرایش: " + shamsi;
         } else {
-          var en = d.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
-          updatedEl.textContent = "Last updated: " + en;
+          var miladi = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+          el.textContent = "آخرین ویرایش: " + shamsi + " (" + miladi + " میلادی)";
         }
-      })
-      .catch(function () {
-        updatedEl.textContent = "";
-      });
+      } else {
+        var en = d.toLocaleDateString("en-US", compact
+          ? { day: "numeric", month: "short", year: "numeric" }
+          : { day: "numeric", month: "long", year: "numeric" });
+        el.textContent = (compact ? "Updated " : "Last updated: ") + en;
+      }
+    };
+
+    var byPath = {};
+    Array.prototype.forEach.call(updatedEls, function (el) {
+      var p = el.getAttribute("data-updated-path");
+      if (!p) return;
+      (byPath[p] = byPath[p] || []).push(el);
+    });
+
+    Object.keys(byPath).forEach(function (repoPath) {
+      var targets = byPath[repoPath];
+      var cacheKey = "last-updated:" + repoPath;
+      var cached = null;
+      try { cached = sessionStorage.getItem(cacheKey); } catch (e) { /* private mode */ }
+      if (cached) {
+        targets.forEach(function (el) { renderUpdated(el, cached); });
+        return;
+      }
+
+      var apiUrl = "https://api.github.com/repos/amini-aria/amini-aria.github.io/commits?path=" +
+        encodeURIComponent(repoPath) + "&page=1&per_page=1";
+
+      fetch(apiUrl, { headers: { Accept: "application/vnd.github+json" } })
+        .then(function (res) { if (!res.ok) throw new Error("api error"); return res.json(); })
+        .then(function (data) {
+          if (!data || !data[0] || !data[0].commit) return;
+          var iso = data[0].commit.committer.date;
+          try { sessionStorage.setItem(cacheKey, iso); } catch (e) { /* quota / private mode */ }
+          targets.forEach(function (el) { renderUpdated(el, iso); });
+        })
+        .catch(function () {
+          targets.forEach(function (el) { el.textContent = ""; });
+        });
+    });
   }
 
   /* ---------- Publications page: auto-mirror sections from the resume page ----------

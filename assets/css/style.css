@@ -94,8 +94,13 @@ html[dir="ltr"] body { text-align: left; }
 .mono { font-family: var(--font-mono); letter-spacing: 0.02em; }
 body.lang-fa .mono { letter-spacing: 0; }
 
-.justify { text-align: justify; text-align-last: right; }
-html[dir="ltr"] .justify { text-align-last: left; }
+/* text-align-last is left at its `auto` default on purpose: for justified text
+   that already means "start-aligned last line", which is correct in both
+   directions. The explicit right/left pair this replaces produced a
+   right-flush last line in English — reading as right-aligned text — any time
+   the html[dir="ltr"] override didn't win. */
+.justify { text-align: justify; }
+.justify:lang(en) { hyphens: auto; }
 
 /* Persian headings/labels must never get letter-spacing or uppercase —
    both break letter joining in the script. */
@@ -104,7 +109,6 @@ body.lang-fa .page-header__eyebrow,
 body.lang-fa .resume__block-title,
 body.lang-fa .interests-band__title,
 body.lang-fa .skills-group__label,
-body.lang-fa .hero__scroll-hint span,
 body.lang-fa .pub-card__role,
 body.lang-fa .cert-card__link,
 body.lang-fa .resume__entry-tag,
@@ -203,7 +207,10 @@ body.lang-fa .lang-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 7rem var(--edge) 4rem;
+  /* The bottom padding has to clear the card's drop shadow, which overflow:
+     hidden would otherwise cut off in a hard line right where the strata
+     divider starts. Shadow reach below the card is offset + blur + spread. */
+  padding: 7rem var(--edge) 6rem;
   overflow: hidden;
 }
 .hero__bg {
@@ -236,7 +243,7 @@ body.lang-fa .lang-pill {
   border-radius: 26px;
   padding: 2.6rem 2.25rem 2.25rem;
   text-align: center;
-  box-shadow: 0 40px 90px -30px rgba(58, 46, 34, 0.35), inset 0 1px 0 rgba(255,255,255,0.7);
+  box-shadow: 0 32px 72px -30px rgba(58, 46, 34, 0.32), inset 0 1px 0 rgba(255,255,255,0.7);
   isolation: isolate;
 }
 .hero__card::before {
@@ -355,18 +362,66 @@ body.lang-fa .lang-pill {
 .btn--ghost { color: var(--ink-dim); }
 .btn--ghost:hover { color: var(--ink); }
 
-.hero__scroll-hint {
-  position: absolute; bottom: 1.75rem; left: 50%; transform: translateX(-50%);
-  color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.7rem;
-  letter-spacing: 0.12em; text-transform: uppercase; z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-  transition: opacity 0.25s ease;
+/* ---- hero action buttons: one shape, one motion, three weights of emphasis.
+   Scoped to .hero__actions so the plain .btn used on the resume and contact
+   pages keeps its existing single-line look. ---- */
+.hero__actions .btn {
+  position: relative;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-height: 54px;
+  padding: 0.72rem 2.75rem;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.22s cubic-bezier(.2,.7,.3,1), background 0.22s ease,
+              border-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
 }
-.hero.spotify-open .hero__scroll-hint { opacity: 0; pointer-events: none; }
-.hero__scroll-hint svg { animation: scroll-bounce 1.8s ease-in-out infinite; }
-@keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.7; }
-  50% { transform: translateY(5px); opacity: 1; }
+.hero-btn__label { font-size: 0.94rem; font-weight: 600; line-height: 1.3; }
+.hero-btn__meta {
+  font-size: 0.66rem; font-weight: 400; line-height: 1.35;
+  letter-spacing: 0.03em; opacity: 0.7;
+}
+.hero-btn__meta:empty { display: none; }
+.hero-btn__icon {
+  position: absolute; inset-inline-end: 1.05rem; top: 50%;
+  width: 15px; height: 15px; margin-top: -7.5px;
+  opacity: 0.5;
+  transition: transform 0.22s cubic-bezier(.2,.7,.3,1), opacity 0.22s ease;
+}
+html[dir="rtl"] .hero-btn__icon { transform: scaleX(-1); }
+.hero__actions .btn:hover { transform: translateY(-2px); }
+.hero__actions .btn:active { transform: translateY(0); }
+.hero__actions .btn:hover .hero-btn__icon { opacity: 1; transform: translateX(3px); }
+html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1) translateX(3px); }
+
+.hero__actions .btn--primary {
+  background: linear-gradient(135deg, #8a563a, var(--umber) 55%, #6a4127);
+  box-shadow: 0 10px 22px -14px rgba(122,75,46,0.7), inset 0 1px 0 rgba(255,255,255,0.16);
+}
+.hero__actions .btn--primary:hover { box-shadow: 0 18px 32px -14px rgba(122,75,46,0.55), inset 0 1px 0 rgba(255,255,255,0.22); }
+.hero__actions .btn--primary .hero-btn__meta { opacity: 0.75; }
+
+.hero__actions .btn--outline {
+  background: rgba(255,255,255,0.62);
+  border-color: rgba(58,46,34,0.14);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.hero__actions .btn--outline:hover {
+  border-color: rgba(110,122,79,0.5);
+  background: rgba(255,255,255,0.82);
+  color: var(--olive);
+}
+
+.hero__actions .btn--ghost {
+  background: rgba(58,46,34,0.045);
+  border-color: rgba(58,46,34,0.06);
+  color: var(--ink-dim);
+}
+.hero__actions .btn--ghost:hover {
+  background: rgba(58,46,34,0.085);
+  border-color: rgba(58,46,34,0.12);
+  color: var(--ink);
 }
 
 /* =========================================================================
@@ -445,7 +500,7 @@ body.lang-fa .lang-pill {
   0%, 100% { background-position: 0% 0; }
   50% { background-position: 100% 0; }
 }
-.section__text { color: var(--ink-dim); max-width: 62ch; font-size: 1.02rem; margin-top: 1.5rem; }
+.section__text { color: var(--ink-dim); max-width: 62ch; font-size: 1.02rem; margin-top: 0.95rem; }
 
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
@@ -775,7 +830,7 @@ body.lang-fa .pub-card--authored { letter-spacing: 0; }
    PRINT — resume page only
    ========================================================================= */
 @media print {
-  .topbar, .footer, .hero__scroll-hint, .resume-downloads, .fossil-field, .divider { display: none !important; }
+  .topbar, .footer, .resume-downloads, .fossil-field, .divider { display: none !important; }
   body { background: #fff; color: #000; }
   .resume-surface { box-shadow: none; border: none; backdrop-filter: none; }
   .page-header { padding-top: 1rem; }
