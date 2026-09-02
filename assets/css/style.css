@@ -735,42 +735,77 @@ body.lang-fa .cert-chip__id {
   direction: ltr;
 }
 
-/* publications — subtle depth, accent bar; authored work stands apart */
+/* Books and publications — one calm card, the citation carrying the weight.
+   The colour lives in a single chip rather than in a heavy accent bar, a
+   tinted wash and a corner ribbon all at once; authored work is set apart by
+   a warmer border and its own chip, not by a second visual language. */
 .pub-card {
-  position: relative;
-  background: linear-gradient(160deg, rgba(122,75,46,0.05), rgba(255,255,255,0)), var(--surface);
+  display: flex; flex-direction: column; align-items: flex-start;
+  background: var(--surface);
   border: 1px solid var(--hairline);
-  border-inline-start: 3px solid var(--umber);
-  border-radius: 4px 10px 10px 4px;
-  padding: 1.1rem 1.3rem;
-  margin-bottom: 0.8rem;
-  box-shadow: 0 10px 24px -18px rgba(58,46,34,0.25);
+  border-radius: 14px;
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 0.6rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
-html[dir="rtl"] .pub-card { border-radius: 10px 4px 4px 10px; }
-.pub-card__citation { color: var(--ink); max-width: 62ch; font-size: 0.94rem; }
-.pub-card__role { color: var(--umber); font-family: var(--font-mono); font-size: 0.76rem; margin-top: 0.5rem; display: inline-block; }
-.pub-card__isbn { display: inline-block; color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.68rem; margin-top: 0.5rem; margin-inline-start: 0.7rem; padding-inline-start: 0.7rem; border-inline-start: 1px solid var(--hairline); }
+@media (hover: hover) and (pointer: fine) {
+  .pub-card:hover {
+    border-color: rgba(122, 75, 46, 0.3);
+    box-shadow: 0 14px 30px -22px rgba(58, 46, 34, 0.55);
+    transform: translateY(-1px);
+  }
+}
+.pub-card__citation { color: var(--ink); max-width: 62ch; font-size: 0.94rem; line-height: 1.6; margin: 0; }
+.pub-card__meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem 0.7rem;
+  margin-top: 0.8rem;
+}
+.pub-card__role {
+  font-family: var(--font-mono); font-size: 0.63rem; font-weight: 500;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--umber);
+  background: var(--umber-soft);
+  border: 1px solid rgba(122, 75, 46, 0.16);
+  border-radius: 999px;
+  padding: 0.24rem 0.66rem;
+}
+/* Persian never takes tracking or uppercasing — both break letter joining */
+body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-size: 0.7rem; }
+.pub-card__isbn {
+  color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.68rem;
+}
 .pub-card__isbn-code { unicode-bidi: isolate; }
 
 .pub-card--authored {
-  position: relative;
-  border: 1px solid var(--clay);
-  border-inline-start-width: 6px;
-  background: linear-gradient(160deg, var(--clay-soft), rgba(255,255,255,0) 65%), var(--surface);
-  box-shadow: 0 16px 34px -18px rgba(181,98,59,0.4);
-  padding-inline-end: 4.7rem;
+  border-color: rgba(181, 98, 59, 0.34);
+  background: linear-gradient(180deg, rgba(181, 98, 59, 0.05), rgba(255, 255, 255, 0) 55%), var(--surface);
 }
-.pub-card--authored .pub-card__role { color: var(--clay); font-weight: 700; }
-.pub-card--authored::after {
-  content: "AUTHOR";
-  position: absolute; top: 0; inset-inline-end: 0;
-  background: var(--clay); color: #fff;
-  font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
-  padding: 0.3rem 0.7rem;
-  border-radius: 0 8px 0 8px;
+@media (hover: hover) and (pointer: fine) {
+  .pub-card--authored:hover { border-color: rgba(181, 98, 59, 0.6); }
 }
-body.lang-fa .pub-card--authored::after { content: "نویسنده"; border-radius: 8px 0 8px 0; letter-spacing: 0; }
-body.lang-fa .pub-card--authored { letter-spacing: 0; }
+.pub-card--authored .pub-card__role {
+  color: var(--clay);
+  background: var(--clay-soft);
+  border-color: rgba(181, 98, 59, 0.3);
+}
+/* the badge is a flex item, so it sits above the citation instead of being
+   pinned into a corner the text then has to be padded away from */
+.pub-card--authored::before {
+  content: "Author";
+  order: -1;
+  margin-bottom: 0.65rem;
+  font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--clay);
+  border: 1px solid rgba(181, 98, 59, 0.4);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+}
+body.lang-fa .pub-card--authored::before {
+  content: "نویسنده";
+  font-family: var(--font-fa); font-size: 0.68rem;
+  letter-spacing: 0; text-transform: none;
+}
 
 /* =========================================================================
    FOOTER — centered, thin, unobtrusive
