@@ -739,19 +739,6 @@ body.lang-fa .cert-chip__id {
   direction: ltr;
 }
 
-/* On the résumé the white sheet flattens these cards and pinches them
-   narrower than the identical cards on the publications page, which sit on
-   the page's own cream. Let the books block alone span the sheet's full
-   width on that same cream ground, so a book looks the same on both pages.
-   The publications page has no sheet, so this scoping simply never applies
-   to the mirrored copy there. */
-.resume-surface .resume__block--books {
-  margin-inline: calc(-1 * clamp(1.25rem, 4vw, 3rem));
-  padding-inline: clamp(1.25rem, 4vw, 3rem);
-  padding-block: 1.4rem;
-  background: var(--cream);
-}
-
 /* Books and publications — one calm card, the citation carrying the weight.
    The colour lives in a single chip rather than in a heavy accent bar, a
    tinted wash and a corner ribbon all at once; authored work is set apart by
