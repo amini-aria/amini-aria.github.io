@@ -238,27 +238,35 @@
         mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-error-text") + "</p>";
       });
   }
-  /* ---------- Contact page: overlapping card stack ----------
-     Each card carries its own resting rotation/offset (--rot/--tx-base/
-     --ty, set inline per card in the HTML). A click brings that one card
-     fully forward (.is-front) above the rest of the pile, replacing
-     whichever card was in front before. */
+    /* ---------- Contact page: shingled card deck ----------
+     Each card carries its own resting tilt and paint order (--rot/--z, set
+     inline per card in the HTML). pointerdown brings a card forward
+     (.is-front) BEFORE the link resolves, so a touch user actually sees the
+     lift; the keyboard gets the same state from :focus-visible in CSS with no
+     JS at all. No preventDefault anywhere — the links must keep working, and
+     that is safe because nothing is hidden behind a tap. */
   var contactCards = document.querySelectorAll(".contact-card");
   if (contactCards.length) {
-    contactCards.forEach(function (el) {
-      el.addEventListener("click", function () {
-        contactCards.forEach(function (c) { c.classList.remove("is-front"); });
-        el.classList.add("is-front");
-      });
-      if (!reduceMotion) {
-        el.addEventListener("mousemove", function (e) {
-          var rect = el.getBoundingClientRect();
-          el.style.setProperty("--gx", ((e.clientX - rect.left) / rect.width) * 100 + "%");
-          el.style.setProperty("--gy", ((e.clientY - rect.top) / rect.height) * 100 + "%");
-        });
-      }
+    var frontCard = null;
+    var bringForward = function (el) {
+      if (frontCard === el) { return; }
+      if (frontCard) { frontCard.classList.remove("is-front"); }
+      el.classList.add("is-front");
+      frontCard = el;
+    };
+    var clearFront = function () {
+      if (frontCard) { frontCard.classList.remove("is-front"); frontCard = null; }
+    };
+    Array.prototype.forEach.call(contactCards, function (el) {
+      el.addEventListener("pointerdown", function () { bringForward(el); });
+      el.addEventListener("click", function () { bringForward(el); });
+      el.addEventListener("pointercancel", clearFront);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" || e.keyCode === 27) { clearFront(); }
     });
   }
+
   /* ---------- Spotify playlist shutter ---------- */
   var spotifyToggle = document.getElementById("spotify-toggle");
   var spotifyDropdown = document.getElementById("spotify-dropdown");

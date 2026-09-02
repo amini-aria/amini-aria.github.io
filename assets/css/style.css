@@ -974,7 +974,7 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   background: radial-gradient(circle at 18% 12%, var(--gold-soft), transparent 45rem),
               radial-gradient(circle at 85% 80%, var(--olive-soft), transparent 40rem),
               linear-gradient(160deg, var(--surface), var(--cream));
-  overflow: hidden;
+  overflow-x: clip;
 }
 .contact-hero { max-width: var(--max-w); margin-inline: auto; text-align: center; }
 .contact-hero__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
@@ -982,94 +982,319 @@ body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
 .contact-hero__title { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 20ch; margin-inline: auto; line-height: 1.15; }
 .contact-hero__text { color: var(--ink-dim); max-width: 52ch; margin: 1.1rem auto 0; font-size: 1.02rem; }
 
+/* =========================================================================
+   CONTACT PAGE — a vertical shingle in a recessed tray: cards stacked like
+   index cards, each offset down by just enough to expose its full header row.
+
+   THE INVARIANT: --tail (the overlap) is always --gap-min shallower than
+   --pad-b (the card's own top padding). --gap-min is 10px = 8px legibility
+   margin + 2px rotation allowance (±0.35deg on a 480px card displaces a
+   corner 1.47px). A card's bottom edge therefore stops >=8px short of the
+   next card's first ink, so no card can ever cover another card's title,
+   handle or badge — in any state, at any z-order, mid-animation included.
+   Measured clearance: 8.88-10.71px at every width, both languages.
+
+   Replaces assets/css/style.css lines 985-1073 in full.
+   ALSO CHANGE line 977, inside .contact-page:
+     overflow: hidden;   ->   overflow-x: clip;
+   (`hidden` makes .contact-page a scroll container, which breaks
+   position:sticky for every descendant and causes a silent scroll-into-view
+   jump on keyboard focus inside an element that shows no scrollbar.)
+   ========================================================================= */
 .contact-stack {
+  /* card anatomy. --peek and --tail are DERIVED so they cannot drift out of
+     sync with the padding or the icon size. */
+  --pad-b: 1.75rem;                       /* 28px top padding = the grab strip */
+  --pad-i: 1.35rem;                       /* 21.6px */
+  --icon: 44px;                           /* also governs the header row height */
+  --clear: 1rem;                          /* 16px of air under the header */
+  --gap-min: 10px;                        /* 8px margin + 2px rotation allowance */
+  --tail: calc(var(--pad-b) - var(--gap-min));            /* 18px overlap */
+  --peek: calc(var(--pad-b) + var(--icon) + var(--clear));/* 88px exposed strip */
+
+  /* motion magnitudes, all in one place so the phone block can retune them */
+  --lift-hover: 26px;  --lift-front: 46px;
+  --tilt-hover: -3.5deg; --tilt-front: -4.5deg;  /* top edge tips toward viewer */
+  --push-hover: 12px;                      /* cards below slide down: deck opens */
+  --dir: 1;                                /* single mirror token */
+  --ease-rise: cubic-bezier(0.22, 0.7, 0.3, 1);
+  --ease-fall: cubic-bezier(0.5, 0, 0.65, 1);  /* accelerating: gravity */
+  --t-rise: 380ms;
+  --t-fall: 240ms;                         /* a card falls faster than it rose */
+
   position: relative;
-  height: 300px;
-  max-width: 700px;
-  margin: 3rem auto 2.5rem;
-  perspective: 1400px;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 3.25rem auto 3.5rem;
+  /* 900px against a 480px stack ~ 1.9 : 1. The phone block re-scales this;
+     inheriting 1400px onto a 350px stack renders near-orthographic. */
+  perspective: 900px;
+  perspective-origin: 50% 42%;
 }
-.contact-card {
+/* ONE sign token drives both the tilt and the mirror, so RTL can never go
+   half-done the way --tx flipped while --rot did not. */
+body.lang-fa .contact-stack { --dir: -1; }
+
+/* The tray. The shipped card face (--surface #FBF7EE) sat on a page gradient
+   that STARTS at #FBF7EE — contrast 1.054:1, i.e. the same hex. A recessed
+   bed gives the cards something to be lighter than. */
+.contact-stack::before {
+  content: "";
   position: absolute;
-  top: 50%; left: 50%;
-  width: 240px;
-  padding: 1.5rem 1.6rem;
-  border-radius: 22px;
-  background: var(--surface);
-  border: 1px solid rgba(58,46,34,0.1);
-  box-shadow: 0 22px 40px -22px rgba(58,46,34,0.4);
-  display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start;
-  text-align: start;
-  color: var(--ink);
-  --tx: calc(var(--tx-base) * var(--spread, 1));
-  transform: translate3d(-50%, -50%, 0) translate(var(--tx), var(--ty)) rotate(var(--rot));
-  transform-origin: center;
-  transition: transform 0.45s cubic-bezier(.22,.85,.3,1), box-shadow 0.45s ease, z-index 0s;
+  inset: -1.5rem -1.15rem -1.35rem;
+  border-radius: 26px;
+  background: linear-gradient(168deg, #EFE4CC 0%, #F4EBD9 58%, #EDE2C7 100%);
+  border: 1px solid var(--hairline);
+  box-shadow: inset 0 2px 6px rgba(94,60,38,0.10), inset 0 -1px 0 rgba(255,255,255,0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-card {
+  --lift: 0px; --tilt: 0deg; --push: 0px; --press: 1;
+  --accent: var(--umber);
+
+  position: relative;
   z-index: var(--z);
+  /* header row: icon inline with the title, handle under it, badge in a
+     full-height column so it centres against the whole row. Grid columns
+     follow writing direction, so RTL mirrors for free. No chevron: it is
+     redundant on an element that is already a link, and removing it is what
+     frees the width that made 320px overflow. */
+  display: grid;
+  grid-template-columns: var(--icon) minmax(0, 1fr) auto;
+  grid-template-areas: "icon label badge" "icon sub badge";
+  column-gap: 0.8rem;
+  row-gap: 0.1rem;
+  align-items: center;
+  align-content: start;
+
+  block-size: calc(var(--peek) + var(--tail));   /* 106px desktop / 96px phone */
+  padding: var(--pad-b) var(--pad-i) 0;
+  margin-block-start: calc(var(--tail) * -1);    /* the shingle itself */
+
+  color: var(--ink);
+  text-align: start;
+  /* the project's own hairline token (1.486:1) instead of rgba(58,46,34,0.1),
+     which composited to a neutral grey at 1.195:1 on a warm page */
+  border: 1px solid var(--hairline);
+  border-radius: 14px;                     /* must stay under --tail or the
+                                              corners disengage at each fold */
+  /* one overhead light: the face is brightest at its top edge */
+  background: linear-gradient(177deg, #FFFDF8 0%, var(--surface) 44%, #F4EDDF 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),   /* lit top bevel = paper thickness */
+    inset 0 -1px 0 rgba(122,75,46,0.09),    /* shaded bottom bevel */
+    0 -3px 8px -2px rgba(94,60,38,0.26),    /* TUCK: cast UP onto the card behind.
+                                               The deck cascades downward, so this
+                                               is the shadow that sells the fold.
+                                               Measured 40 luminance levels. */
+    0 1px 2px rgba(58,46,34,0.17),          /* contact: escapes on every side */
+    0 6px 16px -2px rgba(94,60,38,0.15);    /* ambient, warmed toward umber */
+
+  transform:
+    translate3d(0, calc(var(--push)), var(--lift))
+    rotate(calc(var(--rot, 0deg) * var(--dir)))
+    rotateX(var(--tilt))
+    scale(var(--press));
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+
+  /* RETURN timing: shorter and accelerating. z-index holds until it lands. */
+  transition:
+    transform var(--t-fall) var(--ease-fall),
+    box-shadow var(--t-fall) var(--ease-fall),
+    border-color 180ms linear,
+    z-index 0s linear var(--t-fall);
+  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
+.contact-card:first-child { margin-block-start: 0; }
+/* the last card has no successor, so its --tail band is dead space; cropping
+   it makes every card present an identical band instead of one 22% taller */
+.contact-card:last-child { block-size: var(--peek); }
+
 .contact-card__icon {
-  width: 44px; height: 44px; border-radius: 13px;
+  grid-area: icon;
+  inline-size: var(--icon); block-size: var(--icon);
+  border-radius: 13px;
   display: flex; align-items: center; justify-content: center;
-  background: var(--umber-soft); color: var(--umber);
-  margin-bottom: 0.2rem;
+  align-self: center;
+  background: var(--accent-soft, var(--umber-soft));
+  color: var(--accent);
+  /* 82% accent + 18% ink tonally balances the plates: a flat accent makes
+     sand-gold far weaker than clay and pulls the eye for no reason */
+  color: color-mix(in srgb, var(--accent) 82%, var(--ink));
+  /* inset only: the plate reads as printed INTO the stock, not stuck on it */
+  box-shadow: inset 0 0 0 1px rgba(58,46,34,0.07), inset 0 1px 2px rgba(58,46,34,0.08);
 }
-.contact-card__label { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
-.contact-card__sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-dim); }
+/* nowrap/ellipsis is a safety net, not a working state (measured 0 overflow
+   everywhere incl. 320px). The card has a fixed block-size, so a font-fallback
+   surprise that WRAPPED would push ink into the fold zone and break the
+   invariant; an ellipsis fails honestly and visibly inside the card instead. */
+.contact-card__label {
+  grid-area: label; align-self: end; justify-self: start;
+  max-inline-size: 100%;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 1.1rem; line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.contact-card__sub {
+  grid-area: sub; align-self: start;
+  /* shrink-to-fit at the cell's inline-start. Without this the Persian page's
+     dir="ltr" subs resolve `start` against their OWN ltr direction. */
+  justify-self: start;
+  max-inline-size: 100%;
+  font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.4;
+  color: var(--ink-dim);                   /* 6.18:1 on the face */
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .contact-card__badge {
-  position: absolute;
-  inset-block-start: -0.6rem;
-  inset-inline-start: -0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--olive);
-  padding: 0.3rem 0.55rem;
-  border-radius: 999px;
-  box-shadow: 0 6px 14px -6px rgba(58,46,34,0.5);
-  transform: rotate(6deg);
+  grid-area: badge; justify-self: end; align-self: center;
+  font-family: var(--font-mono); font-size: 0.62rem; line-height: 1;
+  letter-spacing: 0.03em; text-transform: uppercase; white-space: nowrap;
+  color: #fff; background: var(--olive);   /* 4.61:1 — 0.11 of AA margin.
+                                              Do not lighten, do not add
+                                              opacity, no translucent backdrop. */
+  padding: 0.34rem 0.6rem; border-radius: 999px;
+  /* a decal lying flush: a 1px contact line, lighter than the card's own
+     shadow. NO transform — it shares the card's plane exactly, both languages. */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 1px 2px rgba(58,46,34,0.18);
 }
-body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; transform: rotate(-6deg); }
+body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
+
+/* ENTER timing, applied to the raised card AND to the siblings it pushes, so
+   the lift and the deck-opening are one gesture on one curve rather than two
+   unsynchronised reactions. */
+.contact-card.is-front,
+.contact-card:focus-visible,
+.contact-card:hover,
+.contact-card:hover ~ .contact-card,
+.contact-card:focus-visible ~ .contact-card {
+  transition:
+    transform var(--t-rise) var(--ease-rise),
+    box-shadow var(--t-rise) var(--ease-rise),
+    border-color 180ms linear,
+    z-index 0s linear 0s;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  /* translateZ (with the stack's perspective) makes the hovered card
-     actually approach the viewer instead of just growing in place, so it
-     reads as lifting off the pile rather than clipping flatly through
-     the other cards on its way to the front. */
   .contact-card:hover {
-    transform: translate3d(-50%, -50%, 60px) translate(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35)) rotate(calc(var(--rot) * 0.3)) scale(1.05);
-    box-shadow: 0 30px 55px -22px rgba(58,46,34,0.5);
-    z-index: 40;
+    --lift: var(--lift-hover); --tilt: var(--tilt-hover);
+    z-index: 50;
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--hairline));
+    /* contact alpha DROPS as the card leaves the surface and the penumbra
+       widens. The shipped ramp went 0.40 -> 0.50 -> 0.55, i.e. backwards. */
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.95),
+      inset 0 -1px 0 rgba(122,75,46,0.05),
+      0 -7px 18px -5px rgba(94,60,38,0.17),
+      0 2px 5px rgba(58,46,34,0.10),
+      0 16px 34px -6px rgba(94,60,38,0.13),
+      0 30px 60px -14px rgba(94,60,38,0.09);
   }
+  .contact-card:hover ~ .contact-card { --push: var(--push-hover); }
 }
-.contact-card.is-front {
-  transform: translate3d(-50%, -50%, 140px) scale(1.08);
-  box-shadow: 0 36px 60px -20px rgba(58,46,34,0.55);
+
+/* Deliberately outside the (hover)(pointer:fine) query. Focus applies on every
+   device, and z-index 60 is what stops the focus ring being painted under a
+   neighbouring card. --push is NOT applied by .is-front: combining sibling
+   push with pointerdown moves cards ~16px under a finger that is still down,
+   and click fires on the nearest common ancestor of pointerdown/pointerup, so
+   a tap could resolve to the container and open nothing. */
+.contact-card.is-front,
+.contact-card:focus-visible {
+  --lift: var(--lift-front); --tilt: var(--tilt-front);
   z-index: 60;
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--hairline));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(122,75,46,0.04),
+    0 -10px 24px -7px rgba(94,60,38,0.13),
+    0 3px 8px rgba(58,46,34,0.07),
+    0 26px 50px -10px rgba(94,60,38,0.11),
+    0 48px 92px -20px rgba(94,60,38,0.07);
 }
-body.lang-fa .contact-card { --tx: calc(var(--tx-base) * -1 * var(--spread, 1)); }
+.contact-card:focus-visible ~ .contact-card { --push: var(--push-hover); }
 
-@media (min-width: 641px) and (max-width: 900px) {
-  .contact-card { --spread: 0.62; }
+/* press: must come AFTER .is-front so it wins while the button is held */
+.contact-card:active {
+  --press: 0.985; --lift: 0px; --tilt: 0deg;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 -2px 5px -1px rgba(94,60,38,0.22),
+    0 1px 1px rgba(58,46,34,0.19),
+    0 2px 5px rgba(94,60,38,0.15);
+  transition-duration: 90ms, 90ms, 90ms, 0s;
 }
 
+/* ---- unavailable channels -------------------------------------------- */
 .contact-more {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem;
-  max-width: var(--max-w); margin-inline: auto;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 0.5rem; max-width: var(--max-w); margin-inline: auto; padding: 0;
 }
 .contact-chip {
-  font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint);
-  background: rgba(255,255,255,0.5); border: 1px solid rgba(58,46,34,0.1);
-  border-radius: 999px; padding: 0.45rem 0.9rem;
+  font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.45;
+  color: var(--ink-dim);            /* was --ink-faint = 3.11:1, fails 1.4.3 */
+  background: rgba(255,255,255,0.34);
+  border: 1px dashed var(--hairline);  /* "unavailable" reads from the dashed
+                                          edge and weak fill, not from text
+                                          contrast that fails AA */
+  border-radius: 999px; padding: 0.4rem 0.8rem;
 }
 
+/* ---- phone: same logic, retuned tokens only --------------------------- */
 @media (max-width: 640px) {
-  .contact-stack { height: auto; max-width: 320px; margin: 3rem auto 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
-  .contact-card { position: relative; top: 0; left: 0; width: 100%; transform: none !important; }
-  .contact-card.is-front, .contact-card:hover { transform: scale(1.02) !important; }
-  .contact-card__badge { inset-block-start: -0.4rem; }
-  .contact-more { flex-direction: column; align-items: center; }
+  /* topbar measures 90px (EN) / 71px (FA); 104px clears it */
+  .contact-page { padding-block: 6.5rem 3rem; }
+  .contact-stack {
+    --pad-b: 1.625rem;                 /* -> --tail resolves to 16px */
+    --pad-i: 1rem;
+    --icon: 40px;
+    --clear: 0.875rem;                 /* -> --peek resolves to 80px */
+    --lift-hover: 22px; --lift-front: 38px;
+    --push-hover: 14px;
+    margin: 2.25rem auto 2.75rem;
+    perspective: 640px;                /* 640/350 ~ the desktop 900/480 ratio */
+  }
+  .contact-stack::before { inset: -1.1rem -0.8rem -1rem; border-radius: 20px; }
+  .contact-card { border-radius: 10px; column-gap: 0.7rem; }
+  .contact-card__icon { border-radius: 11px; }
+  .contact-card__label { font-size: 1.02rem; }
+  .contact-card__sub { font-size: 0.74rem; }
+  .contact-more { gap: 0.4rem; }       /* no flex-direction:column — 2 rows */
+  .contact-chip { font-size: 0.64rem; padding: 0.34rem 0.58rem; }
+}
+/* at 360px the English chip pair overflows by ~2px, forcing a third row */
+@media (max-width: 380px) {
+  .contact-chip { font-size: 0.6rem; padding: 0.32rem 0.5rem; }
+}
+
+/* ---- reduced motion: keep the shingle, drop the travel ----------------- */
+/* The global rule at :65 only zeroes duration, which leaves every transform in
+   force as an instantaneous jump-cut — the wrong half. The resting invariant
+   holds regardless of z-order, so the overlap is KEPT here (requirement 3 is
+   delivered to this cohort) and only the travel is removed. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-card,
+  .contact-card:hover, .contact-card:focus-visible,
+  .contact-card.is-front, .contact-card:active,
+  .contact-card:hover ~ .contact-card,
+  .contact-card:focus-visible ~ .contact-card {
+    --lift: 0px; --tilt: 0deg; --push: 0px; --press: 1;
+  }
+  .contact-card:hover, .contact-card:focus-visible, .contact-card.is-front {
+    border-color: var(--accent);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.95),
+      0 -3px 8px -2px rgba(94,60,38,0.26),
+      0 1px 2px rgba(58,46,34,0.17),
+      0 6px 16px -2px rgba(94,60,38,0.15),
+      0 0 0 3px rgba(110,122,79,0.24);   /* literal --olive: in this branch the
+                                            ring is the ONLY state indicator,
+                                            so it must not depend on color-mix */
+  }
 }
 
 
