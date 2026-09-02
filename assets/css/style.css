@@ -380,9 +380,50 @@ body.lang-fa .lang-pill {
   z-index: 1;
 }
 .divider svg { display: block; width: 100%; height: 100%; }
-.divider--strata { background: var(--cream); }
-.divider--vein { background: #0b0d10; }
+/* No background here on purpose: the cream side of both dividers stays
+   transparent so the body's radial gradients and the drifting fossil field
+   run straight through them. The dark side is painted inside the SVG in the
+   exact colour of .lab-section, so there is no seam either way. */
 .divider--strata .strata-fossil { animation: fossil-drift 24s ease-in-out infinite; }
+
+/* Sediment bands shear slowly against each other. Each band is drawn a little
+   wider than the viewBox so the horizontal travel can never pull an edge in. */
+.divider__layer { transform-origin: 720px 60px; }
+.divider__layer--a { animation: strata-shear-a 46s ease-in-out infinite; }
+.divider__layer--b { animation: strata-shear-b 62s ease-in-out infinite; }
+.divider__layer--c { animation: strata-shear-c 78s ease-in-out infinite; }
+@keyframes strata-shear-a {
+  0%, 100% { transform: scaleX(1.06) translateX(-9px); }
+  50%      { transform: scaleX(1.06) translateX(9px); }
+}
+@keyframes strata-shear-b {
+  0%, 100% { transform: scaleX(1.06) translateX(7px); }
+  50%      { transform: scaleX(1.06) translateX(-7px); }
+}
+@keyframes strata-shear-c {
+  0%, 100% { transform: scaleX(1.06) translateX(-4px); }
+  50%      { transform: scaleX(1.06) translateX(4px); }
+}
+
+/* Depth on scroll: the upper bands lag behind the base as the divider crosses
+   the viewport. Only the bands that fill down to the bottom edge move, so a
+   negative offset can never open a gap against the section below. */
+@supports (animation-timeline: view()) {
+  .divider__parallax {
+    animation-timeline: view();
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+  }
+  .divider__parallax--a { animation-name: strata-lag-a; }
+  .divider__parallax--b { animation-name: strata-lag-b; }
+  @keyframes strata-lag-a { from { transform: translateY(10px); } to { transform: translateY(-7px); } }
+  @keyframes strata-lag-b { from { transform: translateY(6px); }  to { transform: translateY(-4px); } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .divider__layer, .divider__parallax { animation: none !important; transform: none; }
+}
 
 /* =========================================================================
    SECTIONS
