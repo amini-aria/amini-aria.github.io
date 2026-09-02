@@ -783,28 +783,15 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
 @media (hover: hover) and (pointer: fine) {
   .pub-card--authored:hover { border-color: rgba(181, 98, 59, 0.6); }
 }
+/* His own book carries no separate "Author" badge — the role chip says it.
+   Filling that chip instead of outlining it is what sets it apart from the
+   editor credits without adding a second label that repeats the first. */
 .pub-card--authored .pub-card__role {
-  color: var(--clay);
-  background: var(--clay-soft);
-  border-color: rgba(181, 98, 59, 0.3);
-}
-/* the badge is a flex item, so it sits above the citation instead of being
-   pinned into a corner the text then has to be padded away from */
-.pub-card--authored::before {
-  content: "Author";
-  order: -1;
-  margin-bottom: 0.65rem;
-  font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--clay);
-  border: 1px solid rgba(181, 98, 59, 0.4);
-  border-radius: 999px;
-  padding: 0.2rem 0.7rem;
-}
-body.lang-fa .pub-card--authored::before {
-  content: "نویسنده";
-  font-family: var(--font-fa); font-size: 0.68rem;
-  letter-spacing: 0; text-transform: none;
+  color: #fff;
+  background: var(--clay);
+  border-color: var(--clay);
+  font-weight: 600;
+  box-shadow: 0 6px 14px -8px rgba(181, 98, 59, 0.85);
 }
 
 /* =========================================================================
