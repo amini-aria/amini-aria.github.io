@@ -198,12 +198,24 @@
     var titlesAttr = mirrorMount.getAttribute("data-titles") || "";
     var wantedTitles = titlesAttr.split("|").map(function (s) { return s.trim(); });
 
-    fetch(sourcePath)
-      .then(function (res) { if (!res.ok) throw new Error("fetch failed"); return res.text(); })
+    /* The page head already started this request (and may have answered it
+       from the session cache), so prefer that over issuing a second one. */
+    var preloaded = window.__mirrorSource;
+    var source = preloaded && preloaded.url === sourcePath
+      ? preloaded.text
+      : fetch(sourcePath).then(function (res) {
+          if (!res.ok) throw new Error("fetch failed");
+          return res.text();
+        });
+
+    source
       .then(function (html) {
         var doc = new DOMParser().parseFromString(html, "text/html");
         var blocks = doc.querySelectorAll(".resume__block");
         var found = 0;
+        /* collect into a fragment first: appending block by block would lay
+           the page out once per section */
+        var frag = document.createDocumentFragment();
         blocks.forEach(function (block) {
           var titleEl = block.querySelector(".resume__block-title");
           if (!titleEl) return;
@@ -211,10 +223,11 @@
           if (wantedTitles.indexOf(title) !== -1) {
             var clone = block.cloneNode(true);
             clone.classList.add("reveal");
-            mirrorMount.appendChild(clone);
+            frag.appendChild(clone);
             found++;
           }
         });
+        mirrorMount.appendChild(frag);
         if (found === 0) {
           mirrorMount.innerHTML = '<p class="section__text">' + mirrorMount.getAttribute("data-empty-text") + "</p>";
         } else {
