@@ -128,6 +128,10 @@ body.lang-fa .lang-pill {
   overflow: hidden;
   pointer-events: none;
 }
+/* Mirrored in RTL so the watermarks land on the side the text isn't on.
+   Without it the derrick sits at 68% from the left, which is exactly where a
+   right-aligned page title ends up. */
+html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
 .fossil-field svg {
   position: absolute;
   color: var(--umber);
@@ -1068,8 +1072,14 @@ body.lang-fa .contact-card { --tx: calc(var(--tx-base) * -1 * var(--spread, 1));
   overflow: hidden;
   transition: max-height 0.35s ease;
 }
-.spotify-dropdown.is-open .spotify-panel { max-height: 320px; }
-.spotify-scroll-wrap { position: relative; }
+.spotify-panel::before {
+  content: "";
+  position: absolute; inset: 0 0 auto; height: 130px; z-index: 0;
+  background: linear-gradient(180deg, rgba(29,185,84,0.22), rgba(29,185,84,0) 100%);
+  pointer-events: none;
+}
+.spotify-dropdown.is-open .spotify-panel { max-height: 340px; }
+.spotify-scroll-wrap { position: relative; z-index: 1; }
 .spotify-panel__inner {
   max-height: 230px; overflow-y: scroll;
   direction: ltr;
@@ -1081,14 +1091,14 @@ body.lang-fa .contact-card { --tx: calc(var(--tx-base) * -1 * var(--spread, 1));
    platform (iOS Safari ignores CSS scrollbar styling and auto-hides its
    native one; this track/thumb pair is our own markup, always on) */
 .spotify-scrollbar-track {
-  position: absolute; top: 4px; right: 3px; bottom: 4px; width: 5px;
-  background: rgba(255,255,255,0.06);
+  position: absolute; top: 4px; right: 3px; bottom: 4px; width: 4px;
+  background: rgba(255,255,255,0.05);
   border-radius: 999px;
   z-index: 5;
   transition: background 0.2s ease, width 0.2s ease, right 0.2s ease;
 }
 .spotify-scrollbar-thumb {
-  position: absolute; right: 0; width: 5px;
+  position: absolute; right: 0; width: 4px;
   background: #1DB954;
   border-radius: 999px;
   opacity: 0.75;
@@ -1107,33 +1117,93 @@ body.lang-fa .contact-card { --tx: calc(var(--tx-base) * -1 * var(--spread, 1));
 .spotify-scrollbar-track { cursor:pointer; touch-action:none; }
 .spotify-scrollbar-thumb { cursor:grab; touch-action:none; }
 .spotify-scrollbar-thumb.is-dragging { cursor:grabbing; }
-.spotify-panel__list {
-  display: flex; flex-direction: column; gap: 0.4rem;
-  padding: 0.3rem 0.35rem 0.4rem;
+/* ---- panel header: the equaliser bars a player shows on the track that is
+   actually playing, and the reason the list exists ---- */
+.spotify-panel__head {
+  position: relative; z-index: 1;
+  display: flex; align-items: baseline; gap: 0.5rem;
+  padding: 0.75rem 1rem 0.55rem;
   direction: ltr;
+  font-family: var(--font-spotify);
+}
+.spotify-eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; align-self: center; }
+.spotify-eq i {
+  display: block; width: 3px; border-radius: 1px;
+  background: #1DB954;
+  animation: spotify-eq 1.1s ease-in-out infinite;
+}
+.spotify-eq i:nth-child(1) { height: 40%; animation-delay: -0.9s; }
+.spotify-eq i:nth-child(2) { height: 90%; animation-delay: -0.5s; }
+.spotify-eq i:nth-child(3) { height: 60%; animation-delay: -0.2s; }
+.spotify-eq i:nth-child(4) { height: 75%; animation-delay: -0.7s; }
+@keyframes spotify-eq {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+.spotify-eq i { transform-origin: bottom; }
+.spotify-panel__count {
+  color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+}
+.spotify-panel__tag {
+  color: #8f8f8f; font-size: 0.68rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+body.lang-fa .spotify-panel__head { direction: rtl; }
+body.lang-fa .spotify-panel__count,
+body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
+
+/* ---- the list reads like a Spotify track list: an index that becomes a
+   play triangle under the cursor, and nothing else competing with it ---- */
+.spotify-panel__list {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 0 0.4rem 0.4rem;
+  direction: ltr;
+  counter-reset: spotify-track;
 }
 .spotify-panel__list a {
-  display: flex; align-items: center; gap: 0.55rem;
-  padding: 0.5rem 0.75rem; border-radius: 10px;
-  background: rgba(29,185,84,0.07);
-  border: 1px solid rgba(29,185,84,0.15);
-  color: #d7d7d7; font-family: var(--font-spotify); font-size: 0.82rem;
+  position: relative;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.5rem 0.7rem; border-radius: 6px;
+  padding-inline-start: 2.5rem;
+  background: transparent;
+  border: 0;
+  color: #b3b3b3; font-family: var(--font-spotify); font-size: 0.82rem;
   text-align: left; direction: ltr;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
+/* the index is generated, so adding or removing a playlist renumbers itself */
 .spotify-panel__list a::before {
-  content: "";
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #1DB954; flex-shrink: 0;
+  counter-increment: spotify-track;
+  content: counter(spotify-track, decimal-leading-zero);
+  position: absolute; inset-inline-start: 0.7rem;
+  width: 1.4rem; text-align: center;
+  font-size: 0.7rem; font-variant-numeric: tabular-nums;
+  color: #6f6f6f;
+  transition: opacity 0.15s ease;
 }
-.spotify-panel__list a:hover { background: rgba(29,185,84,0.18); color: #1DB954; border-color: rgba(29,185,84,0.4); }
+.spotify-panel__list a::after {
+  content: "";
+  position: absolute; inset-inline-start: 1.25rem;
+  width: 0; height: 0;
+  border-inline-start: 8px solid #1DB954;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  opacity: 0; transform: translateX(-3px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.spotify-panel__list a:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.spotify-panel__list a:hover::before { opacity: 0; }
+.spotify-panel__list a:hover::after { opacity: 1; transform: translateX(0); }
+.spotify-panel__list a:focus-visible { background: rgba(255,255,255,0.07); color: #fff; }
+
 .spotify-panel__note {
-  margin: 0.6rem 0.9rem 0.7rem;
-  padding: 0;
+  position: relative; z-index: 1;
+  margin: 0 0.9rem;
+  padding: 0.65rem 0 0.75rem;
   background: none;
-  border: none;
-  color: #9a9a9a;
-  font-size: 0.72rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  color: #7e7e7e;
+  font-size: 0.7rem;
   line-height: 1.5;
   text-align: center;
 }
