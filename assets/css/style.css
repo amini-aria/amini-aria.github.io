@@ -783,8 +783,8 @@ body.lang-fa .pub-card--authored { letter-spacing: 0; }
    FOOTER — centered, thin, unobtrusive
    ========================================================================= */
 /* The page settles into a last stratum rather than being cut off by a rule:
-   a soft wash toward the deeper cream, then a centred fossil mark with two
-   hairlines that dissolve outward from it. */
+   a soft wash toward the deeper cream, then the same skull mark the header
+   carries, flanked by two hairlines that dissolve outward from it. */
 .footer {
   position: relative; z-index: 1;
   padding: 3.5rem var(--edge) 2.25rem;
@@ -797,7 +797,7 @@ body.lang-fa .pub-card--authored { letter-spacing: 0; }
 }
 .footer__rule { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--hairline)); }
 .footer__ornament .footer__rule:last-child { background: linear-gradient(90deg, var(--hairline), transparent); }
-.footer__mark { flex: none; width: 36px; height: 24px; color: var(--umber); opacity: 0.55; }
+.footer__mark { flex: none; width: 54px; height: 54px; color: var(--umber); opacity: 0.55; }
 .footer__inner { max-width: var(--max-w); margin-inline: auto; display: flex; justify-content: center; text-align: center; }
 .rights {
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
