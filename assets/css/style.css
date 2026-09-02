@@ -358,7 +358,7 @@ html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
 
 /* --net is the brand colour; everything else reads from it */
 .hero__socials a[data-net="email"]        { --net: var(--clay); }
-.hero__socials a[data-net="civilica"]     { --net: var(--umber); }
+.hero__socials a[data-net="civilica"]     { --net: #255693; }   /* sampled from their own logo */
 .hero__socials a[data-net="linkedin"]     { --net: #0A66C2; }
 .hero__socials a[data-net="scholar"]      { --net: #4285F4; }
 .hero__socials a[data-net="researchgate"] { --net: #00B3A4; }
