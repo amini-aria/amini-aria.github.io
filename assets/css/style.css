@@ -275,12 +275,11 @@ body.lang-fa .lang-pill {
   filter: drop-shadow(0 2px 6px rgba(181, 98, 59, 0.4));
 }
 
-/* ---- portrait: a calm glowing halo behind a photo that periodically
-   crossfades into a minimal ammonite line-art mark. Halo and crossfade
-   share the hero's design intent but run their own timelines — the halo
-   is ambient (any phase looks fine), while photo-fade/ammonite-fade are
-   two ends of the SAME 9s cycle, so they can never drift out of sync
-   with each other the way independently-timed animations previously did. ---- */
+/* ---- portrait: a calm glowing halo behind a photo whose frame periodically
+   morphs into the site's skull mark. Halo and morph share the hero's design
+   intent but run their own timelines — the halo is ambient (any phase looks
+   fine), while the photo fade and the skull fade are two ends of the SAME
+   cycle, so they can never drift out of sync with each other. ---- */
 .hero__portrait-wrap {
   position: relative;
   z-index: 4;
@@ -313,16 +312,10 @@ body.lang-fa .lang-pill {
 }
 .hero__portrait-bg { fill: var(--surface); }
 .hero__portrait-photo-img { transition: opacity 0.4s ease; }
-.hero__ammonite-detail {
-  color: var(--umber);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.ammonite-whorl { fill: none; stroke: currentColor; stroke-width: 0.9; }
-.ammonite-whorl:nth-of-type(1) { stroke-width: 1.1; }
-.ammonite-whorl:nth-of-type(3) { stroke-width: 0.6; }
-.ammonite-rib { fill: none; stroke: currentColor; stroke-width: 0.45; stroke-linecap: round; opacity: 0.9; }
-.ammonite-division { fill: none; stroke: currentColor; stroke-width: 0.3; stroke-linecap: round; opacity: 0.7; }
+/* The mark's own negative space does the work: filled evenodd, its holes
+   let the cream window behind show through as eye socket, nostril and the
+   gaps between the teeth. */
+.hero__skull-fill { fill: var(--umber); opacity: 0; }
 .hero__portrait-frame {
   fill: none;
   stroke: var(--umber);
