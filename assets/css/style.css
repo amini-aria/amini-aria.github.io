@@ -600,20 +600,18 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   will-change: transform;
   z-index: 0;
 }
-/* A frosted pane sits between the drifting contour lines and the text, so the
-   copy reads cleanly without touching the band's structure, border or
-   background. The radial mask feathers its edges — the pattern stays visible
-   all the way in, it just loses contrast right where the words are. */
+/* The contour lines are softened rather than covered: this layer spans the
+   whole band and does almost nothing but blur what is behind it, with only a
+   trace of tint. The pattern still reads everywhere — it just stops competing
+   with the text for contrast. */
 .interests-band::after {
   content: "";
-  position: absolute; inset: 0.7rem;
+  position: absolute; inset: 0;
   z-index: 0;
-  border-radius: 8px;
-  background: rgba(251, 247, 238, 0.55);
-  -webkit-backdrop-filter: blur(5px) saturate(115%);
-  backdrop-filter: blur(5px) saturate(115%);
-  -webkit-mask-image: radial-gradient(125% 135% at 50% 50%, #000 52%, transparent 100%);
-  mask-image: radial-gradient(125% 135% at 50% 50%, #000 52%, transparent 100%);
+  border-radius: inherit;
+  background: rgba(251, 247, 238, 0.18);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   pointer-events: none;
 }
 .interests-band > * { position: relative; z-index: 1; }
