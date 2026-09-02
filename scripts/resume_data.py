@@ -12,12 +12,18 @@ page on the site, update the matching fields here too (and re-run
 build_resume_docs.py, or just push — the GitHub Action does it for you)
 so the downloadable files keep matching what's on the site.
 
-Only real, filled-in content lives here — sections that are still
-bracketed placeholders on the site (Research Experience) are
-intentionally left out of the downloadable files entirely, since an
-ATS-optimized resume should never show empty/placeholder sections.
-Publications is not on the site at all right now (ISI articles aren't
-printed yet), so it has no entry here either.
+Only real, filled-in content lives here: a section that is still a
+bracketed placeholder on the site is left out of the downloadable files
+entirely, since an ATS-optimized resume should never show an empty
+section. Publications is not on the site at all right now (ISI articles
+aren't printed yet), so it has no entry here either.
+
+Because this file is maintained by hand, scripts/check_resume_sync.py
+compares it against the two resume pages on every push and fails the
+build when they disagree — which section exists, in what order, and how
+many entries it holds. That check is what stopped "Research Experience"
+from staying out of the documents after it went from a placeholder to
+real content on the site.
 """
 
 RESUME_EN = {
@@ -76,6 +82,26 @@ RESUME_EN = {
             {"role": "Technical Manager, SARMAD High-Performance Computing (HPC) System", "period": "Feb 2025 \u2013 Aug 2026"},
         ]},
         {"org": "Gemology Science and Art Development Co. (Gemsa), Knowledge-Based Company", "role": "Research & Development (R&D) Manager", "period": "Sep 2024 \u2013 Apr 2025"},
+    ],
+    "research": [
+        {
+            "title": "Academic Internship",
+            "period": "May 2025 \u2013 Aug 2025",
+            "org": "National Iranian Oil Company",
+            "note": "Internship report: National Iranian South Oilfields Company, Geological Operations Department \u00b7 Grade A",
+        },
+        {
+            "title": "Researcher and Research Collaborator",
+            "period": "Feb 2025 \u2013 Sep 2026",
+            "org": "Shahid Beheshti University, Tehran",
+            "note": "Developing HPC infrastructure, supporting faculty with computational code, contributing to papers, and debugging scientific programs.",
+        },
+        {
+            "title": "Research & Development",
+            "period": "Sep 2024 \u2013 Apr 2025",
+            "org": "Gemology Science and Art Development Co. (Gemsa)",
+            "note": "Research on Raman spectroscopy using spectrophotometric methods.",
+        },
     ],
     "books": [
         {"citation": "Ghorbani, M., & Amini, M. A. (2025). The Historiography of Earth Science in Iran: Introducing a Number of Contemporary Pioneers.", "role": "Co-author", "isbn": "978-600-6058-43-6"},
@@ -318,6 +344,26 @@ RESUME_FA = {
             {"role": "\u0645\u062f\u06cc\u0631 \u0641\u0646\u06cc \u0633\u06cc\u0633\u062a\u0645 \u0627\u0628\u0631\u0631\u0627\u06cc\u0627\u0646\u0647 \u0633\u0631\u0645\u062f", "period": "\u0628\u0647\u0645\u0646 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0645\u0631\u062f\u0627\u062f \u06f1\u06f4\u06f0\u06f5"},
         ]},
         {"org": "\u0634\u0631\u06a9\u062a \u062a\u0648\u0633\u0639\u0647 \u062f\u0627\u0646\u0634 \u0648 \u0647\u0646\u0631 \u06af\u0648\u0647\u0631\u0634\u0646\u0627\u0633\u06cc (\u062c\u0650\u0645\u0633\u0627) - \u062f\u0627\u0646\u0634\u200c\u0628\u0646\u06cc\u0627\u0646", "role": "\u0645\u062f\u06cc\u0631 \u062a\u062d\u0642\u06cc\u0642 \u0648 \u062a\u0648\u0633\u0639\u0647 (R&D)", "period": "\u0634\u0647\u0631\u06cc\u0648\u0631 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f4"},
+    ],
+    "research": [
+        {
+            "title": "کارآموزی (به‌عنوان واحد درسی)",
+            "period": "اردیبهشت ۱۴۰۴ – مرداد ۱۴۰۴",
+            "org": "شرکت ملی نفت ایران",
+            "note": "عنوان گزارش: گزارش دوره کارآموزی شرکت ملی مناطق نفت‌خیز جنوب، اداره عملیات زمین‌شناسی · نمره: گرید A",
+        },
+        {
+            "title": "پژوهشگر و همکار پژوهشی",
+            "period": "بهمن ۱۴۰۳ – شهریور ۱۴۰۵",
+            "org": "دانشگاه شهید بهشتی، تهران",
+            "note": "توسعه زیرساخت‌های HPC، همکاری با اعضای هیئت علمی در اجرای کدها، مشارکت در نگارش مقالات و رفع اشکال کدهای محاسباتی.",
+        },
+        {
+            "title": "تحقیق و توسعه",
+            "period": "شهریور ۱۴۰۳ – فروردین ۱۴۰۴",
+            "org": "شرکت دانش‌بنیان توسعه دانش و هنر گوهرشناسی (جِمسا)",
+            "note": "پژوهش و تحقیقات بر روی طیف‌سنجی رامان (Raman Spectroscopy) با استفاده از روش اسپکتروفتومتری.",
+        },
     ],
     "books": [
         {"citation": "\u0642\u0631\u0628\u0627\u0646\u06cc\u060c \u0645. \u0648 \u0627\u0645\u06cc\u0646\u06cc\u060c \u0645. \u0622. (\u06f1\u06f4\u06f0\u06f4). \u062a\u0627\u0631\u06cc\u062e\u200c\u0646\u06af\u0627\u0631\u06cc \u062f\u0627\u0646\u0634 \u0639\u0644\u0648\u0645\u200c\u0632\u0645\u06cc\u0646 \u062f\u0631 \u0627\u06cc\u0631\u0627\u0646: \u0628\u0627 \u0645\u0639\u0631\u0641\u06cc \u0634\u0645\u0627\u0631\u06cc \u0627\u0632 \u067e\u06cc\u0634\u06af\u0627\u0645\u0627\u0646 \u0645\u0639\u0627\u0635\u0631.", "role": "\u0646\u0648\u06cc\u0633\u0646\u062f\u0647 \u0647\u0645\u06a9\u0627\u0631", "isbn": "978-600-6058-43-6"},

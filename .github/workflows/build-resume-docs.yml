@@ -6,6 +6,12 @@ name: Build resume documents
 # so the two files are always identical in content — editing
 # scripts/resume_data.py and pushing is all that's needed to update both.
 #
+# It also runs on a change to the resume pages themselves. The pages are
+# hand-edited HTML and resume_data.py is hand-maintained alongside them, so
+# check_resume_sync.py runs first and fails the build if the two disagree.
+# Without that trigger and that check, editing the page changed the site and
+# silently left the downloadable files behind.
+#
 # The .docx files are intentionally never linked from the site UI (only
 # the .pdf download buttons are), but they live at the same path with a
 # .docx extension, so they're reachable by anyone who edits the URL.
@@ -16,8 +22,11 @@ on:
     paths:
       - "scripts/resume_data.py"
       - "scripts/build_resume_docs.py"
+      - "scripts/check_resume_sync.py"
       - "scripts/embed_docx_fonts.py"
       - "scripts/jalali.py"
+      - "resume/index.html"
+      - "fa/resume/index.html"
       - "assets/fonts/**"
       - ".github/workflows/build-resume-docs.yml"
   workflow_dispatch: {}
@@ -34,6 +43,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Check the resume pages and resume_data.py still agree
+        run: python3 scripts/check_resume_sync.py
 
       - name: Install LibreOffice, python-docx, and the UNO scripting bridge
         run: |

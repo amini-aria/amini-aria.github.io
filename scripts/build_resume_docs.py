@@ -362,6 +362,18 @@ class ResumeBuilder:
             else:
                 self._entry_head_line(e["role"], e["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
 
+    def research(self):
+        title = "Research Experience" if not self.is_fa else "\u062a\u062c\u0631\u0628\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc"
+        self._section_title(title)
+        for r in self.data["research"]:
+            self._entry_head_line(r["title"], r["period"], left_weight="demibold")
+            p = self._para(space_after=0)
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            self._run(p, r["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            if r.get("note"):
+                p2 = self._para(space_after=2)
+                self._run(p2, r["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+
     def books(self):
         self._section_title("Books" if not self.is_fa else "\u06a9\u062a\u0627\u0628\u200c\u0647\u0627")
         default_isbn_label = "ISBN: " if not self.is_fa else "\u0634\u0627\u0628\u06a9: "
@@ -548,6 +560,7 @@ class ResumeBuilder:
         self.interests()
         self.education()
         self.experience()
+        self.research()
         self.books()
         self.conferences()
         self.patents()
