@@ -83,11 +83,21 @@
       .replace(/>/g, "&gt;");
   }
 
+  /* A coloured PS1, the same one in both panes — user in green, working
+     directory in cyan, the sigil dimmed. */
+  function prompt(path) {
+    return '<span class="lab-prompt__user">aria@lab</span>' +
+      '<span class="lab-prompt__sign">:</span>' +
+      '<span class="lab-prompt__path">' + path + "</span>" +
+      '<span class="lab-prompt__sign">$</span>';
+  }
+  var PROMPT_HTML = prompt("~/aria-tools");
+
   function renderFixedHeader() {
     var el = document.getElementById("lab-terminal-fixed");
     if (!el) return;
     el.innerHTML =
-      '<p class="lab-prompt-line"><span class="lab-prompt">root@aria:~#</span> whoami</p>' +
+      '<p class="lab-prompt-line">' + prompt("~") + " whoami</p>" +
       '<h2 class="lab-section__title">' +
       escapeHtml(ARIA_LAB_DATA.title) +
       '<span class="lab-title__cursor">|</span></h2>' +
@@ -133,14 +143,24 @@
   renderCards();
 
   /* =========================================================================
-     Simulated terminal log — a lightweight, bounded "tail -f" loop.
-     Real, technically-valid Linux commands and outputs relevant to running
-     these tools (git, npm, pip, docker, systemd, yt-dlp, spotdl...), with
-     occasional human touches: a typo that gets corrected, a command
-     aborted with Ctrl+C, a command re-run, small pauses before output.
-     A single setTimeout chain drives it (never more than one pending
-     timer), and the DOM node count is hard-capped, so it can run
-     indefinitely without leaking memory.
+     Simulated terminal session.
+
+     Everything below prints what the real tool prints: the command set is
+     what you would actually run to deploy one of these bots, and each
+     output block is that program's genuine format — apt's three "Done"
+     lines, git's counting/compressing/resolving phases, npm's audit
+     summary, Vite's build table, pip's ━ progress bar, yt-dlp's percentage
+     line, docker compose's ✔ list, the full systemctl status block.
+
+     Human touches are deliberate: a mistyped subcommand that actually
+     fails with apt's own error before being retyped, tab completion on a
+     half-typed directory, a dev server killed with Ctrl+C, downloads that
+     speed up and stall rather than filling at a constant rate, and pauses
+     of uneven length between commands.
+
+     A single setTimeout chain drives all of it (never more than one timer
+     pending) and the DOM node count is hard-capped, so it can run for as
+     long as the page is open without leaking.
      ========================================================================= */
   var logEl = document.getElementById("lab-terminal-log");
   if (!logEl) return;
@@ -149,178 +169,308 @@
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) {
     logEl.innerHTML =
-      '<div class="lab-log__line lab-log__line--cmd"><span class="lab-prompt">root@aria:~#</span> systemctl status aria-bot.service</div>' +
-      '<div class="lab-log__line">\u25cf aria-bot.service - Aria Tools Worker</div>' +
-      '<div class="lab-log__line">   Active: active (running)</div>';
+      '<div class="lab-log__line lab-log__line--cmd">' + PROMPT_HTML + " systemctl status aria-bot.service</div>" +
+      '<div class="lab-log__line"><span class="t-green">●</span> aria-bot.service - Aria Tools Worker</div>' +
+      '<div class="lab-log__line">     Active: <span class="t-green">active (running)</span> since Tue 09:14:22 UTC</div>';
     return;
   }
 
   var MAX_LOG_LINES = 40;
-  var PROMPT = "root@aria:~#";
   var timer = null;
 
-  function schedule(fn, ms) {
-    timer = setTimeout(fn, ms);
-  }
-
-  function jitter(base, spread) {
-    return base + Math.random() * spread;
-  }
+  function schedule(fn, ms) { timer = setTimeout(fn, ms); }
+  function jitter(base, spread) { return base + Math.random() * spread; }
+  function rep(ch, n) { return n > 0 ? new Array(n + 1).join(ch) : ""; }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function padStart(s, n) { s = String(s); while (s.length < n) { s = " " + s; } return s; }
 
   function trimLog() {
-    while (logEl.children.length > MAX_LOG_LINES) {
-      logEl.removeChild(logEl.firstChild);
+    while (logEl.children.length > MAX_LOG_LINES) { logEl.removeChild(logEl.firstChild); }
+  }
+
+  /* Output lines are written in a tiny markup — {colour|text} — so the step
+     table below stays readable while still emitting per-token colour. */
+  var TOKEN_RE = /\{([a-z]+)\|([^}]*)\}/g;
+  function writeMarkup(el, str) {
+    el.textContent = "";
+    var last = 0, m;
+    TOKEN_RE.lastIndex = 0;
+    while ((m = TOKEN_RE.exec(str)) !== null) {
+      if (m.index > last) el.appendChild(document.createTextNode(str.slice(last, m.index)));
+      var span = document.createElement("span");
+      span.className = "t-" + m[1];
+      span.textContent = m[2];
+      el.appendChild(span);
+      last = m.index + m[0].length;
     }
+    if (last < str.length) el.appendChild(document.createTextNode(str.slice(last)));
   }
 
-  function appendOutputLine(text) {
+  function newLine(cls) {
     var el = document.createElement("div");
-    el.className = "lab-log__line";
-    el.textContent = text;
-    logEl.appendChild(el);
-    trimLog();
-  }
-
-  /* a download that visibly progresses from 0% to 100% on its own line,
-     the way a real terminal sits and waits on a download — updates one
-     element in place rather than spamming a new line per tick */
-  function runDownloadProgress(templateFn, done) {
-    var el = document.createElement("div");
-    el.className = "lab-log__line";
-    logEl.appendChild(el);
-    trimLog();
-    var pct = 0;
-    function tick() {
-      pct += jitter(7, 15);
-      if (pct >= 100) pct = 100;
-      el.textContent = templateFn(pct);
-      if (pct < 100) {
-        schedule(tick, jitter(150, 180));
-      } else {
-        schedule(done, jitter(300, 250));
-      }
-    }
-    tick();
-  }
-
-  function pad2(n) {
-    return (n < 10 ? "0" : "") + n;
-  }
-
-  function appendPlainCmdLine(text) {
-    var el = document.createElement("div");
-    el.className = "lab-log__line lab-log__line--cmd";
-    el.innerHTML = '<span class="lab-prompt">' + PROMPT + "</span> " + escapeHtml(text);
+    el.className = "lab-log__line" + (cls ? " " + cls : "");
     logEl.appendChild(el);
     trimLog();
     return el;
   }
 
+  function appendOutputLine(str) {
+    var el = newLine();
+    /* a blank line in real output still occupies a row */
+    if (str === "") { el.textContent = " "; return; }
+    writeMarkup(el, str);
+  }
+
+  function appendPlainCmdLine(text) {
+    var el = newLine("lab-log__line--cmd");
+    el.innerHTML = PROMPT_HTML + " ";
+    el.appendChild(document.createTextNode(text));
+  }
+
+  /* ---- downloads that actually fill ----------------------------------- */
+  var PROGRESS = {
+    /* git's receive phase: fast, with the odd hitch */
+    gitRecv: {
+      step: [6, 13], tick: [55, 85], stall: 0.10,
+      line: function (p) {
+        return "Receiving objects: " + Math.floor(p) + "% (" +
+          Math.round(214 * p / 100) + "/214), " +
+          (1.42 * p / 100).toFixed(2) + " MiB | 3.10 MiB/s";
+      },
+      done: "Receiving objects: 100% (214/214), 1.42 MiB | 3.10 MiB/s, done."
+    },
+    /* pip's rich bar, ━ filled in magenta the way pip renders it */
+    pipWheel: {
+      step: [4, 10], tick: [70, 110], stall: 0.16,
+      line: function (p, speed) {
+        var w = 32, f = Math.round(w * p / 100);
+        var eta = p >= 100 ? "0:00:00" : "0:00:" + pad2(Math.max(1, Math.ceil((100 - p) / 26)));
+        return "   {bar|" + rep("━", f) + "}{barbg|" + rep("━", w - f) + "} " +
+          (3.2 * p / 100).toFixed(1) + "/3.2 MB " + speed.toFixed(1) + " MB/s eta " + eta;
+      },
+      speed: [6.8, 3.2]
+    },
+    /* yt-dlp's single status line, in its exact column layout */
+    ytdlp: {
+      step: [3, 9], tick: [75, 120], stall: 0.18,
+      line: function (p, speed) {
+        var eta = Math.max(0, Math.ceil((100 - p) / 100 * 4));
+        return "[download] " + padStart(p.toFixed(1), 5) + "% of " +
+          padStart("24.31MiB", 10) + " at " + padStart(speed.toFixed(2) + "MiB/s", 12) +
+          " ETA 00:" + pad2(eta);
+      },
+      speed: [6.4, 2.6]
+    },
+    /* spotdl runs on rich too, so it gets the same bar with a track count */
+    spotdl: {
+      step: [4, 9], tick: [90, 140], stall: 0.12,
+      line: function (p) {
+        var w = 24, f = Math.round(w * p / 100);
+        var n = Math.round(24 * p / 100);
+        return "Downloading {bar|" + rep("━", f) + "}{barbg|" + rep("━", w - f) + "} " +
+          padStart(n, 2) + "/24 0:00:" + pad2(Math.max(0, Math.ceil((100 - p) / 100 * 22)));
+      }
+    }
+  };
+
+  function runProgress(name, done) {
+    var spec = PROGRESS[name];
+    var el = newLine();
+    var pct = 0;
+    var speed = spec.speed ? spec.speed[0] : 0;
+
+    function paint() {
+      writeMarkup(el, spec.line(pct, speed));
+    }
+
+    function tick() {
+      /* real transfers pause; a constant fill rate is the tell that it is fake */
+      if (pct > 8 && pct < 92 && Math.random() < spec.stall) {
+        schedule(tick, jitter(260, 420));
+        return;
+      }
+      pct = Math.min(100, pct + jitter(spec.step[0], spec.step[1]));
+      if (spec.speed) speed = Math.max(0.4, spec.speed[0] + (Math.random() - 0.5) * spec.speed[1]);
+      paint();
+      if (pct < 100) {
+        schedule(tick, jitter(spec.tick[0], spec.tick[1]));
+      } else {
+        if (spec.done) writeMarkup(el, spec.done);
+        schedule(done, jitter(280, 240));
+      }
+    }
+
+    paint();
+    schedule(tick, jitter(120, 160));
+  }
+
+  /* ---- the session ----------------------------------------------------- */
   var STEPS = [
     {
       cmd: "apt update",
-      output: [
-        "Hit:1 http://deb.debian.org/debian bookworm InRelease",
-        "Reading package lists... Done",
-        "Building dependency tree... Done",
+      out: [
+        "{dim|Hit:1} http://deb.debian.org/debian bookworm InRelease",
+        "{dim|Get:2} http://security.debian.org/debian-security bookworm-security InRelease {dim|[48.0 kB]}",
+        "Fetched 48.0 kB in 1s (43.7 kB/s)",
+        "Reading package lists... {green|Done}",
+        "Building dependency tree... {green|Done}",
+        "Reading state information... {green|Done}",
         "All packages are up to date."
       ]
     },
     {
-      typo: "insall",
+      /* the mistake gets made properly: typed, run, and rejected by apt */
+      cmd: "apt insall ffmpeg -y",
+      norepeat: true,
+      out: ["{red|E: Invalid operation insall}"]
+    },
+    {
       cmd: "apt install ffmpeg -y",
-      output: [
-        "Reading package lists... Done",
+      out: [
+        "Reading package lists... {green|Done}",
+        "Building dependency tree... {green|Done}",
+        "Reading state information... {green|Done}",
         "ffmpeg is already the newest version (7:5.1.6-0+deb12u1).",
-        "0 upgraded, 0 newly installed, 0 to remove."
+        "0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded."
       ]
     },
     {
       cmd: "git clone https://github.com/aria-labs/yt-downloader-bot.git",
-      output: [
-        "Cloning into 'yt-downloader-bot'...",
-        "remote: Enumerating objects: 214, done.",
-        "Receiving objects: 100% (214/214), 1.42 MiB | 3.10 MiB/s, done."
+      out: [
+        "Cloning into '{cyan|yt-downloader-bot}'...",
+        "{dim|remote:} Enumerating objects: 214, done.",
+        "{dim|remote:} Counting objects: 100% (214/214), done.",
+        "{dim|remote:} Compressing objects: 100% (142/142), done.",
+        "{dim|remote:} Total 214 (delta 71), reused 198 (delta 55), pack-reused 0",
+        { progress: "gitRecv" },
+        "Resolving deltas: 100% (71/71), done."
       ]
     },
     {
-      cmd: "cd yt-downloader-bot && npm install",
-      output: ["added 182 packages in 6s"]
+      /* half typed, then completed with Tab the way anyone actually does it */
+      cmd: "cd yt-downloader-bot",
+      tab: 9,
+      out: []
+    },
+    {
+      cmd: "npm ci",
+      out: [
+        "",
+        "added 182 packages, and audited 183 packages in 6s",
+        "",
+        "41 packages are looking for funding",
+        "  run `npm fund` for details",
+        "",
+        "found {green|0 vulnerabilities}"
+      ]
     },
     {
       cmd: "npm run dev",
-      output: ["  VITE ready in 320 ms", "  \u2794  Local: http://localhost:5173/"],
-      ctrlC: true
-    },
-    {
-      cmd: "npm run build",
-      output: ["> yt-downloader-bot@1.0.0 build", "> tsc -p .", "Build completed successfully."]
-    },
-    {
-      cmd: "pip install yt-dlp spotdl",
-      output: ["Successfully installed yt-dlp-2024.08.06 spotdl-4.2.5"]
-    },
-    {
-      cmd: "yt-dlp -f best -o '%(title)s.%(ext)s' <url>",
-      output: [
-        "[youtube] Extracting URL",
-        "[download] Destination: sample_video.mp4",
-        { progress: "ytdlp" }
+      ctrlC: true,
+      out: [
+        "{dim|> yt-downloader-bot@1.0.0 dev}",
+        "{dim|> vite}",
+        "",
+        "  {green|VITE v5.4.2}  ready in 320 ms",
+        "",
+        "  {green|➜}  {bold|Local}:   {cyan|http://localhost:5173/}",
+        "  {green|➜}  {bold|Network}: use {dim|--host} to expose"
       ]
     },
     {
-      cmd: "spotdl download <playlist-url>",
-      output: [
-        "Processing query: Playlist",
-        "Found 24 songs in playlist",
+      cmd: "npm run build",
+      out: [
+        "{dim|> yt-downloader-bot@1.0.0 build}",
+        "{dim|> tsc -p tsconfig.json && vite build}",
+        "",
+        "{dim|vite v5.4.2 building for production...}",
+        "{green|✓} 148 modules transformed.",
+        "dist/index.html                  {dim|0.46 kB │ gzip:  0.30 kB}",
+        "dist/assets/index-B7xQ1a2c.js  {dim|142.83 kB │ gzip: 46.12 kB}",
+        "{green|✓ built in 2.14s}"
+      ]
+    },
+    {
+      cmd: "pip install -U yt-dlp spotdl",
+      out: [
+        "Collecting yt-dlp",
+        "  Downloading yt_dlp-2024.8.6-py3-none-any.whl.metadata {dim|(170 kB)}",
+        "Collecting spotdl",
+        "  Downloading spotdl-4.2.5-py3-none-any.whl.metadata {dim|(11 kB)}",
+        "Downloading yt_dlp-2024.8.6-py3-none-any.whl {dim|(3.2 MB)}",
+        { progress: "pipWheel" },
+        "Installing collected packages: yt-dlp, spotdl",
+        "{green|Successfully installed} spotdl-4.2.5 yt-dlp-2024.8.6"
+      ]
+    },
+    {
+      cmd: "yt-dlp -f 'bv*+ba/b' -o '%(title)s.%(ext)s' https://youtu.be/aqz-KE-bpKQ",
+      out: [
+        "{yellow|[youtube]} Extracting URL: https://youtu.be/aqz-KE-bpKQ",
+        "{yellow|[youtube]} aqz-KE-bpKQ: Downloading webpage",
+        "{yellow|[youtube]} aqz-KE-bpKQ: Downloading ios player API JSON",
+        "{cyan|[info]} aqz-KE-bpKQ: Downloading 1 format(s): 137+251",
+        "{cyan|[download]} Destination: Big Buck Bunny.f137.mp4",
+        { progress: "ytdlp" },
+        "{cyan|[download]} 100% of   24.31MiB in 00:00:03 at 7.42MiB/s",
+        "{magenta|[Merger]} Merging formats into \"Big Buck Bunny.mp4\""
+      ]
+    },
+    {
+      cmd: "spotdl download https://open.spotify.com/playlist/37i9dQZF1DX",
+      out: [
+        "Processing query: https://open.spotify.com/playlist/37i9dQZF1DX",
+        "Found 24 songs in 1 album",
         { progress: "spotdl" },
-        'Downloaded "Track 01": 100%'
+        "{green|Downloaded} \"Pink Floyd - Time\": ~/Music/Pink Floyd - Time.mp3"
       ]
     },
     {
       cmd: "docker compose up -d",
-      output: ["Network aria_default  Created", "Container aria-api  Started"]
+      out: [
+        "[+] Running 3/3",
+        " {green|✔} Network aria_default   {dim|Created}                     {dim|0.1s}",
+        " {green|✔} Container aria-redis   {dim|Started}                     {dim|0.4s}",
+        " {green|✔} Container aria-api     {dim|Started}                     {dim|0.7s}"
+      ]
     },
     {
       cmd: "systemctl status aria-bot.service",
-      output: ["\u25cf aria-bot.service - Aria Tools Worker", "   Active: active (running)"]
+      out: [
+        "{green|●} aria-bot.service - Aria Tools Worker",
+        "     Loaded: loaded ({cyan|/etc/systemd/system/aria-bot.service}; enabled; preset: enabled)",
+        "     Active: {green|active (running)} since Tue 2026-09-02 09:14:22 UTC; 2h 11min ago",
+        "   Main PID: 1842 (node)",
+        "      Tasks: 11 (limit: 4915)",
+        "     Memory: 84.2M",
+        "     CGroup: /system.slice/aria-bot.service",
+        "             └─1842 /usr/bin/node /srv/aria-bot/dist/index.js"
+      ]
     },
     {
-      cmd: "journalctl -u aria-bot.service -n 3",
-      output: ["aria systemd[1]: Started Aria Tools Worker.", "aria bot[1842]: job completed in 3.2s"]
-    },
-    {
-      cmd: "tree -L 2",
-      output: [".", "\u251c\u2500\u2500 src", "\u251c\u2500\u2500 package.json", "\u2514\u2500\u2500 README.md"]
+      cmd: "journalctl -u aria-bot.service -n 3 --no-pager",
+      out: [
+        "{dim|Sep 02 11:22:04} aria systemd[1]: Started Aria Tools Worker.",
+        "{dim|Sep 02 11:24:41} aria aria-bot[1842]: queue: 3 jobs pending",
+        "{dim|Sep 02 11:25:31} aria aria-bot[1842]: job 4f21c8 completed in 3.2s"
+      ]
     }
   ];
 
   var stepIndex = 0;
 
-  /* types `text` into `span` one character at a time, at an irregular,
-     human pace: a slower base speed, natural per-character jitter, and
-     occasional short hesitation pauses (like someone reading ahead while
-     they type, not a machine printing at a constant rate) */
+  /* Types one character at a time at an irregular pace, with the occasional
+     hesitation — a constant interval reads as a machine printing, not a
+     person typing. */
   function typeInto(span, text, done) {
     var i = 0;
     function tick() {
       if (i >= text.length) { done(); return; }
       span.textContent += text.charAt(i);
       i++;
-      var delay = jitter(65, 95);
+      var delay = jitter(58, 88);
       if (Math.random() < 0.09) delay += jitter(180, 260);
       schedule(tick, delay);
-    }
-    tick();
-  }
-
-  function backspaceFrom(span, count, done) {
-    var removed = 0;
-    function tick() {
-      if (removed >= count) { done(); return; }
-      span.textContent = span.textContent.slice(0, -1);
-      removed++;
-      schedule(tick, jitter(55, 45));
     }
     tick();
   }
@@ -328,43 +478,36 @@
   function runStep() {
     var step = STEPS[stepIndex];
 
-    var lineEl = document.createElement("div");
-    lineEl.className = "lab-log__line lab-log__line--cmd";
+    var lineEl = newLine("lab-log__line--cmd");
     var promptSpan = document.createElement("span");
-    promptSpan.className = "lab-prompt";
     var typedSpan = document.createElement("span");
     var cursorSpan = document.createElement("span");
     cursorSpan.className = "lab-log__cursor";
     lineEl.appendChild(promptSpan);
-    lineEl.appendChild(document.createTextNode(" "));
     lineEl.appendChild(typedSpan);
     lineEl.appendChild(cursorSpan);
-    logEl.appendChild(lineEl);
-    trimLog();
 
-    // the line lands empty first (just its fade-in), then the prompt
-    // itself prints after a short human beat, then another short pause
-    // before typing starts — so a new command never just pops fully
-    // formed out of nowhere
+    /* the line lands empty, then the prompt prints, then typing starts —
+       so a command never pops into existence fully formed */
     schedule(function () {
-      promptSpan.textContent = PROMPT;
-      schedule(beginTyping, jitter(260, 260));
-    }, jitter(320, 280));
+      promptSpan.innerHTML = PROMPT_HTML + " ";
+      schedule(beginTyping, jitter(240, 240));
+    }, jitter(300, 260));
 
     function beginTyping() {
-      if (step.typo) {
-        var prefix = step.cmd.split(" ")[0] + " ";
-        typeInto(typedSpan, prefix + step.typo, function () {
+      if (step.tab) {
+        typeInto(typedSpan, step.cmd.slice(0, step.tab), function () {
           schedule(function () {
-            backspaceFrom(typedSpan, step.typo.length, function () {
-              var rest = step.cmd.slice(prefix.length);
-              typeInto(typedSpan, rest, finishTyping);
-            });
-          }, jitter(350, 300));
+            typedSpan.textContent = step.cmd + "/";
+            schedule(function () {
+              typedSpan.textContent = step.cmd;
+              finishTyping();
+            }, jitter(260, 200));
+          }, jitter(420, 320));
         });
-      } else {
-        typeInto(typedSpan, step.cmd, finishTyping);
+        return;
       }
+      typeInto(typedSpan, step.cmd, finishTyping);
     }
 
     function finishTyping() {
@@ -376,13 +519,13 @@
             schedule(function () {
               appendOutputLine("^C");
               schedule(nextStep, jitter(450, 350));
-            }, jitter(550, 450));
+            }, jitter(900, 700));
           });
         }, jitter(200, 200));
         return;
       }
 
-      schedule(function () { printOutput(0, nextStepDelayed); }, jitter(220, 260));
+      schedule(function () { printOutput(0, nextStepDelayed); }, jitter(220, 280));
     }
 
     function nextStepDelayed() {
@@ -391,30 +534,17 @@
     }
 
     function printOutput(i, done) {
-      if (!step.output || i >= step.output.length) { done(); return; }
-      var item = step.output[i];
+      if (!step.out || i >= step.out.length) { done(); return; }
+      var item = step.out[i];
       if (item && typeof item === "object" && item.progress) {
-        var tpl =
-          item.progress === "ytdlp"
-            ? function (pct) {
-                var eta = Math.max(0, Math.round(((100 - pct) / 100) * 3));
-                return (
-                  "[download] " +
-                  pct.toFixed(1) +
-                  "% of 24.31MiB at 6.8MiB/s ETA 00:" +
-                  pad2(eta)
-                );
-              }
-            : function (pct) {
-                return 'Downloading "Track 01": ' + Math.round(pct) + "%";
-              };
-        runDownloadProgress(tpl, function () {
-          schedule(function () { printOutput(i + 1, done); }, jitter(150, 200));
+        runProgress(item.progress, function () {
+          schedule(function () { printOutput(i + 1, done); }, jitter(140, 200));
         });
         return;
       }
       appendOutputLine(item);
-      schedule(function () { printOutput(i + 1, done); }, jitter(140, 220));
+      /* blank spacer lines land instantly; real output arrives in bursts */
+      schedule(function () { printOutput(i + 1, done); }, item === "" ? 40 : jitter(120, 210));
     }
   }
 
@@ -429,18 +559,12 @@
 
   function nextStep() {
     stepIndex++;
-    if (stepIndex >= STEPS.length) {
-      clearAndLoop();
-      return;
-    }
-    // small chance of immediately re-running the same command again, the
-    // way people sometimes double-check a result
-    if (Math.random() < 0.1) {
+    if (stepIndex >= STEPS.length) { clearAndLoop(); return; }
+    /* people re-run a command now and then to double-check the result */
+    var prev = STEPS[stepIndex - 1];
+    if (prev && !prev.norepeat && !prev.tab && Math.random() < 0.1) {
       var repeatIdx = stepIndex - 1;
-      schedule(function () {
-        stepIndex = repeatIdx;
-        runStep();
-      }, jitter(300, 300));
+      schedule(function () { stepIndex = repeatIdx; runStep(); }, jitter(300, 300));
       return;
     }
     schedule(runStep, jitter(350, 350));
