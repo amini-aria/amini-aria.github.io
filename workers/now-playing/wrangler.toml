@@ -1,8 +1,0 @@
-name = "aria-now-playing"
-main = "index.js"
-compatibility_date = "2026-09-01"
-
-# Secrets are never listed here. Set them once, after the first deploy:
-#   npx wrangler secret put SPOTIFY_CLIENT_ID
-#   npx wrangler secret put SPOTIFY_CLIENT_SECRET
-#   npx wrangler secret put SPOTIFY_REFRESH_TOKEN
