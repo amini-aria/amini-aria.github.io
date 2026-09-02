@@ -600,18 +600,18 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   will-change: transform;
   z-index: 0;
 }
-/* The contour lines are softened rather than covered: this layer spans the
-   whole band and does almost nothing but blur what is behind it, with only a
-   trace of tint. The pattern still reads everywhere — it just stops competing
-   with the text for contrast. */
+/* The contour lines stay legible and simply go soft: this layer spans the
+   whole band and does nothing but take the edge off what is behind it. The
+   tint is barely there — enough to lift the text off the pattern, not enough
+   to wash the pattern out. */
 .interests-band::after {
   content: "";
   position: absolute; inset: 0;
   z-index: 0;
   border-radius: inherit;
-  background: rgba(251, 247, 238, 0.18);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+  background: rgba(251, 247, 238, 0.07);
+  -webkit-backdrop-filter: blur(1.6px);
+  backdrop-filter: blur(1.6px);
   pointer-events: none;
 }
 .interests-band > * { position: relative; z-index: 1; }
@@ -782,15 +782,29 @@ body.lang-fa .pub-card--authored { letter-spacing: 0; }
 /* =========================================================================
    FOOTER — centered, thin, unobtrusive
    ========================================================================= */
-.footer { border-top: 1px solid var(--hairline); padding: 2rem var(--edge); position: relative; z-index: 1; }
+/* The page settles into a last stratum rather than being cut off by a rule:
+   a soft wash toward the deeper cream, then a centred fossil mark with two
+   hairlines that dissolve outward from it. */
+.footer {
+  position: relative; z-index: 1;
+  padding: 3.5rem var(--edge) 2.25rem;
+  background: linear-gradient(180deg, transparent, rgba(235, 223, 197, 0.5));
+}
+.footer__ornament {
+  max-width: var(--max-w); margin-inline: auto;
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.footer__rule { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--hairline)); }
+.footer__ornament .footer__rule:last-child { background: linear-gradient(90deg, var(--hairline), transparent); }
+.footer__mark { flex: none; width: 36px; height: 24px; color: var(--umber); opacity: 0.55; }
 .footer__inner { max-width: var(--max-w); margin-inline: auto; display: flex; justify-content: center; text-align: center; }
 .rights {
-  font-weight: 300;
-  font-size: 0.7rem;
-  letter-spacing: 0.02em;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
   color: var(--ink-faint);
-  opacity: 0.7;
-  font-family: var(--font-body-en);
   direction: ltr;
   unicode-bidi: isolate;
 }
