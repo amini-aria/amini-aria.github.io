@@ -151,6 +151,11 @@ html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
 /* =========================================================================
    TOP BAR — modern glass, no hard seam
    ========================================================================= */
+/* The bar itself is now an invisible positioning frame: it still spans the
+   window so the name can be centred against the window rather than against
+   whatever the page happens to be, but it paints nothing and swallows no
+   clicks. The only visible chrome is the capsule, which is short, centred,
+   and speaks the same language as the dock at the bottom of the screen. */
 .topbar {
   position: fixed;
   inset-inline: 0;
@@ -158,91 +163,142 @@ html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
   z-index: 100;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1.1rem var(--edge);
-  background: rgba(241, 231, 213, 0.55);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow: 0 1px 0 rgba(58, 46, 34, 0);
-  transition: box-shadow 0.25s ease, background 0.25s ease;
+  justify-content: center;
+  padding: 0.7rem var(--edge);
+  pointer-events: none;
 }
-.topbar.is-solid {
-  background: rgba(241, 231, 213, 0.82);
-  box-shadow: 0 12px 30px -20px rgba(58, 46, 34, 0.45);
+.brand {
+  pointer-events: auto;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.42rem 1rem 0.42rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(251, 247, 238, 0.66);
+  border: 1px solid rgba(222, 203, 169, 0.5);
+  backdrop-filter: blur(15px) saturate(170%);
+  -webkit-backdrop-filter: blur(15px) saturate(170%);
+  box-shadow: 0 10px 26px -18px rgba(58, 46, 34, 0.5);
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 0.86rem; letter-spacing: 0.015em;
+  color: var(--ink);
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-
-.brand { display: flex; align-items: center; gap: 0.55rem; font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--ink); }
+.topbar.is-solid .brand {
+  background: rgba(251, 247, 238, 0.9);
+  border-color: var(--hairline);
+  box-shadow: 0 14px 32px -18px rgba(58, 46, 34, 0.6);
+}
+.brand:hover { border-color: color-mix(in srgb, var(--umber) 30%, var(--hairline)); }
 .brand__mark { color: var(--umber); display: inline-flex; view-transition-name: brand-mark; }
+.brand__mark svg { display: block; width: 19px; height: 19px; }
+body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
 
-.topnav { display: flex; align-items: center; gap: 1.75rem; }
-.topnav__links { display: flex; gap: 1.6rem; }
-.topnav__links a { font-size: 0.9rem; color: var(--ink-dim); transition: color 0.2s ease; }
-.topnav__links a:hover, .topnav__links a.is-active { color: var(--umber); }
-
-/* Language switch — a segmented control, not two links and a slash.
-   Both labels stay "EN" and "FA" in Latin in BOTH languages: this control is
-   read by someone who does not yet read the language they are looking at, and
-   writing the Persian side in Persian script hid it from exactly the person
-   who needed to find it. Internal order is forced LTR for the same reason —
-   the control should look identical on every page of the site. */
-.lang-pill {
+/* =========================================================================
+   DOCK — the site menu lives at the bottom of the viewport on a solid black
+   bar, fixed. It replaces the header link row AND the burger drawer: one
+   control, the same at every width, always reachable without scrolling back
+   to the top. The header keeps only the name and the language switch.
+   ========================================================================= */
+/* sticky, not fixed. In flow the dock's own row sits immediately above the
+   footer, so as the page bottom arrives the bar simply settles into that row
+   and stops — it can never reach the copyright line, and because the row is
+   real layout it also cannot cover the content above it. No JS, no scroll
+   listener, and it is correct on every page regardless of length. */
+.dock {
+  position: sticky; z-index: 90;
+  bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
+  margin: 3.25rem auto 1.5rem;
+  width: max-content; max-width: calc(100% - 1.5rem);
+  display: flex; align-items: stretch; gap: 2px;
+  padding: 5px;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 26px;
+  box-shadow: 0 20px 44px -18px rgba(0, 0, 0, 0.6), 0 3px 10px -4px rgba(0, 0, 0, 0.45);
+}
+.dock__item {
   position: relative; isolation: isolate;
-  display: inline-flex; align-items: stretch;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px;
+  min-width: 4.5rem;
+  padding: 0.6rem 0.85rem 0.55rem;
+  border-radius: 21px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+/* The active pill is a pseudo-element rather than a background on the link so
+   that only the pill carries view-transition-name: the label and icon are left
+   out of the shared-element capture, so navigating slides the pill along the
+   dock instead of dragging two words across it. */
+.dock__item::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  transition: background-color 0.25s ease;
+}
+.dock__item.is-active::before {
+  background: var(--cream);
+  view-transition-name: dock-pill;
+}
+.dock__icon { width: 19px; height: 19px; flex: none; }
+.dock__label {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.66rem;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.dock__item:hover { color: rgba(255, 255, 255, 0.88); }
+.dock__item:hover::before { background: rgba(255, 255, 255, 0.07); }
+.dock__item.is-active,
+.dock__item.is-active:hover { color: #0E0C0A; }
+.dock__item.is-active:hover::before { background: var(--cream); }
+.dock__item.is-active .dock__label { font-weight: 400; }
+.dock__item:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+
+/* Language lives in the dock now, stacked rather than side by side: two rows
+   of 17px take a third of the width the header pill needed, so it costs the
+   bar almost nothing. Row height is set explicitly because the thumb is
+   animated with translateY, and a percentage height against an auto-height
+   parent is not something that can be relied on. */
+.dock__sep {
+  flex: none; align-self: center;
+  width: 1px; height: 26px; margin-inline: 0.4rem 0.15rem;
+  background: rgba(255, 255, 255, 0.14);
+}
+.dock-lang {
+  position: relative; isolation: isolate;
+  flex: none; align-self: center;
+  display: flex; flex-direction: column; gap: 1px;
   direction: ltr;
   padding: 3px;
-  border: 1px solid var(--hairline); border-radius: 999px;
-  background: var(--surface);
-  box-shadow: inset 0 1px 2px rgba(58, 46, 34, 0.06);
-  font-size: 0.72rem; line-height: 1;
-  transition: border-color 0.3s ease;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.06);
 }
-/* The travelling thumb. Its resting side comes from data-lang on the
-   container, so it is already correct in the first painted frame — no JS, no
-   :has(), nothing to flash. view-transition-name hands it to the
-   cross-document transition enabled at the top of this file, so switching
-   language slides the thumb across rather than cross-fading the header. */
-.lang-pill::before {
+.dock-lang::before {
   content: "";
   position: absolute; z-index: -1;
-  top: 3px; bottom: 3px; left: 3px;
-  width: calc(50% - 3px);
-  border-radius: 999px;
-  background: var(--umber);
-  box-shadow: 0 2px 6px -3px rgba(58, 46, 34, 0.65);
+  left: 3px; right: 3px; top: 3px; height: 17px;
+  border-radius: 12px;
+  background: var(--cream);
   transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
   view-transition-name: lang-thumb;
 }
-.lang-pill[data-lang="fa"]::before { transform: translateX(100%); }
-.lang-pill a {
-  flex: 1; min-width: 2.35rem;
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.34rem 0.15rem;
-  border-radius: 999px;
-  /* pinned rather than var(--font-mono): that token resolves to Vazirmatn
-     under body.lang-fa, which would set these two Latin labels in a Persian
-     face and make the control look different in each language */
+.dock-lang[data-lang="fa"]::before { transform: translateY(18px); }
+.dock-lang a {
+  display: flex; align-items: center; justify-content: center;
+  height: 17px; min-width: 2.05rem;
+  border-radius: 12px;
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-weight: 500; letter-spacing: 0.06em;
-  color: var(--ink-faint);
+  font-size: 0.55rem; font-weight: 500; letter-spacing: 0.09em; line-height: 1;
+  color: rgba(255, 255, 255, 0.52);
   transition: color 0.3s ease;
 }
-.lang-pill a:hover { color: var(--ink-dim); }
-.lang-pill a.is-active,
-.lang-pill a.is-active:hover { color: var(--cream); font-weight: 600; }
-.lang-pill a:focus-visible { outline: 2px solid var(--umber); outline-offset: 3px; }
-.lang-pill:hover { border-color: color-mix(in srgb, var(--umber) 35%, var(--hairline)); }
-
-.burger {
-  display: none;
-  flex-direction: column; justify-content: center; gap: 5px;
-  width: 34px; height: 34px; background: none; border: none; cursor: pointer;
-}
-.burger span { width: 100%; height: 2px; background: var(--ink); border-radius: 2px; }
-
-/* Close (X) button lives only inside the mobile dropdown panel — must stay
-   hidden at all other sizes, or it renders as an unstyled, unexplained
-   rectangular button in the header (a real bug in the previous version). */
-.nav-close { display: none; }
+.dock-lang a:hover { color: rgba(255, 255, 255, 0.9); }
+.dock-lang a.is-active,
+.dock-lang a.is-active:hover { color: #0E0C0A; }
+.dock-lang a:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
 
 /* =========================================================================
    HERO — glass card over an animated, fossil-flecked background
@@ -924,40 +980,17 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
    RESPONSIVE
    ========================================================================= */
 @media (max-width: 720px) {
-  .nav-backdrop {
-    position: fixed; inset: 0; z-index: 90;
-    background: rgba(58, 46, 34, 0.25);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
+  .dock {
+    width: auto; max-width: none;
+    margin-inline: 0.75rem;
+    border-radius: 24px;
   }
-  .nav-backdrop.is-open { opacity: 1; pointer-events: auto; }
-
-  /* the header appears to stretch downward and reveal its links, rather
-     than a side drawer sliding in over the page */
-  .topnav__links {
-    position: absolute; top: 100%; inset-inline: 0; z-index: 99;
-    display: flex; flex-direction: column; align-items: stretch; gap: 0;
-    background: rgba(241, 231, 213, 0.97);
-    backdrop-filter: blur(18px) saturate(160%);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    border-top: 1px solid var(--hairline);
-    box-shadow: 0 24px 44px -22px rgba(58,46,34,0.4);
-    max-height: 0;
-    overflow: hidden;
-    padding-inline: var(--edge);
-    transition: max-height 0.4s cubic-bezier(.2,.8,.2,1);
-  }
-  .topnav__links.is-open { max-height: 70vh; overflow-y: auto; }
-  .topnav__links a {
-    padding: 1rem 0; width: 100%; border-bottom: 1px solid var(--hairline);
-    font-family: var(--font-display); font-size: 1.05rem; color: var(--ink);
-  }
-  .nav-close { display: none !important; }
-  .burger { display: flex; }
-  .burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .burger.is-open span:nth-child(2) { opacity: 0; }
-  .burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .burger span { transition: transform 0.25s ease, opacity 0.2s ease; }
+  .dock__item { flex: 1; min-width: 0; padding-inline: 0.2rem; }
+  .dock__label { font-size: 0.58rem; }
+  .dock__icon { width: 18px; height: 18px; }
+  .dock__sep { margin-inline: 0.2rem 0.1rem; }
+  .dock-lang a { min-width: 1.85rem; font-size: 0.52rem; }
+  .brand { font-size: 0.8rem; padding-inline: 0.85rem 0.62rem; }
   .skills-groups { grid-template-columns: 1fr; }
   .hero { padding-top: 6rem; }
   .resume-surface { padding: 0.5rem 1rem; }
@@ -992,6 +1025,7 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   }
   .resume__block { border-top-color: #4682B4; }
 }
+@media print { .dock, .topbar { display: none; } }
 @page { size: A4; margin: 14mm 16mm; }
 
 /* =========================================================================

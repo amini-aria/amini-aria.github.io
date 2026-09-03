@@ -12,7 +12,7 @@
 <link rel="icon" href="/assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css?v=b41206bccf">
 </head>
 <body>
@@ -23,28 +23,12 @@
   <svg class="f4" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15 C9 7 16 2.5 24 2.5 C32 2.5 39 7 39 15"/><path d="M24 2.5 L24 28.5"/><path d="M9 15 C7 19.5 9 25 16.5 28 C20.5 29.6 27.5 29.6 31.5 28 C39 25 41 19.5 39 15"/></svg>
 </div>
 
-<div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
 <header class="topbar" id="topbar">
   <a href="/" class="brand">
     <span class="brand__mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg"><path d="M317,214 L304,187 L299,185 L295,175 L291,156 L292,127 L286,111 L270,93 L258,86 L248,83 L216,85 L127,107 L93,109 L68,114 L48,123 L35,132 L21,148 L13,168 L13,175 L15,177 L16,184 L24,180 L25,176 L30,179 L31,175 L35,174 L42,194 L44,194 L44,180 L48,177 L50,179 L53,191 L55,191 L57,180 L62,183 L67,194 L69,194 L70,186 L74,184 L78,187 L79,193 L84,201 L86,201 L86,195 L89,188 L101,188 L106,197 L112,201 L112,186 L116,187 L121,198 L125,200 L124,184 L127,183 L131,192 L136,195 L134,181 L138,179 L141,184 L143,184 L144,177 L146,177 L150,183 L152,183 L152,176 L158,179 L159,175 L179,175 L201,178 L200,181 L179,188 L166,196 L160,195 L160,200 L158,202 L151,197 L152,206 L149,209 L147,209 L142,202 L140,202 L142,214 L137,216 L132,209 L129,209 L129,222 L127,224 L122,221 L118,209 L116,209 L114,226 L110,225 L108,218 L105,219 L104,225 L101,226 L98,212 L96,212 L91,225 L86,223 L85,216 L83,216 L80,225 L76,225 L75,220 L73,220 L70,225 L66,225 L66,215 L64,215 L56,225 L53,224 L53,219 L50,219 L48,224 L44,225 L42,218 L39,217 L38,225 L35,226 L33,219 L31,219 L29,226 L26,228 L26,233 L31,243 L42,253 L64,260 L102,256 L219,259 L240,248 L285,219 L296,217 L314,221 L317,219 Z M241,177 L258,176 L271,178 L282,183 L284,187 L282,189 L273,188 L242,180 Z M95,140 L101,136 L109,135 L114,138 L115,145 L112,149 L108,150 L99,146 Z M54,131 L53,134 L36,144 L32,143 L36,137 L50,130 Z M174,112 L178,119 L180,133 L179,152 L174,158 L164,161 L149,161 L132,158 L126,153 L121,140 L121,132 L126,127 L141,119 L170,111 Z M249,105 L263,105 L270,109 L276,116 L275,121 L259,122 L259,126 L274,139 L281,150 L280,155 L271,162 L253,163 L245,160 L242,156 L240,149 L241,123 L244,111 Z M202,101 L209,102 L213,105 L215,109 L215,129 L224,136 L224,141 L219,148 L205,158 L199,158 L195,154 L191,141 L191,128 L194,113 L197,106 Z" fill="currentColor" fill-rule="evenodd"/></svg></span>
     Mohammad Aria Amini
   </a>
-  <nav class="topnav">
-    <div class="topnav__links" id="topnav-links">      <a href="/">Home</a>
-      <a href="/#about">Biography</a>
-      <a href="/resume/">Resume</a>
-      <a href="/publications/">Research &amp; Publications</a>
-      <a href="/contact/">Contact</a>
-    </div>
-    <div class="lang-pill" data-lang="en">
-      <a href="/" hreflang="en" lang="en" class="is-active" aria-current="page">EN</a>
-      <a href="/fa/" hreflang="fa" lang="en">FA</a>
-    </div>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
 </header>
 
 <!-- ===== Hero ===== -->
@@ -189,6 +173,34 @@
     </p>
   </div>
 </section>
+
+<nav class="dock" aria-label="Site menu">
+  <a class="dock__item is-active" href="/" aria-current="page">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.4 12 4l8 6.4V19a1 1 0 0 1-1 1h-4.2v-5.6H9.2V20H5a1 1 0 0 1-1-1Z"/></svg>
+    <span class="dock__label">Home</span>
+  </a>
+  <a class="dock__item" href="/#about">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg>
+    <span class="dock__label">Bio</span>
+  </a>
+  <a class="dock__item" href="/resume/">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.2 3.2h6.6l5 5v12.6H6.2Z"/><path d="M12.8 3.2v5h5"/><path d="M9.2 13h5.6M9.2 16.4h3.8"/></svg>
+    <span class="dock__label">Resume</span>
+  </a>
+  <a class="dock__item" href="/publications/">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 5.6A1.6 1.6 0 0 1 5.8 4H11v16H5.8a1.6 1.6 0 0 1-1.6-1.6Z"/><path d="M19.8 5.6A1.6 1.6 0 0 0 18.2 4H13v16h5.2a1.6 1.6 0 0 0 1.6-1.6Z"/></svg>
+    <span class="dock__label">Research</span>
+  </a>
+  <a class="dock__item" href="/contact/">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 6.6h17.6v10.8H3.2Z"/><path d="m3.4 7 8.6 5.8L20.6 7"/></svg>
+    <span class="dock__label">Contact</span>
+  </a>
+  <span class="dock__sep" aria-hidden="true"></span>
+  <div class="dock-lang" data-lang="en">
+    <a href="/" hreflang="en" lang="en" class="is-active" aria-current="page">EN</a>
+    <a href="/fa/" hreflang="fa" lang="en">FA</a>
+  </div>
+</nav>
 
 <footer class="footer">
   <div class="footer__ornament" aria-hidden="true">

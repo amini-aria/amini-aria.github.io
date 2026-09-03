@@ -8,34 +8,17 @@
 <link rel="icon" href="/assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css?v=b41206bccf">
 </head>
 <body class="lang-fa">
 
-<div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
 <header class="topbar is-solid" id="topbar">
   <a href="/fa/" class="brand">
     <span class="brand__mark" aria-hidden="true"><svg width="20" height="14" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15 C9 7 16 2.5 24 2.5 C32 2.5 39 7 39 15"/><path d="M24 2.5 L24 28.5"/><path d="M9 15 C7 19.5 9 25 16.5 28 C20.5 29.6 27.5 29.6 31.5 28 C39 25 41 19.5 39 15"/></svg></span>
     محمدآریا امینی
   </a>
-  <nav class="topnav">
-    <div class="topnav__links" id="topnav-links">
-      <a href="/fa/">خانه</a>
-      <a href="/fa/#about">بیوگرافی</a>
-      <a href="/fa/resume/">رزومه</a>
-      <a href="/fa/publications/">مقاله، پژوهش و تألیف‌ها</a>
-      <a href="/fa/contact/" class="is-active">ارتباط با من</a>
-    </div>
-    <div class="lang-pill" data-lang="fa">
-      <a href="/contact/" hreflang="en" lang="en">EN</a>
-      <a href="/fa/contact/" hreflang="fa" lang="en" class="is-active" aria-current="page">FA</a>
-    </div>
-    <button class="burger" id="burger" aria-label="منو" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
 </header>
 
 <main class="contact-page">
@@ -79,6 +62,34 @@
     <li class="contact-chip">تلفن (ایران) · در دسترس نیست</li>
   </ul>
 </main>
+
+<nav class="dock" aria-label="منوی سایت">
+  <a class="dock__item" href="/fa/">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.4 12 4l8 6.4V19a1 1 0 0 1-1 1h-4.2v-5.6H9.2V20H5a1 1 0 0 1-1-1Z"/></svg>
+    <span class="dock__label">خانه</span>
+  </a>
+  <a class="dock__item" href="/fa/#about">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/></svg>
+    <span class="dock__label">بیوگرافی</span>
+  </a>
+  <a class="dock__item" href="/fa/resume/">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.2 3.2h6.6l5 5v12.6H6.2Z"/><path d="M12.8 3.2v5h5"/><path d="M9.2 13h5.6M9.2 16.4h3.8"/></svg>
+    <span class="dock__label">رزومه</span>
+  </a>
+  <a class="dock__item" href="/fa/publications/">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.2 5.6A1.6 1.6 0 0 1 5.8 4H11v16H5.8a1.6 1.6 0 0 1-1.6-1.6Z"/><path d="M19.8 5.6A1.6 1.6 0 0 0 18.2 4H13v16h5.2a1.6 1.6 0 0 0 1.6-1.6Z"/></svg>
+    <span class="dock__label">پژوهش</span>
+  </a>
+  <a class="dock__item is-active" href="/fa/contact/" aria-current="page">
+    <svg class="dock__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 6.6h17.6v10.8H3.2Z"/><path d="m3.4 7 8.6 5.8L20.6 7"/></svg>
+    <span class="dock__label">ارتباط</span>
+  </a>
+  <span class="dock__sep" aria-hidden="true"></span>
+  <div class="dock-lang" data-lang="fa">
+    <a href="/" hreflang="en" lang="en">EN</a>
+    <a href="/fa/" hreflang="fa" lang="en" class="is-active" aria-current="page">FA</a>
+  </div>
+</nav>
 
 <footer class="footer">
   <div class="footer__ornament" aria-hidden="true">

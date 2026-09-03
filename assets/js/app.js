@@ -13,36 +13,6 @@
     a.setAttribute("href", base + "?v=" + Date.now());
   });
 
-  var burger = document.getElementById("burger");
-  var links = document.getElementById("topnav-links");
-  var backdrop = document.getElementById("nav-backdrop");
-  function closeNav() {
-    if (links) links.classList.remove("is-open");
-    if (backdrop) backdrop.classList.remove("is-open");
-    if (burger) { burger.classList.remove("is-open"); burger.setAttribute("aria-expanded", "false"); }
-    document.documentElement.style.overflow = "";
-  }
-  function openNav() {
-    if (links) links.classList.add("is-open");
-    if (backdrop) backdrop.classList.add("is-open");
-    if (burger) { burger.classList.add("is-open"); burger.setAttribute("aria-expanded", "true"); }
-    document.documentElement.style.overflow = "hidden";
-  }
-  if (burger && links) {
-    burger.addEventListener("click", function () {
-      if (links.classList.contains("is-open")) closeNav(); else openNav();
-    });
-    links.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", closeNav);
-    });
-  }
-  if (backdrop) backdrop.addEventListener("click", closeNav);
-  window.addEventListener("resize", closeNav);
-  /* Pages restored from the back/forward cache (common with cross-document
-     View Transitions) can otherwise keep a stale "is-open" state from
-     before navigation, making the menu appear stuck or unresponsive. */
-  window.addEventListener("pageshow", closeNav);
-
   var topbar = document.getElementById("topbar");
   if (topbar) {
     window.addEventListener("scroll", function () {
