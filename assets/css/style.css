@@ -112,8 +112,7 @@ body.lang-fa .skills-group__label,
 body.lang-fa .pub-card__role,
 body.lang-fa .cert-card__link,
 body.lang-fa .resume__entry-tag,
-body.lang-fa .resume__entry-kicker,
-body.lang-fa .lang-pill {
+body.lang-fa .resume__entry-kicker {
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
@@ -180,15 +179,58 @@ html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
 .topnav__links a { font-size: 0.9rem; color: var(--ink-dim); transition: color 0.2s ease; }
 .topnav__links a:hover, .topnav__links a.is-active { color: var(--umber); }
 
+/* Language switch — a segmented control, not two links and a slash.
+   Both labels stay "EN" and "FA" in Latin in BOTH languages: this control is
+   read by someone who does not yet read the language they are looking at, and
+   writing the Persian side in Persian script hid it from exactly the person
+   who needed to find it. Internal order is forced LTR for the same reason —
+   the control should look identical on every page of the site. */
 .lang-pill {
-  display: flex; align-items: center; gap: 0.3rem;
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: stretch;
+  direction: ltr;
+  padding: 3px;
   border: 1px solid var(--hairline); border-radius: 999px;
-  padding: 0.35rem 0.7rem; font-family: var(--font-mono); font-size: 0.78rem;
-  color: var(--ink-dim); background: var(--surface);
+  background: var(--surface);
+  box-shadow: inset 0 1px 2px rgba(58, 46, 34, 0.06);
+  font-size: 0.72rem; line-height: 1;
+  transition: border-color 0.3s ease;
 }
-.lang-pill a { padding: 0.05rem 0.2rem; }
-.lang-pill a.is-active { color: var(--umber); font-weight: 600; }
-.lang-pill span { color: var(--hairline); }
+/* The travelling thumb. Its resting side comes from data-lang on the
+   container, so it is already correct in the first painted frame — no JS, no
+   :has(), nothing to flash. view-transition-name hands it to the
+   cross-document transition enabled at the top of this file, so switching
+   language slides the thumb across rather than cross-fading the header. */
+.lang-pill::before {
+  content: "";
+  position: absolute; z-index: -1;
+  top: 3px; bottom: 3px; left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 999px;
+  background: var(--umber);
+  box-shadow: 0 2px 6px -3px rgba(58, 46, 34, 0.65);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  view-transition-name: lang-thumb;
+}
+.lang-pill[data-lang="fa"]::before { transform: translateX(100%); }
+.lang-pill a {
+  flex: 1; min-width: 2.35rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.34rem 0.15rem;
+  border-radius: 999px;
+  /* pinned rather than var(--font-mono): that token resolves to Vazirmatn
+     under body.lang-fa, which would set these two Latin labels in a Persian
+     face and make the control look different in each language */
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500; letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  transition: color 0.3s ease;
+}
+.lang-pill a:hover { color: var(--ink-dim); }
+.lang-pill a.is-active,
+.lang-pill a.is-active:hover { color: var(--cream); font-weight: 600; }
+.lang-pill a:focus-visible { outline: 2px solid var(--umber); outline-offset: 3px; }
+.lang-pill:hover { border-color: color-mix(in srgb, var(--umber) 35%, var(--hairline)); }
 
 .burger {
   display: none;
