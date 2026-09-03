@@ -287,9 +287,36 @@
     spotifyScrollThumb.style.height = thumbH + "px";
     spotifyScrollThumb.style.top = thumbTop + "px";
   }
+  /* The list fades out at whichever edge still has rows behind it. Without
+     this the first and last row would always look half-erased, which reads as
+     a rendering fault rather than as an affordance. */
+  var spotifyWrap = document.querySelector(".spotify-scroll-wrap");
+  function updateSpotifyFades() {
+    if (!spotifyWrap || !spotifyScrollInner) return;
+    var maxScroll = spotifyScrollInner.scrollHeight - spotifyScrollInner.clientHeight;
+    var top = spotifyScrollInner.scrollTop;
+    spotifyWrap.classList.toggle("at-top", top <= 1);
+    spotifyWrap.classList.toggle("at-end", maxScroll <= 1 || top >= maxScroll - 1);
+  }
+  /* The header count is derived from the list itself, so adding or removing a
+     playlist can never leave the two disagreeing. Only the digits are written;
+     the word beside them stays in the page, in whichever language it is. */
+  (function syncPlaylistCount() {
+    var slot = document.querySelector("[data-playlist-count]");
+    var rows = document.querySelectorAll(".spotify-panel__list a");
+    if (!slot || !rows.length) return;
+    var n = String(rows.length);
+    if (document.body.classList.contains("lang-fa")) {
+      var fa = "\u06F0\u06F1\u06F2\u06F3\u06F4\u06F5\u06F6\u06F7\u06F8\u06F9";
+      n = n.replace(/[0-9]/g, function (d) { return fa.charAt(Number(d)); });
+    }
+    slot.textContent = n;
+  })();
+  function updateSpotifyScrollUI() { updateSpotifyThumb(); updateSpotifyFades(); }
   if (spotifyScrollInner) {
-    spotifyScrollInner.addEventListener("scroll", updateSpotifyThumb);
-    window.addEventListener("resize", updateSpotifyThumb);
+    spotifyScrollInner.addEventListener("scroll", updateSpotifyScrollUI);
+    window.addEventListener("resize", updateSpotifyScrollUI);
+    updateSpotifyFades();
   }
   /* The visual scrollbar is custom, so make its thumb behave like a real
      scrollbar as well: click-to-jump and pointer drag both update the list. */
@@ -337,7 +364,7 @@
       var open = spotifyDropdown.classList.toggle("is-open");
       spotifyToggle.setAttribute("aria-expanded", open ? "true" : "false");
       if (heroEl) heroEl.classList.toggle("spotify-open", open);
-      if (open) setTimeout(updateSpotifyThumb, 360);
+      if (open) { updateSpotifyScrollUI(); setTimeout(updateSpotifyScrollUI, 480); }
     });
     document.addEventListener("click", function (e) {
       if (!spotifyDropdown.contains(e.target)) closeSpotify();

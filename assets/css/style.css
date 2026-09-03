@@ -1315,39 +1315,67 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   box-shadow: 0 8px 20px -10px rgba(0,0,0,0.55);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
   overflow: hidden;
 }
-.spotify-dropdown.is-open { box-shadow: 0 26px 55px -20px rgba(0,0,0,0.6); }
-.spotify-link { justify-content: center; text-align: center; }
+/* the ring is the only thing that says "this is Spotify" before it opens */
+.spotify-dropdown:hover {
+  border-color: rgba(29,185,84,0.32);
+  box-shadow: 0 12px 26px -12px rgba(0,0,0,0.6), 0 0 0 2px rgba(29,185,84,0.07);
+}
+.spotify-dropdown.is-open {
+  border-color: rgba(29,185,84,0.42);
+  box-shadow: 0 26px 55px -20px rgba(0,0,0,0.65), 0 0 0 2px rgba(29,185,84,0.09);
+}
+.spotify-link { position: relative; justify-content: center; text-align: center; }
 .spotify-link__label { flex: none; text-align: center; }
-.spotify-link__chev { transition: transform 0.3s ease; }
+.spotify-link__chev { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
 .spotify-dropdown.is-open .spotify-link__chev { transform: rotate(180deg); }
-.spotify-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease;
+.spotify-dropdown.is-open .spotify-link { color: #fff; }
+/* the wordmark lights up once the shutter is open */
+.spotify-dropdown.is-open .spotify-link > svg:first-child {
+  filter: drop-shadow(0 0 6px rgba(29,185,84,0.55));
 }
+/* hairline that only exists while the pill has something under it */
+.spotify-link::after {
+  content: "";
+  position: absolute; inset-inline: 0.9rem; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(29,185,84,0.5), transparent);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.spotify-dropdown.is-open .spotify-link::after { opacity: 1; }
+
 .spotify-panel {
   position: relative;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.35s ease;
+  /* closing is quicker than opening: a shutter that shuts slowly feels stuck */
+  transition: max-height 0.26s cubic-bezier(0.4, 0, 1, 1);
 }
 .spotify-panel::before {
   content: "";
-  position: absolute; inset: 0 0 auto; height: 130px; z-index: 0;
-  background: linear-gradient(180deg, rgba(29,185,84,0.22), rgba(29,185,84,0) 100%);
+  position: absolute; inset: 0 0 auto; height: 150px; z-index: 0;
+  background: radial-gradient(130% 100% at 50% 0%, rgba(29,185,84,0.24), rgba(29,185,84,0) 72%);
   pointer-events: none;
 }
-.spotify-dropdown.is-open .spotify-panel { max-height: 340px; }
+.spotify-dropdown.is-open .spotify-panel {
+  max-height: 360px;
+  transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
 .spotify-scroll-wrap { position: relative; z-index: 1; }
 .spotify-panel__inner {
+  --fade-top: 16px; --fade-bot: 20px;
   max-height: 230px; overflow-y: scroll;
   direction: ltr;
   padding-right: 9px;
   scrollbar-width: none;
+  /* the list dissolves at whichever edge still has rows behind it, so the cut
+     reads as "more below" instead of as the end of the list */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bot)), transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bot)), transparent 100%);
 }
+.spotify-scroll-wrap.at-top .spotify-panel__inner { --fade-top: 0px; }
+.spotify-scroll-wrap.at-end .spotify-panel__inner { --fade-bot: 0px; }
 .spotify-panel__inner::-webkit-scrollbar { display: none; }
 /* custom scroll indicator — JS-driven so it's guaranteed visible on every
    platform (iOS Safari ignores CSS scrollbar styling and auto-hides its
@@ -1403,10 +1431,14 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
   50%      { transform: scaleY(1); }
 }
 .spotify-eq i { transform-origin: bottom; }
+/* nothing is visible while the shutter is shut — don't animate off-screen */
+.spotify-dropdown:not(.is-open) .spotify-eq i { animation-play-state: paused; }
 .spotify-panel__count {
   color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 .spotify-panel__tag {
+  min-width: 0;
   color: #8f8f8f; font-size: 0.68rem;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
@@ -1427,11 +1459,18 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
   display: flex; align-items: center; gap: 0.75rem;
   padding: 0.5rem 0.7rem; border-radius: 6px;
   padding-inline-start: 2.5rem;
-  background: transparent;
+  padding-inline-end: 2rem;
   border: 0;
   color: #b3b3b3; font-family: var(--font-spotify); font-size: 0.82rem;
   text-align: left; direction: ltr;
-  transition: background 0.15s ease, color 0.15s ease;
+  /* the "opens in a new tab" arrow scales in from nothing rather than popping,
+     which is the only way to fade a background-image with both pseudos taken */
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 16L16 8M9.5 8H16v6.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 0 0;
+  transition: background-color 0.15s ease, background-size 0.18s cubic-bezier(0.22,1,0.36,1), color 0.15s ease;
 }
 /* the index is generated, so adding or removing a playlist renumbers itself */
 .spotify-panel__list a::before {
@@ -1453,10 +1492,38 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
   opacity: 0; transform: translateX(-3px);
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
-.spotify-panel__list a:hover { background: rgba(255,255,255,0.07); color: #fff; }
-.spotify-panel__list a:hover::before { opacity: 0; }
-.spotify-panel__list a:hover::after { opacity: 1; transform: translateX(0); }
-.spotify-panel__list a:focus-visible { background: rgba(255,255,255,0.07); color: #fff; }
+.spotify-panel__list a:hover,
+.spotify-panel__list a:focus-visible {
+  background-color: rgba(255,255,255,0.07);
+  background-size: 11px 11px;
+  color: #fff;
+  outline: none;
+}
+.spotify-panel__list a:focus-visible { box-shadow: inset 0 0 0 1px rgba(29,185,84,0.55); }
+.spotify-panel__list a:hover::before,
+.spotify-panel__list a:focus-visible::before { opacity: 0; }
+.spotify-panel__list a:hover::after,
+.spotify-panel__list a:focus-visible::after { opacity: 1; transform: translateX(0); }
+/* rows deal themselves in behind the shutter as it travels */
+@keyframes spotify-row-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}
+.spotify-dropdown.is-open .spotify-panel__list a {
+  animation: spotify-row-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.05s + var(--row, 11) * 0.028s);
+}
+.spotify-panel__list a:nth-child(1)  { --row: 0; }
+.spotify-panel__list a:nth-child(2)  { --row: 1; }
+.spotify-panel__list a:nth-child(3)  { --row: 2; }
+.spotify-panel__list a:nth-child(4)  { --row: 3; }
+.spotify-panel__list a:nth-child(5)  { --row: 4; }
+.spotify-panel__list a:nth-child(6)  { --row: 5; }
+.spotify-panel__list a:nth-child(7)  { --row: 6; }
+.spotify-panel__list a:nth-child(8)  { --row: 7; }
+.spotify-panel__list a:nth-child(9)  { --row: 8; }
+.spotify-panel__list a:nth-child(10) { --row: 9; }
+.spotify-panel__list a:nth-child(11) { --row: 10; }
 
 .spotify-panel__note {
   position: relative; z-index: 1;
@@ -1471,6 +1538,10 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 }
 .spotify-panel__note--ltr { direction: ltr; font-family: var(--font-spotify); }
 .spotify-panel__note--rtl { direction: rtl; font-family: var(--font-body); }
+@media (prefers-reduced-motion: reduce) {
+  .spotify-eq i { animation: none; transform: scaleY(0.8); }
+  .spotify-dropdown.is-open .spotify-panel__list a { animation: none; opacity: 1; }
+}
 
 
 
