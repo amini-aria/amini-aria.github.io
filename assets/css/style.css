@@ -31,6 +31,7 @@
   --font-body: var(--font-body-en);
 
   --edge: clamp(1.25rem, 5vw, 4.5rem);
+  --dock-air: 1.75rem;
   --max-w: 900px;
 
   --mx: 50%;
@@ -206,7 +207,7 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
 .dock {
   position: sticky; z-index: 90;
   bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
-  margin: 3.25rem auto 1.5rem;
+  margin-inline: auto;
   width: max-content; max-width: calc(100% - 1.5rem);
   display: flex; align-items: stretch; gap: 2px;
   padding: 5px;
@@ -1047,10 +1048,23 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   position: relative;
   min-height: 100vh;
   padding: 9rem var(--edge) 6rem;
+  overflow-x: clip;
+}
+/* The wash is painted on a layer of its own rather than on the page box.
+   Painted on the box it stopped dead at the end of <main> and left a hard
+   horizontal seam across the page just above the dock and the footer; on its
+   own layer it can be dissolved into the body background before the page
+   ends, so scrolling up out of the footer is one continuous surface. */
+.contact-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: radial-gradient(circle at 18% 12%, var(--gold-soft), transparent 45rem),
               radial-gradient(circle at 85% 80%, var(--olive-soft), transparent 40rem),
               linear-gradient(160deg, var(--surface), var(--cream));
-  overflow-x: clip;
+  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
 }
 .contact-hero { max-width: var(--max-w); margin-inline: auto; text-align: center; }
 .contact-hero__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
@@ -1957,4 +1971,14 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
   .lab-card__desc { font-size: 0.72rem; }
 }
 
-
+/* =========================================================================
+   DOCK SPACING — the bar is the last thing in flow before the footer, and it
+   owns the space around itself: the block it follows and the footer it
+   precedes both hand back their trailing/leading padding, so the same air
+   sits above and below the bar on every page, whatever kind of block ends
+   that page. Kept deliberately tight; the bar should read as part of the
+   page's ending, not as a gap in it.
+   ========================================================================= */
+:has(+ .dock) { padding-bottom: var(--dock-air); }
+.dock { margin-block: var(--dock-air); }
+.dock + .footer { padding-top: var(--dock-air); }
