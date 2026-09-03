@@ -445,17 +445,50 @@ class ResumeBuilder:
                 p2 = self._para(space_after=2)
                 self._run(p2, h["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
 
-    def _chip_group(self, groups):
-        for label, items in groups.items():
-            p = self._para(space_before=1, space_after=0)
-            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, label + ":  ", weight="demibold", size=SIZE_BODY)
-            self._run(p, "  \u2022  ".join(items), weight="regular", size=SIZE_BODY)
+    def _spine(self, paragraph):
+        """One hairline rule down the start edge of a paragraph — the trunk the
+        group labels branch off. Word and LibreOffice mirror w:left for bidi
+        paragraphs the same way they mirror w:ind/w:left, so the Persian build
+        gets the rule on the right without a second code path."""
+        pPr = paragraph._p.get_or_add_pPr()
+        pBdr = OxmlElement("w:pBdr")
+        left = OxmlElement("w:left")
+        left.set(qn("w:val"), "single")
+        left.set(qn("w:sz"), "6")
+        left.set(qn("w:space"), "6")
+        left.set(qn("w:color"), "999999")
+        pBdr.append(left)
+        pPr.append(pBdr)
+
+    def _skill_tree(self, groups):
+        """The site draws this section as a tree — one spine, a node per group,
+        the terms sitting opposite as the leaf — and the document keeps the same
+        reading rather than reverting to "Label: a * b * c" run together.
+
+        The spine is a paragraph border, not a character: neither Times New Roman
+        nor Dana carries the box-drawing glyphs, and a border stays out of the
+        text layer entirely, so an ATS still extracts plain paragraphs and the
+        file keeps its no-tables promise. Each group is a node line with an
+        indented leaf line under it, which is the form the tree has to take in a
+        single narrow column — the same stacking the site falls back to on a
+        phone."""
+        items = list(groups.items())
+        for i, (label, terms) in enumerate(items):
+            head = self._para(space_before=0 if i == 0 else 3, space_after=0)
+            head.paragraph_format.left_indent = Cm(0.5)
+            self._spine(head)
+            self._run(head, label, weight="demibold", size=SIZE_BODY)
+
+            leaf = self._para(space_before=0, space_after=2 if i == len(items) - 1 else 0)
+            leaf.paragraph_format.left_indent = Cm(0.5)
+            leaf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            self._spine(leaf)
+            self._run(leaf, "  \u2022  ".join(terms), weight="regular", size=SIZE_BODY)
 
     def skills(self):
         title = "Technical & Specialized Skills" if not self.is_fa else "\u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627\u06cc \u0641\u0646\u06cc \u0648 \u062a\u062e\u0635\u0635\u06cc"
         self._section_title(title)
-        self._chip_group(self.data["skills"])
+        self._skill_tree(self.data["skills"])
 
     def languages(self):
         self._section_title("Languages" if not self.is_fa else "\u0632\u0628\u0627\u0646\u200c\u0647\u0627")

@@ -1312,8 +1312,24 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
 }
 .contact-hero { max-width: var(--max-w); margin-inline: auto; text-align: center; }
 .contact-hero__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
-body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
-.contact-hero__title { font-size: calc(clamp(2rem, 5vw, 3.2rem) * var(--display-scale)); max-width: 20ch; margin-inline: auto; }
+/* Tracking and caps are what carried the Latin eyebrow; with both gone the
+   Persian one is just a very small line, so it takes the size back instead. */
+body.lang-fa .contact-hero__eyebrow { font-size: 0.88rem; letter-spacing: 0; text-transform: none; }
+/* One line, every width, both languages. The 20ch cap was breaking this in
+   Persian at desktop before the type was anywhere near too wide for the
+   column, so the cap goes and nowrap states the rule outright; the vw term
+   is what actually keeps the promise, since with nowrap a title that is too
+   big does not wrap, it overflows. 10.1vw sits a few px under the widest the
+   English string can be set at 320px — the tightest case, where --edge stops
+   shrinking at its 20px floor while the viewport keeps going. */
+.contact-hero__title {
+  font-size: min(calc(clamp(2rem, 5vw, 3.2rem) * var(--display-scale)), 10.1vw);
+  max-width: none; margin-inline: auto;
+  white-space: nowrap;
+}
+/* Persian sets about 1.6x wider per em here — same sentence, more of it — so
+   it needs its own ceiling rather than the English one. */
+body.lang-fa .contact-hero__title { font-size: min(clamp(2rem, 5vw, 3.2rem), 6.4vw); }
 .contact-hero__text { color: var(--ink-dim); max-width: 52ch; margin: 1.15rem auto 0; font-size: 1.02rem; font-weight: var(--w-prose); line-height: 1.78; }
 
 /* =========================================================================
@@ -1553,7 +1569,11 @@ body.lang-fa .contact-stack { --dir: -1; }
   border-color: color-mix(in srgb, var(--umber) 30%, transparent);
 }
 
-body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
+/* 0.59rem is a size for spaced Latin capitals. Persian has no capitals to
+   space, and Vazirmatn's dots and diacritics are the first thing to go at
+   9px, so the Persian badge is set larger — still the smallest thing on the
+   card, but legible rather than merely present. */
+body.lang-fa .contact-card__badge { font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
 /* On a 312px card the badge and the handle share one row, and the handle is the
    part someone actually needs to read — an ellipsised email address is a broken
    address. The badge gives up the width first. */
@@ -1564,6 +1584,20 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
     padding-inline: 0.5rem;
     gap: 0.3rem;
   }
+  /* Persian keeps more size than the Latin badge does here, and pays for it
+     out of its own padding: at 390px the email address was clipping by 2px,
+     and the address is the part that has to survive. */
+  body.lang-fa .contact-card__badge { font-size: 0.6rem; padding-inline: 0.44rem; }
+}
+/* Below ~400px the badge and the email address stop fitting on one line: the
+   card is down to ~250px of which the plate takes 44, and a truncated address
+   is a wrong address. So the badge stops spanning both rows and sits beside
+   the label — which is one short word in either language — and the address
+   takes the whole width underneath. Same reflow in both languages; Persian
+   only reaches it sooner because its badges say more. */
+@media (max-width: 400px) {
+  .contact-card { grid-template-areas: "icon label badge" "icon sub sub"; }
+  .contact-card__badge { align-self: end; }
 }
 
 /* Brand marks keep their own colour: a logo repainted into the page palette
@@ -1687,9 +1721,10 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
 /* the Persian state is a phrase, not a code: no mono, no caps, no tracking */
 body.lang-fa .contact-chip__state {
   font-family: var(--font-fa); font-weight: 400;
-  font-size: 0.68rem; line-height: 1.4;
+  font-size: 0.72rem; line-height: 1.4;
   text-transform: none; letter-spacing: 0;
 }
+body.lang-fa .contact-chip__name { font-size: 0.9rem; }
 
 /* ---- phone: same logic, retuned tokens only --------------------------- */
 @media (max-width: 640px) {
@@ -1718,10 +1753,13 @@ body.lang-fa .contact-chip__state {
   .contact-more { width: min(100%, 14.5rem); }
   .contact-chip { padding-block: 0.42rem; }
   .contact-chip__name { font-size: 0.8rem; }
+  body.lang-fa .contact-chip__name { font-size: 0.86rem; }
 }
 @media (max-width: 380px) {
   .contact-chip__name { font-size: 0.78rem; }
   .contact-chip__state { font-size: 0.56rem; }
+  body.lang-fa .contact-chip__name { font-size: 0.83rem; }
+  body.lang-fa .contact-chip__state { font-size: 0.66rem; }
 }
 
 /* ---- reduced motion: keep the shingle, drop the travel ----------------- */

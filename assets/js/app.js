@@ -13,6 +13,46 @@
     a.setAttribute("href", base + "?v=" + Date.now());
   });
 
+  /* ---------- Notice when this page is a stale build ----------
+     The ?v= stamp on style.css and app.js only helps a browser that has
+     already fetched today's HTML. The HTML itself is cached too (GitHub
+     Pages serves it with max-age=600, and a browser's own heuristics can
+     stretch that further), so someone can sit on an old page that keeps
+     asking for the old assets by name and never learns a deploy happened.
+
+     CI writes the stamp it used into /version.json, uncached. This script
+     knows its own stamp from its src, so comparing the two answers "am I
+     the current build?" directly. When they disagree, refetching the page
+     with cache: "reload" replaces the stale entry in the HTTP cache -- a
+     plain location.reload() would just re-read it -- and then the reload
+     lands on the new HTML.
+
+     Guarded by a per-version sessionStorage flag so a bad deploy or a
+     half-published version.json can cost at most one reload rather than
+     trapping the tab in a loop. Everything is best-effort: no fetch, no
+     stamp, a 404, or private-mode storage all mean do nothing. */
+  var thisScript = document.currentScript;
+  if (window.fetch && thisScript) {
+    var stamp = /[?&]v=([^&]+)/.exec(thisScript.src || "");
+    if (stamp) {
+      fetch("/version.json", { cache: "no-store" }).then(function (res) {
+        return res.ok ? res.json() : null;
+      }).then(function (data) {
+        if (!data || !data.v || data.v === stamp[1]) { return; }
+        var flag = "build-reload:" + data.v;
+        try {
+          if (sessionStorage.getItem(flag)) { return; }
+          sessionStorage.setItem(flag, "1");
+        } catch (e) { return; }
+        fetch(window.location.href, { cache: "reload" }).then(function () {
+          window.location.reload();
+        }, function () {
+          window.location.reload();
+        });
+      }, function () {});
+    }
+  }
+
   var revealObserver;
   function observeReveals() {
     if (!revealObserver) {

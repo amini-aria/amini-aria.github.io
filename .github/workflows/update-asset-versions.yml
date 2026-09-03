@@ -39,7 +39,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html resume/index.html publications/index.html contact/index.html \
-                  fa/index.html fa/resume/index.html fa/publications/index.html fa/contact/index.html
+                  fa/index.html fa/resume/index.html fa/publications/index.html fa/contact/index.html \
+                  version.json
           git diff --staged --quiet && exit 0
           git commit -m "chore: bump asset cache-busting versions [skip ci]"
           # Another workflow (e.g. build-resume-docs) can push to main

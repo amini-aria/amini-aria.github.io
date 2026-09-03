@@ -54,10 +54,23 @@ def main():
             path.write_text(new_text, encoding="utf-8")
             changed.append(rel)
 
+    # The ?v= above only fixes CSS and JS. The HTML page that carries those
+    # URLs is itself cached by GitHub Pages (max-age=600) and by the browser's
+    # own heuristics, so a visitor can hold a stale page that keeps asking for
+    # the previous version of everything, and nothing in the deploy tells them
+    # otherwise. Publishing the same stamp as a tiny uncacheable file gives the
+    # page a way to ask "am I the current build?" — see the version guard in
+    # assets/js/app.js. Written every run, changed or not, so it always agrees
+    # with the SHA the assets were stamped with.
+    (ROOT / "version.json").write_text(
+        '{"v": "%s"}\n' % version, encoding="utf-8"
+    )
+
     if changed:
         print(f"bumped to {version} in: {', '.join(changed)}")
     else:
         print("no HTML files needed a version bump")
+    print(f"wrote version.json ({version})")
 
 
 if __name__ == "__main__":
