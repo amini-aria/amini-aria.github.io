@@ -13,13 +13,6 @@
     a.setAttribute("href", base + "?v=" + Date.now());
   });
 
-  var topbar = document.getElementById("topbar");
-  if (topbar) {
-    window.addEventListener("scroll", function () {
-      topbar.classList.toggle("is-solid", window.scrollY > 12);
-    }, { passive: true });
-  }
-
   var revealObserver;
   function observeReveals() {
     if (!revealObserver) {
@@ -113,8 +106,20 @@
         if (compact) {
           el.textContent = "آخرین ویرایش: " + shamsi;
         } else {
+          /* The Gregorian date is a Latin run sitting in an RTL sentence between
+             a parenthesis and a Persian word. As plain text the bidi algorithm
+             resolves the day number and the neutrals around it against the
+             paragraph's RTL direction, and the parts of the date come apart —
+             "3 September 2026" rendering with the day on the wrong side.
+             <bdi dir="ltr"> makes it one atomic LTR island, which is exactly
+             what the ISBNs and document IDs on this page already do. */
           var miladi = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-          el.textContent = "آخرین ویرایش: " + shamsi + " (" + miladi + " میلادی)";
+          var bdi = document.createElement("bdi");
+          bdi.setAttribute("dir", "ltr");
+          bdi.textContent = miladi;
+          el.textContent = "آخرین ویرایش: " + shamsi + " (";
+          el.appendChild(bdi);
+          el.appendChild(document.createTextNode(" میلادی)"));
         }
       } else {
         var en = d.toLocaleDateString("en-US", compact
@@ -340,14 +345,73 @@
       if (!spotifyDropdown.contains(e.target)) closeSpotify();
     });
   }
-  /* ---------- Preserve scroll position across language switches ---------- */
-  document.querySelectorAll(".lang-pill a").forEach(function (a) {
-    a.addEventListener("click", function () {
-      var docH = document.documentElement.scrollHeight - window.innerHeight;
-      var ratio = docH > 0 ? window.scrollY / docH : 0;
-      try { sessionStorage.setItem("scrollRatio", String(ratio)); } catch (e) {}
+  /* ---------- One highlight, travelling ----------
+     Every dock item used to fade in its own background on hover. Two
+     rectangles cross-fading reads as two events; one rectangle moving reads
+     as a single continuous gesture, which is the difference between a bar
+     that feels switchy and one that feels smooth. The element is created
+     here rather than sitting in all eight pages' markup, and only where a
+     real pointer exists — on touch there is no hover to follow, and the CSS
+     fallback (guarded by :has(.dock__glow)) takes over by itself. */
+  var dockEl = document.querySelector(".dock");
+  if (dockEl && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var glow = document.createElement("span");
+    glow.className = "dock__glow";
+    glow.setAttribute("aria-hidden", "true");
+    dockEl.insertBefore(glow, dockEl.firstChild);
+
+    var moveGlow = function (el) {
+      var d = dockEl.getBoundingClientRect();
+      var r = el.getBoundingClientRect();
+      glow.style.width = r.width + "px";
+      glow.style.height = r.height + "px";
+      glow.style.transform = "translate(" + (r.left - d.left) + "px, " + (r.top - d.top) + "px)";
+      dockEl.classList.add("is-hovering");
+    };
+    var hideGlow = function () { dockEl.classList.remove("is-hovering"); };
+
+    Array.prototype.forEach.call(dockEl.querySelectorAll(".dock__item"), function (el) {
+      el.addEventListener("mouseenter", function () { moveGlow(el); });
+      el.addEventListener("focus", function () { moveGlow(el); });
     });
-  });
+    dockEl.addEventListener("mouseleave", hideGlow);
+    dockEl.addEventListener("focusout", hideGlow);
+    /* the bar is centred, so its items move under a resize; a stale transform
+       would leave the highlight parked beside the item it belongs to */
+    window.addEventListener("resize", hideGlow);
+  }
+
+  /* ---------- The language plate is one target, not two ----------
+     The switch lives in the dock as two stacked 17px rows. That is a smaller
+     target than a fingertip, and half of it used to be a no-op: pressing the
+     row you were already on did nothing. The plate itself now takes the
+     click and always resolves to the OTHER language, so anywhere inside it
+     — either row, the gap, or the margin the ::after overlay adds past its
+     edge — switches. The real link is still there and still navigates on its
+     own for keyboard and middle-click; the handler only steps in when the
+     press landed anywhere else.
+
+     .lang-pill, which this used to be bound to, was the header's language
+     control and went away with the header — the scroll-position hand-off had
+     been silently dead since. */
+  function rememberScroll() {
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var ratio = docH > 0 ? window.scrollY / docH : 0;
+    try { sessionStorage.setItem("scrollRatio", String(ratio)); } catch (e) {}
+  }
+  var langPlate = document.querySelector(".dock-lang");
+  if (langPlate) {
+    var otherLang = langPlate.querySelector("a:not(.is-active)");
+    if (otherLang) {
+      langPlate.addEventListener("click", function (e) {
+        if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { return; }
+        rememberScroll();
+        if (e.target.closest && e.target.closest("a") === otherLang) { return; }
+        e.preventDefault();
+        window.location.href = otherLang.href;
+      });
+    }
+  }
   (function restoreScroll() {
     var val;
     try { val = sessionStorage.getItem("scrollRatio"); } catch (e) { val = null; }

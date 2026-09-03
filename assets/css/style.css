@@ -22,13 +22,42 @@
   --olive-soft: rgba(110, 122, 79, 0.07);
   --gold-soft: rgba(201, 162, 39, 0.10);
 
-  --font-display-en: 'Fraunces', Georgia, serif;
-  --font-body-en: 'Inter', -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* Three voices, deliberately unequal.
+
+     Instrument Serif is the editorial one: one weight, very high stroke
+     contrast, hairline serifs. It is only ever used large, where those
+     hairlines survive — page and section titles, the surname in the
+     wordmark. It supplies the delicacy.
+
+     Geist is the working voice and carries the whole weight axis, 200 to
+     700, so emphasis is made with weight rather than with a second family.
+     Geist Mono is its sibling, not a stranger: labels, dates, IDs and
+     figures stay in the same skeleton as the prose around them.
+
+     --font-title exists because a display serif set at 1rem is a weak,
+     muddy thing. Small headings stay in the grotesque at 600; only type
+     large enough to show the contrast is allowed to use the serif. */
+  --font-serif-en: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --font-sans-en: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono-en: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-fa: 'Vazirmatn', Tahoma, sans-serif;
 
-  --font-display: var(--font-display-en);
-  --font-body: var(--font-body-en);
+  --font-display: var(--font-serif-en);
+  --font-title: var(--font-sans-en);
+  --font-body: var(--font-sans-en);
+  --font-mono: var(--font-mono-en);
+
+  /* Instrument Serif runs optically smaller than the grotesque at the same
+     size, and Persian needs no such correction — one number, applied to
+     every display size, instead of eight hand-tuned clamps. */
+  --display-scale: 1.16;
+
+  /* Running prose is set below the UI weight. Geist's 400 is a working
+     weight built for labels and buttons; at paragraph length on a warm,
+     low-contrast page it reads heavier than it needs to. 350 keeps the
+     stems open without going papery. Persian stays at 400 — Vazirmatn's
+     lighter grades thin the connecting strokes, not just the stems. */
+  --w-prose: 350;
 
   --edge: clamp(1.25rem, 5vw, 4.5rem);
   --dock-air: 1.75rem;
@@ -40,13 +69,16 @@
 
 body.lang-fa {
   --font-display: var(--font-fa);
+  --font-title: var(--font-fa);
   --font-body: var(--font-fa);
   --font-mono: var(--font-fa);
+  --display-scale: 1;
+  --w-prose: 400;
 }
 
 /* Safety net: if Persian text is ever marked up with lang="fa" inside an
    English-language page, it always renders in the site's Persian font
-   (Vazirmatn) rather than inheriting Fraunces/Inter, which have no
+   (Vazirmatn) rather than inheriting the Latin stack, which has no
    Persian glyphs and would fall back to a generic system font. */
 :lang(fa) { font-family: var(--font-fa); }
 
@@ -78,11 +110,36 @@ body {
   font-family: var(--font-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  /* Every family here ships the weights and the italic the site asks for, so
+     the browser is never allowed to fake one. If a weight is ever missing the
+     page shows it instead of hiding it behind a smeared synthetic bold. */
+  font-synthesis: none;
+  font-optical-sizing: auto;
   text-align: left;
   position: relative;
 }
-h1, h2, h3 { font-family: var(--font-display); margin: 0; font-weight: 600; color: var(--ink); }
-p { margin: 0; }
+/* The serif has exactly one weight, so headings are set at 400 and get
+   their presence from size and contrast rather than from bolding. Persian
+   has no serif twin here, so it takes the same emphasis in weight instead. */
+h1, h2 {
+  font-family: var(--font-display);
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+h3 {
+  font-family: var(--font-title);
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.006em;
+  color: var(--ink);
+}
+body.lang-fa :is(h1, h2, h3) { letter-spacing: 0; font-weight: 700; line-height: 1.5; }
+p { margin: 0; text-wrap: pretty; }
 a { color: inherit; text-decoration: none; }
 ul { margin: 0; padding: 0; list-style: none; }
 img, svg { display: block; max-width: 100%; }
@@ -92,7 +149,9 @@ img, svg { display: block; max-width: 100%; }
 html[dir="rtl"] body { text-align: right; }
 html[dir="ltr"] body { text-align: left; }
 
-.mono { font-family: var(--font-mono); letter-spacing: 0.02em; }
+/* Figures in the label voice are tabular: dates, scores and IDs line up
+   in a column instead of shuffling by a few hundredths of an em. */
+.mono { font-family: var(--font-mono); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
 body.lang-fa .mono { letter-spacing: 0; }
 
 /* text-align-last is left at its `auto` default on purpose: for justified text
@@ -109,6 +168,7 @@ body.lang-fa .section__eyebrow,
 body.lang-fa .page-header__eyebrow,
 body.lang-fa .resume__block-title,
 body.lang-fa .interests-band__title,
+body.lang-fa .skills-group__label { font-size: 0.8rem; line-height: 1.7; }
 body.lang-fa .skills-group__label,
 body.lang-fa .pub-card__role,
 body.lang-fa .cert-card__link,
@@ -149,49 +209,6 @@ html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
   50% { transform: translate(2.5%, -3%) rotate(4deg); }
 }
 
-/* =========================================================================
-   TOP BAR — modern glass, no hard seam
-   ========================================================================= */
-/* The bar itself is now an invisible positioning frame: it still spans the
-   window so the name can be centred against the window rather than against
-   whatever the page happens to be, but it paints nothing and swallows no
-   clicks. The only visible chrome is the capsule, which is short, centred,
-   and speaks the same language as the dock at the bottom of the screen. */
-.topbar {
-  position: fixed;
-  inset-inline: 0;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem var(--edge);
-  pointer-events: none;
-}
-.brand {
-  pointer-events: auto;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.42rem 1rem 0.42rem 0.72rem;
-  border-radius: 999px;
-  background: rgba(251, 247, 238, 0.66);
-  border: 1px solid rgba(222, 203, 169, 0.5);
-  backdrop-filter: blur(15px) saturate(170%);
-  -webkit-backdrop-filter: blur(15px) saturate(170%);
-  box-shadow: 0 10px 26px -18px rgba(58, 46, 34, 0.5);
-  font-family: var(--font-display);
-  font-weight: 600; font-size: 0.86rem; letter-spacing: 0.015em;
-  color: var(--ink);
-  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-.topbar.is-solid .brand {
-  background: rgba(251, 247, 238, 0.9);
-  border-color: var(--hairline);
-  box-shadow: 0 14px 32px -18px rgba(58, 46, 34, 0.6);
-}
-.brand:hover { border-color: color-mix(in srgb, var(--umber) 30%, var(--hairline)); }
-.brand__mark { color: var(--umber); display: inline-flex; view-transition-name: brand-mark; }
-.brand__mark svg { display: block; width: 19px; height: 19px; }
-body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
 
 /* =========================================================================
    DOCK — the site menu lives at the bottom of the viewport on a solid black
@@ -205,27 +222,67 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
    real layout it also cannot cover the content above it. No JS, no scroll
    listener, and it is correct on every page regardless of length. */
 .dock {
+  /* one curve for everything that moves in the bar: overshoot-free, slow to
+     settle. Two different easings on two things that move together is what
+     makes a control feel loose. */
+  --dock-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
   position: sticky; z-index: 90;
   bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
   margin-inline: auto;
   width: max-content; max-width: calc(100% - 1.5rem);
   display: flex; align-items: stretch; gap: 2px;
   padding: 5px;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  /* Glass, not a solid slab. The bar floats over the page for most of the
+     scroll, and an opaque black rectangle makes content vanish under a hard
+     edge; blurring what passes beneath it keeps the two surfaces related, so
+     the bar reads as sitting ON the page rather than punched through it. */
+  background: rgba(11, 11, 13, 0.82);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 26px;
   box-shadow: 0 20px 44px -18px rgba(0, 0, 0, 0.6), 0 3px 10px -4px rgba(0, 0, 0, 0.45);
+  transition: box-shadow 0.35s var(--dock-ease), border-color 0.35s var(--dock-ease);
 }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .dock { background: #0B0B0D; }
+}
+.dock:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 26px 54px -18px rgba(0, 0, 0, 0.68), 0 4px 12px -4px rgba(0, 0, 0, 0.5);
+}
+
+/* ONE highlight that travels between items, rather than a separate background
+   fading in under each one. Cross-fading two rectangles reads as two events;
+   moving a single rectangle reads as one, and it is what makes the bar feel
+   continuous instead of switchy. Injected by assets/js/app.js only where a
+   real pointer can hover, so touch keeps the plain per-item fallback below. */
+.dock__glow {
+  position: absolute; left: 0; top: 0; z-index: 0;
+  border-radius: 21px;
+  background: rgba(255, 255, 255, 0.085);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.38s var(--dock-ease),
+              width 0.38s var(--dock-ease),
+              height 0.38s var(--dock-ease),
+              opacity 0.22s ease;
+}
+.dock.is-hovering .dock__glow { opacity: 1; }
 .dock__item {
-  position: relative; isolation: isolate;
+  position: relative; isolation: isolate; z-index: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 5px;
   min-width: 4.5rem;
   padding: 0.6rem 0.85rem 0.55rem;
   border-radius: 21px;
   color: rgba(255, 255, 255, 0.5);
-  transition: color 0.25s ease, background-color 0.25s ease;
+  transition: color 0.25s ease, transform 0.24s var(--dock-ease);
 }
+/* the press is the only place the bar is allowed to overshoot-free snap:
+   a short, small scale down, released on the same curve as everything else */
+.dock__item:active { transform: scale(0.94); }
 /* The active pill is a pseudo-element rather than a background on the link so
    that only the pill carries view-transition-name: the label and icon are left
    out of the shared-element capture, so navigating slides the pill along the
@@ -241,7 +298,12 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
   background: var(--cream);
   view-transition-name: dock-pill;
 }
-.dock__icon { width: 19px; height: 19px; flex: none; }
+.dock__icon {
+  width: 19px; height: 19px; flex: none;
+  transition: transform 0.28s var(--dock-ease);
+}
+.dock__item:hover .dock__icon { transform: translateY(-1.5px); }
+.dock__item.is-active .dock__icon { transform: none; }
 .dock__label {
   font-family: var(--font-body);
   font-weight: 300;
@@ -251,7 +313,11 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
   white-space: nowrap;
 }
 .dock__item:hover { color: rgba(255, 255, 255, 0.88); }
-.dock__item:hover::before { background: rgba(255, 255, 255, 0.07); }
+/* Fallback only: where the travelling highlight exists it owns the hover, and
+   two overlapping highlights would double the tint on the item under the
+   cursor. Where :has() or the script is unavailable, this is the old
+   behaviour, unchanged. */
+.dock:not(:has(.dock__glow)) .dock__item:hover::before { background: rgba(255, 255, 255, 0.07); }
 .dock__item.is-active,
 .dock__item.is-active:hover { color: #0E0C0A; }
 .dock__item.is-active:hover::before { background: var(--cream); }
@@ -264,12 +330,14 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
    animated with translateY, and a percentage height against an auto-height
    parent is not something that can be relied on. */
 .dock__sep {
+  position: relative; z-index: 1;
   flex: none; align-self: center;
   width: 1px; height: 26px; margin-inline: 0.4rem 0.15rem;
   background: rgba(255, 255, 255, 0.14);
 }
 .dock-lang {
-  position: relative; isolation: isolate;
+  position: relative; isolation: isolate; z-index: 1;
+  cursor: pointer;
   flex: none; align-self: center;
   display: flex; flex-direction: column; gap: 1px;
   direction: ltr;
@@ -291,7 +359,7 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
   display: flex; align-items: center; justify-content: center;
   height: 17px; min-width: 2.05rem;
   border-radius: 12px;
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono-en);
   font-size: 0.55rem; font-weight: 500; letter-spacing: 0.09em; line-height: 1;
   color: rgba(255, 255, 255, 0.52);
   transition: color 0.3s ease;
@@ -300,6 +368,19 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
 .dock-lang a.is-active,
 .dock-lang a.is-active:hover { color: #0E0C0A; }
 .dock-lang a:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+/* The visible control is 33x41 and each row inside it is 17px tall — under
+   half a fingertip. This overlay hands the whole plate, plus a margin past
+   its own edge, to a single target; the script behind it always resolves to
+   the OTHER language, so there is no dead row and no wrong half to hit.
+   It sits above both links deliberately, which is why the hover colour is
+   driven from the plate below. */
+.dock-lang::after {
+  content: "";
+  position: absolute;
+  inset: -8px -10px;
+  border-radius: 20px;
+}
+.dock-lang:hover a:not(.is-active) { color: rgba(255, 255, 255, 0.9); }
 
 /* =========================================================================
    HERO — glass card over an animated, fossil-flecked background
@@ -313,7 +394,7 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
   /* The bottom padding has to clear the card's drop shadow, which overflow:
      hidden would otherwise cut off in a hard line right where the strata
      divider starts. Shadow reach below the card is offset + blur + spread. */
-  padding: 7rem var(--edge) 6rem;
+  padding: 6rem var(--edge) 6rem;
   overflow: hidden;
 }
 .hero__bg {
@@ -426,9 +507,10 @@ body.lang-fa .brand { font-size: 0.9rem; letter-spacing: 0; }
   stroke-linejoin: round;
 }
 
-.hero__name { position: relative; z-index: 4; font-size: clamp(1.5rem, 4vw, 1.9rem); letter-spacing: -0.01em; }
-.hero__role { position: relative; z-index: 4; color: var(--umber); font-size: 0.98rem; margin-top: 0.55rem; font-family: var(--font-display); }
-.hero__bio { position: relative; z-index: 4; color: var(--ink-dim); font-size: 0.92rem; margin-top: 1rem; max-width: 34ch; margin-inline: auto; }
+.hero__name { position: relative; z-index: 4; font-size: calc(clamp(1.5rem, 4vw, 1.9rem) * var(--display-scale)); }
+.hero__role { position: relative; z-index: 4; color: var(--umber); font-size: calc(0.98rem * var(--display-scale)); margin-top: 0.55rem; font-family: var(--font-display); font-style: italic; }
+body.lang-fa .hero__role { font-style: normal; }
+.hero__bio { position: relative; z-index: 4; color: var(--ink-dim); font-size: 0.92rem; font-weight: var(--w-prose); line-height: 1.72; margin-top: 1rem; max-width: 34ch; margin-inline: auto; }
 
 .hero__divider { position: relative; z-index: 4; height: 1px; background: rgba(58,46,34,0.12); margin: 1.5rem 0; }
 
@@ -634,7 +716,7 @@ html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1
 .section--alt { background: linear-gradient(180deg, var(--cream-deep), var(--cream)); }
 .section__inner { max-width: var(--max-w); margin-inline: auto; position: relative; z-index: 1; }
 .section__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
-.section__title { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: 1.5rem; position: relative; display: inline-block; }
+.section__title { font-size: calc(clamp(1.6rem, 3vw, 2.1rem) * var(--display-scale)); margin-bottom: 1.5rem; position: relative; display: inline-block; }
 .section__title::after {
   content: "";
   position: absolute; bottom: -0.5rem; inset-inline-start: 0;
@@ -646,7 +728,7 @@ html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1
   0%, 100% { background-position: 0% 0; }
   50% { background-position: 100% 0; }
 }
-.section__text { color: var(--ink-dim); max-width: 62ch; font-size: 1.02rem; margin-top: 0.95rem; }
+.section__text { color: var(--ink-dim); max-width: 62ch; font-size: 1.02rem; font-weight: var(--w-prose); line-height: 1.78; margin-top: 0.95rem; }
 
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
@@ -703,9 +785,9 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 /* =========================================================================
    RESUME PAGE — compact reading surface
    ========================================================================= */
-.page-header { padding: 8rem var(--edge) 1.5rem; max-width: var(--max-w); margin-inline: auto; }
+.page-header { padding: 4.5rem var(--edge) 1.5rem; max-width: var(--max-w); margin-inline: auto; }
 .page-header__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
-.page-header__title { font-size: clamp(1.9rem, 5vw, 2.5rem); margin-top: 0.5rem; }
+.page-header__title { font-size: calc(clamp(1.9rem, 5vw, 2.5rem) * var(--display-scale)); margin-top: 0.5rem; }
 .page-header__updated {
   font-size: 0.78rem; font-weight: 400; color: var(--ink-faint);
   margin-top: 0.5rem; font-family: var(--font-mono);
@@ -769,7 +851,7 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem;
   color: var(--umber); margin-bottom: 0.7rem;
 }
-.interests-band__text { color: #000; font-size: 0.98rem; }
+.interests-band__text { color: #000; font-size: 0.98rem; font-weight: var(--w-prose); line-height: 1.78; }
 /* .resume__lorem / .interests-band__text are always paired with .justify
    in the markup, which already handles text-align + text-align-last
    correctly per direction — this rule used to override text-align back
@@ -789,11 +871,11 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .resume__entry-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
 .resume__entry-title-wrap { display: inline-flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }
 .resume__entry-kicker { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; color: var(--olive); text-transform: uppercase; letter-spacing: 0.04em; }
-.resume__entry-role { font-size: 1rem; font-weight: 600; font-family: var(--font-display); }
+.resume__entry-role { font-size: 1rem; font-weight: 600; font-family: var(--font-title); }
 .resume__entry-period { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; white-space: nowrap; }
 .resume__entry-org { color: var(--ink-dim); margin-top: 0.2rem; font-size: 0.92rem; }
-.resume__entry-org--heading { color: var(--ink); font-weight: 600; font-family: var(--font-display); font-size: 1rem; margin: 0 0 0.2rem; }
-.resume__entry--exp .resume__entry-role--sub { font-family: var(--font-body); font-weight: 400; font-style: italic; color: var(--ink-dim); font-size: 0.92rem; }
+.resume__entry-org--heading { color: var(--ink); font-weight: 600; font-family: var(--font-title); font-size: 1rem; margin: 0 0 0.2rem; }
+.resume__entry--exp .resume__entry-role--sub { font-family: var(--font-display); font-weight: 400; font-style: italic; color: var(--ink-dim); font-size: 1.02rem; }
 .resume__entry-notes { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
 .resume__entry-notes li { position: relative; padding-inline-start: 1.1rem; color: var(--ink-dim); font-size: 0.9rem; }
 .resume__entry-notes li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.6em; width: 5px; height: 5px; border-radius: 1px; background: var(--olive); }
@@ -812,12 +894,63 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .resume__entry--placeholder .resume__entry-role { font-weight: 500; }
 
 .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.chip {
-  border: 1px solid var(--hairline); border-radius: 999px;
-  padding: 0.35rem 0.85rem; font-size: 0.82rem; color: var(--ink-dim); background: var(--cream);
+/* SKILLS — an index, not a tag cloud.
+
+   Forty-odd bordered pills in a two-column grid cost 844px of page and still
+   looked empty: grid rows are as tall as their tallest cell, so wherever one
+   column's group was shorter than its neighbour's the difference showed up as
+   a hole. And a pill is a control — outlining every one of these terms
+   promises a filter that does not exist.
+
+   Set as a definition list instead — label in the margin, terms as one
+   flowing run — the same content reads in about a third of the height, each
+   group is exactly as tall as its own content, and it looks like a résumé
+   rather than a search UI. */
+.skills-groups { display: block; }
+.skills-group {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  gap: 0.35rem 1.75rem;
+  padding-block: 0.9rem;
+  border-top: 1px solid var(--hairline);
 }
-.skills-groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
-.skills-group__label { font-family: var(--font-mono); color: var(--umber); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; display: block; }
+.skills-group:first-child { border-top: 0; padding-top: 0.25rem; }
+.skills-group:last-child { padding-bottom: 0.25rem; }
+.skills-group__label {
+  display: block; align-self: start;
+  margin: 0.2rem 0 0;
+  font-family: var(--font-mono); font-weight: 500;
+  font-size: 0.68rem; line-height: 1.55;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--umber);
+}
+.skills-list {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  margin: 0; padding: 0; list-style: none;
+  row-gap: 0.15rem;
+  font-size: 0.88rem; font-weight: var(--w-prose); line-height: 1.7;
+  color: var(--ink);
+}
+/* A comma, not a middot, and drawn as an ::after so it wraps with the term it
+   follows rather than starting the next line. Both marks leave a separator
+   at the end of a wrapped line — that is unavoidable in a flex run — but a
+   line ending in a comma is what running text does anyway, while a line
+   ending in a dangling middot just looks broken. The comma supplies the gap
+   itself, so column-gap stays at 0. */
+.skills-list li:not(:last-child)::after {
+  content: ",";
+  margin-inline-end: 0.4rem;
+  color: var(--ink-faint);
+}
+/* Every term in this list is a Latin technical name, even on the Persian
+   page. Laid out RTL the comma lands on the left of the word it follows and
+   reads as a leading comma, so the run itself is set LTR and then pushed to
+   the right-hand (leading) edge of its column — each line reads left to right
+   while the block still rags the way the rest of the page does. */
+body.lang-fa .skills-list {
+  direction: ltr;
+  justify-content: flex-end;
+}
 
 .lang-bars { display: flex; flex-direction: column; gap: 1rem; max-width: 420px; }
 .lang-bar__top { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.4rem; }
@@ -908,7 +1041,28 @@ body.lang-fa .cert-chip__id {
     transform: translateY(-1px);
   }
 }
-.pub-card__citation { color: var(--ink); max-width: 62ch; font-size: 0.94rem; line-height: 1.6; margin: 0; }
+/* A citation is not one flat string. The apparatus — authors, year, the
+   closing period — is reference matter and is set small and light; the title
+   is the thing on the shelf and is the only part allowed the display serif,
+   in italic, which is what a bibliography does anyway. Dropping the apparatus
+   to 0.86/350 is what makes room for the title to be bigger without the card
+   growing. */
+.pub-card__citation {
+  color: var(--ink-dim); max-width: 62ch;
+  font-size: 0.86rem; font-weight: var(--w-prose); line-height: 1.65; margin: 0;
+}
+.pub-card__title {
+  font-family: var(--font-display); font-style: italic; font-weight: 400;
+  font-size: 1.12rem; line-height: 1.4;
+  color: var(--ink);
+  letter-spacing: 0.004em;   /* italic serif at this size closes up slightly */
+}
+/* No serif twin in the Persian face, and no italic convention in Persian
+   typesetting either — the title takes weight instead. */
+body.lang-fa .pub-card__title {
+  font-family: var(--font-fa); font-style: normal; font-weight: 600;
+  font-size: 1rem; letter-spacing: 0;
+}
 .pub-card__meta {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem 0.7rem;
   margin-top: 0.8rem;
@@ -967,15 +1121,32 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
 .footer__ornament .footer__rule:last-child { background: linear-gradient(90deg, var(--hairline), transparent); }
 .footer__mark { flex: none; width: 54px; height: 54px; color: var(--umber); opacity: 0.55; }
 .footer__inner { max-width: var(--max-w); margin-inline: auto; display: flex; justify-content: center; text-align: center; }
+/* The one line on the site set in Geist's 200. Nothing else uses that weight,
+   which is the whole point: it is legally required text that should be the
+   quietest thing on the page, and the quiet is made with weight and tracking
+   rather than by washing the colour out — --ink-faint would have been 3.1:1.
+   At 200, --ink-dim's 6.18:1 still reads as a whisper. The name inside it
+   steps back up to 400 so the line has one thing in it worth reading. */
 .rights {
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.66rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  color: var(--ink-faint);
+  font-family: var(--font-sans-en);
+  font-size: 0.72rem;
+  font-weight: 200;
+  letter-spacing: 0.09em;
+  line-height: 1.5;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
   direction: ltr;
   unicode-bidi: isolate;
 }
+/* The name steps up by a weight and closes its tracking slightly. That is
+   the whole emphasis — no colour change, because at this size a darker ink
+   is what makes a legal line start pulling the eye. */
+.rights__name {
+  font-weight: 350;
+  letter-spacing: 0.05em;
+}
+.rights__mark { font-size: 0.92em; opacity: 0.7; }
+.rights__sep { margin-inline: 0.15em; color: var(--ink-faint); }
 
 /* =========================================================================
    RESPONSIVE
@@ -991,9 +1162,9 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   .dock__icon { width: 18px; height: 18px; }
   .dock__sep { margin-inline: 0.2rem 0.1rem; }
   .dock-lang a { min-width: 1.85rem; font-size: 0.52rem; }
-  .brand { font-size: 0.8rem; padding-inline: 0.85rem 0.62rem; }
-  .skills-groups { grid-template-columns: 1fr; }
-  .hero { padding-top: 6rem; }
+  /* the label has nowhere useful to sit beside a 320px column of terms */
+  .skills-group { grid-template-columns: 1fr; gap: 0.3rem; padding-block: 0.8rem; }
+  .hero { padding-top: 3.5rem; }
   .resume-surface { padding: 0.5rem 1rem; }
   .contact__buttons { gap: 0.5rem; }
   .divider { height: 60px; }
@@ -1003,7 +1174,7 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
    PRINT — resume page only
    ========================================================================= */
 @media print {
-  .topbar, .footer, .resume-downloads, .fossil-field, .divider { display: none !important; }
+  .footer, .resume-downloads, .fossil-field, .divider { display: none !important; }
   body { background: #fff; color: #000; }
   .resume-surface { box-shadow: none; border: none; backdrop-filter: none; }
   .page-header { padding-top: 1rem; }
@@ -1026,7 +1197,7 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   }
   .resume__block { border-top-color: #4682B4; }
 }
-@media print { .dock, .topbar { display: none; } }
+@media print { .dock { display: none; } }
 @page { size: A4; margin: 14mm 16mm; }
 
 /* =========================================================================
@@ -1046,8 +1217,11 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
    ========================================================================= */
 .contact-page {
   position: relative;
-  min-height: 100vh;
-  padding: 9rem var(--edge) 6rem;
+  /* No min-height: it stretched the page box past its own content, and the
+     slack landed between the last chip and the dock as ~115px of dead air
+     that no other page had. The dock is sticky and the page is taller than
+     any realistic viewport anyway, so nothing needed the fill. */
+  padding: 5.5rem var(--edge) 6rem;
   overflow-x: clip;
 }
 /* The wash is painted on a layer of its own rather than on the page box.
@@ -1069,8 +1243,8 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
 .contact-hero { max-width: var(--max-w); margin-inline: auto; text-align: center; }
 .contact-hero__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
 body.lang-fa .contact-hero__eyebrow { letter-spacing: 0; text-transform: none; }
-.contact-hero__title { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 20ch; margin-inline: auto; line-height: 1.15; }
-.contact-hero__text { color: var(--ink-dim); max-width: 52ch; margin: 1.1rem auto 0; font-size: 1.02rem; }
+.contact-hero__title { font-size: calc(clamp(2rem, 5vw, 3.2rem) * var(--display-scale)); max-width: 20ch; margin-inline: auto; }
+.contact-hero__text { color: var(--ink-dim); max-width: 52ch; margin: 1.15rem auto 0; font-size: 1.02rem; font-weight: var(--w-prose); line-height: 1.78; }
 
 /* =========================================================================
    CONTACT PAGE — a vertical shingle in a recessed tray: cards stacked like
@@ -1226,8 +1400,8 @@ body.lang-fa .contact-stack { --dir: -1; }
 .contact-card__label {
   grid-area: label; align-self: end; justify-self: start;
   max-inline-size: 100%;
-  font-family: var(--font-display); font-weight: 600;
-  font-size: 1.1rem; line-height: 1.25;
+  font-family: var(--font-title); font-weight: 550;
+  font-size: 1.06rem; line-height: 1.25; letter-spacing: -0.008em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .contact-card__sub {
@@ -1236,23 +1410,70 @@ body.lang-fa .contact-stack { --dir: -1; }
      dir="ltr" subs resolve `start` against their OWN ltr direction. */
   justify-self: start;
   max-inline-size: 100%;
-  font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.4;
+  /* Pinned to the Latin mono in BOTH languages. Every one of these is a
+     Latin handle or address, and --font-mono resolves to Vazirmatn under
+     body.lang-fa — so the Persian page was rendering the same four strings
+     in a different face from the English page. 300 is the light end of
+     Geist Mono's axis: an address should sit under its own label, not
+     compete with it. */
+  font-family: var(--font-mono-en); font-weight: 300;
+  font-size: 0.8rem; line-height: 1.4; letter-spacing: 0.005em;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-dim);                   /* 6.18:1 on the face */
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* A status, not a sticker. The solid olive lozenge with white type was the
+   loudest thing on a card whose whole job is to be calm, and it announced a
+   fact ("this channel is answered quickly") in the visual language of a sale
+   badge. Now it is a live indicator: a pulsing dot, olive type on its own
+   tint, a hairline instead of a fill. Darkened 62/38 against the ink so the
+   text clears AA on the pale tint — the old white-on-olive had 0.11 of margin
+   and no room to be lightened at all. */
 .contact-card__badge {
   grid-area: badge; justify-self: end; align-self: center;
-  font-family: var(--font-mono); font-size: 0.62rem; line-height: 1;
-  letter-spacing: 0.03em; text-transform: uppercase; white-space: nowrap;
-  color: #fff; background: var(--olive);   /* 4.61:1 — 0.11 of AA margin.
-                                              Do not lighten, do not add
-                                              opacity, no translucent backdrop. */
-  padding: 0.34rem 0.6rem; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 0.38rem;
+  font-family: var(--font-mono); font-weight: 500;
+  font-size: 0.59rem; line-height: 1;
+  letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+  color: color-mix(in srgb, var(--olive) 62%, var(--ink));
+  background: color-mix(in srgb, var(--olive) 9%, #FFFFFF);
+  border: 1px solid color-mix(in srgb, var(--olive) 28%, transparent);
+  padding-inline: 0.5rem 0.62rem;
+  padding-block: 0.32rem;
+  border-radius: 999px;
   /* a decal lying flush: a 1px contact line, lighter than the card's own
      shadow. NO transform — it shares the card's plane exactly, both languages. */
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 1px 2px rgba(58,46,34,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 2px rgba(58,46,34,0.10);
+}
+.contact-card__badge::before {
+  content: "";
+  inline-size: 5px; block-size: 5px; flex: none;
+  border-radius: 50%;
+  background: var(--olive);
+  animation: badge-pulse 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+/* literal olive: a keyframe cannot be resolved from a color-mix() in every
+   engine that supports the mix itself */
+@keyframes badge-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(110, 122, 79, 0.5); }
+  70%  { box-shadow: 0 0 0 5px rgba(110, 122, 79, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(110, 122, 79, 0); }
 }
 body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
+
+/* Brand marks keep their own colour: a logo repainted into the page palette
+   stops being that logo. The brand colour is confined to the glyph and to the
+   plate tint behind it — the card's border, hover ring and focus ring still
+   run on --accent, so the four cards read as one set rather than as three
+   pieces of someone else's branding stapled to a cream page. Instagram has no
+   single colour, so its glyph carries the real gradient in the SVG and
+   --brand only supplies the tint. */
+.contact-card--brand .contact-card__icon {
+  color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 10%, #FFFFFF);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 20%, transparent),
+              inset 0 1px 2px rgba(58, 46, 34, 0.07);
+}
 
 /* ENTER timing, applied to the raised card AND to the siblings it pushes, so
    the lift and the deck-opening are one gesture on one curve rather than two
@@ -1320,12 +1541,17 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
 }
 
 /* ---- unavailable channels -------------------------------------------- */
+/* One per row, one width. Wrapped, the three channels made a ragged two-line
+   block whose shape changed with the viewport and with the language; stacked
+   to a common width they read as what they are — a short list of three
+   entries, each the same kind of thing. */
 .contact-more {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 0.5rem; max-width: var(--max-w); margin-inline: auto; padding: 0;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.4rem; max-width: var(--max-w); margin-inline: auto; padding: 0;
 }
 .contact-chip {
-  font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.45;
+  min-width: 15rem; text-align: center;
+  font-family: var(--font-mono); font-weight: 300; font-size: 0.72rem; line-height: 1.45;
   color: var(--ink-dim);            /* was --ink-faint = 3.11:1, fails 1.4.3 */
   background: rgba(255,255,255,0.34);
   border: 1px dashed var(--hairline);  /* "unavailable" reads from the dashed
@@ -1336,8 +1562,7 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
 
 /* ---- phone: same logic, retuned tokens only --------------------------- */
 @media (max-width: 640px) {
-  /* topbar measures 90px (EN) / 71px (FA); 104px clears it */
-  .contact-page { padding-block: 6.5rem 3rem; }
+  .contact-page { padding-block: 3.5rem 3rem; padding-inline: 1.5rem; }
   .contact-stack {
     --pad-b: 1.625rem;                 /* -> --tail resolves to 16px */
     --pad-i: 1rem;
@@ -1346,19 +1571,23 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
     --lift-hover: 22px; --lift-front: 38px;
     --push-hover: 14px;
     margin: 2.25rem auto 2.75rem;
+    /* The tray bleeds 0.75rem outside the stack on each side, so the stack
+       has to give that back plus a margin or the deck ends up ~7px off the
+       bezel. Capped at 19.5rem as well: past that the cards were simply
+       wider than the text they hold, and a 44px plate next to a two-word
+       label on a 340px line is a lot of empty middle. */
+    max-width: min(19.5rem, calc(100% - 1.5rem));
     perspective: 640px;                /* 640/350 ~ the desktop 900/480 ratio */
   }
-  .contact-stack::before { inset: -1.1rem -0.8rem -1rem; border-radius: 20px; }
+  .contact-stack::before { inset: -1.1rem -0.75rem -1rem; border-radius: 20px; }
   .contact-card { border-radius: 10px; column-gap: 0.7rem; }
   .contact-card__icon { border-radius: 11px; }
   .contact-card__label { font-size: 1.02rem; }
   .contact-card__sub { font-size: 0.74rem; }
-  .contact-more { gap: 0.4rem; }       /* no flex-direction:column — 2 rows */
-  .contact-chip { font-size: 0.64rem; padding: 0.34rem 0.58rem; }
+  .contact-chip { min-width: min(100%, 13.5rem); font-size: 0.68rem; padding: 0.36rem 0.6rem; }
 }
-/* at 360px the English chip pair overflows by ~2px, forcing a third row */
 @media (max-width: 380px) {
-  .contact-chip { font-size: 0.6rem; padding: 0.32rem 0.5rem; }
+  .contact-chip { font-size: 0.64rem; padding: 0.34rem 0.5rem; }
 }
 
 /* ---- reduced motion: keep the shingle, drop the travel ----------------- */
@@ -1636,16 +1865,27 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 
 
 /* =========================================================================
-   ARIA'S LAB — deliberately its own universe: near-black, terminal-green
-   accent, a real fake-terminal with a fixed header and a live-scrolling
-   command log underneath. Always English (see assets/js/lab.js), so this
-   whole block forces LTR regardless of page language.
+   ARIA'S LAB — deliberately its own universe: a cold slate night lit by cyan
+   and violet rather than the usual terminal green, with a real fake-terminal
+   (fixed header pane, live-scrolling command log) inside macOS window chrome.
+   Always English (see assets/js/lab.js), so this whole block forces LTR
+   regardless of page language.
    ========================================================================= */
 .lab-section {
+  /* One accent family for the whole universe, so the terminal, the cards and
+     the background glow are demonstrably the same instrument. */
+  --lab-accent: #67E8F9;
+  --lab-accent-2: #A78BFA;
+  --lab-live: #5EEAD4;
+  --lab-off: #FB7185;
+  --lab-text: #E2E8F0;
+  --lab-text-dim: #94A3B8;
+  --lab-line: rgba(148, 163, 184, 0.14);
+
   position: relative;
   overflow: hidden;
-  background: #0b0d10;
-  padding: 4.5rem var(--edge);
+  background: #080A0F;
+  padding: 3.25rem var(--edge);
   isolation: isolate;
   direction: ltr;
   text-align: left;
@@ -1653,29 +1893,42 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 .lab-section__bg {
   position: absolute; inset: 0; z-index: 0;
   background-image:
-    radial-gradient(480px circle at 20% 30%, rgba(74,222,128,0.16), transparent 65%);
-  background-size: 160% 160%;
+    radial-gradient(640px circle at 13% 34%, rgba(103, 232, 249, 0.3), transparent 66%),
+    radial-gradient(600px circle at 87% 70%, rgba(167, 139, 250, 0.28), transparent 70%);
+  background-size: 150% 150%;
   background-repeat: no-repeat;
-  animation: lab-bg-drift 22s ease-in-out infinite;
-  mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 78%);
-  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 78%);
+  animation: lab-bg-drift 26s ease-in-out infinite;
+  /* A purely vertical fade, not an ellipse. The section's left and right
+     edges are the viewport, so only the top and bottom have to disappear —
+     they butt straight onto the two dividers, and any light still alive at
+     those two lines draws a horizontal band that separates the section from
+     the divider above it. Zero alpha for the first and last fifth means the
+     seam is literally the same #080A0F on both sides. */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 21%, black 79%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 21%, black 79%, transparent 100%);
   will-change: background-position;
 }
+/* A blueprint hairline grid instead of the old dot field. Dots at 26px read
+   as texture and had to pulse to stay interesting; ruled lines at 56px read
+   as a plan being drawn on, and can therefore sit perfectly still while the
+   glow behind them moves. Masked to an ellipse so it never meets an edge. */
 .lab-section__bg::after {
   content: "";
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle at 1px 1px, rgba(74,222,128,0.55) 1.4px, transparent 1.8px);
-  background-size: 26px 26px;
-  animation: lab-dots-drift 22s ease-in-out infinite, lab-dots-breathe 4.5s ease-in-out infinite;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.13) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.13) 1px, transparent 1px);
+  background-size: 56px 56px;
+  /* same vertical fade as the glow, for the same reason: a ruled line that
+     survives to the top edge is exactly the kind of hard tell that makes the
+     section look pasted on top of the divider */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%);
+  animation: lab-grid-drift 40s linear infinite;
 }
-@keyframes lab-dots-drift {
-  0%   { background-position: 0 0; }
-  50%  { background-position: 13px 13px; }
-  100% { background-position: 0 0; }
-}
-@keyframes lab-dots-breathe {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 1; }
+@keyframes lab-grid-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 56px 56px; }
 }
 @keyframes lab-bg-drift {
   0%   { background-position: 0% 20%; }
@@ -1683,13 +1936,12 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
   100% { background-position: 0% 20%; }
 }
 @media (max-width: 640px) {
-  /* keep it light on phones: a single breathing dot layer, no drift, no
-     extra glow layer, so there's less to repaint */
-  .lab-section__bg { animation: none; background-image: none; }
-  .lab-section__bg::after {
-    background-size: 24px 24px;
-    animation: lab-dots-breathe 4.5s ease-in-out infinite;
-  }
+  /* keep it light on phones: the static grid only, nothing repainting */
+  .lab-section__bg { animation: none; }
+  .lab-section__bg::after { background-size: 44px 44px; animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-section__bg, .lab-section__bg::after { animation: none; }
 }
 .lab-section__inner { position: relative; z-index: 1; max-width: 960px; margin-inline: auto; }
 
@@ -1698,27 +1950,30 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
    resolve to SF Mono and SF Pro on a Mac, so there the window renders in the
    system's own typefaces rather than an approximation of them. */
 .lab-terminal {
-  --term-bg: #14171c;
-  --term-bg-alt: #101318;
-  --term-fg: #d5d9e0;
-  --term-dim: #7c8697;
-  --term-green: #3ddc84;
-  --term-red: #ff6b6b;
-  --term-yellow: #f0c674;
-  --term-cyan: #56c8d8;
-  --term-blue: #7aa6ff;
-  --term-magenta: #d78bf0;
-  --term-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "IBM Plex Mono", monospace;
+  --term-bg: #0E1219;
+  --term-bg-alt: #0A0D14;
+  --term-fg: #C7D0DE;
+  --term-dim: #6B7688;
+  --term-green: #5EEAD4;
+  --term-red: #FB7185;
+  --term-yellow: #FCD34D;
+  --term-cyan: #67E8F9;
+  --term-blue: #818CF8;
+  --term-magenta: #A78BFA;
+  --term-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "Geist Mono", monospace;
   --term-ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
 
   max-width: 960px; margin: 0 auto;
   background: var(--term-bg);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+  /* the outer ring picks up the section accent instead of plain white, so the
+     window sits inside the same light as the glow behind it */
   box-shadow:
-    0 0 0 0.5px rgba(255,255,255,0.10),
-    0 2px 6px rgba(0,0,0,0.35),
-    0 28px 70px -20px rgba(0,0,0,0.75);
+    0 0 0 0.5px rgba(103, 232, 249, 0.16),
+    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 2px 6px rgba(0,0,0,0.4),
+    0 30px 70px -22px rgba(0,0,0,0.8);
 }
 
 /* title bar: traffic lights left, centred document title, macOS gradient */
@@ -1728,9 +1983,9 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 .lab-terminal__bar {
   position: relative;
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  height: 38px; padding: 0 0.8rem;
-  background: linear-gradient(180deg, #3b3b3d, #2c2c2e);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.55);
+  height: 34px; padding: 0 0.8rem;
+  background: linear-gradient(180deg, #2A2F3A, #1D212A);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.6);
 }
 .lab-terminal__lights { display: flex; align-items: center; gap: 8px; }
 .lab-terminal__dot {
@@ -1761,41 +2016,41 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 /* two panes, the way a split Terminal window looks */
 .lab-terminal__panes {
   display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
   background: var(--term-bg);
 }
 
 /* left pane: the one command whose output never scrolls away */
 .lab-terminal__fixed {
-  padding: 1.35rem 1.4rem 1.5rem;
+  padding: 1.1rem 1.2rem 1.2rem;
   background: var(--term-bg-alt);
-  border-right: 1px solid rgba(255,255,255,0.07);
+  border-right: 1px solid rgba(255,255,255,0.06);
 }
 .lab-terminal__fixed .lab-prompt-line {
-  font-family: var(--term-font); font-size: 0.72rem; color: var(--term-dim);
-  margin: 0 0 0.85rem;
+  font-family: var(--term-font); font-size: 0.7rem; color: var(--term-dim);
+  margin: 0 0 0.7rem;
 }
 .lab-section__title {
   font-family: var(--term-font);
-  font-weight: 600; font-size: clamp(1.35rem, 3vw, 1.7rem);
-  color: #f4f6f8; letter-spacing: -0.01em; margin: 0 0 0.6rem;
+  font-weight: 600; font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  color: #F1F5F9; letter-spacing: -0.01em; margin: 0 0 0.5rem;
 }
 .lab-section__title .lab-title__cursor {
-  display: inline-block; color: var(--term-green); margin-inline-start: 2px;
+  display: inline-block; color: var(--lab-accent); margin-inline-start: 2px;
   animation: lab-cursor-blink 0.9s step-end infinite;
 }
 @keyframes lab-cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .lab-section__text {
   font-family: var(--term-ui-font);
-  color: #a8b2c1; font-size: 0.84rem; line-height: 1.65; margin: 0;
+  color: var(--lab-text-dim); font-size: 0.79rem; line-height: 1.6; margin: 0;
   text-align: justify; hyphens: auto;
 }
 
 /* right pane: the live session. New lines rise in at the bottom and fade out
    at the top, like watching a real scrollback. */
 .lab-terminal__log {
-  height: 320px;
-  padding: 1rem 1.1rem;
+  height: 232px;
+  padding: 0.85rem 1.05rem;
   display: flex; flex-direction: column; justify-content: flex-end;
   gap: 0.1rem;
   overflow: hidden;
@@ -1821,7 +2076,7 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 }
 
 /* prompt pieces and the ANSI-ish output tokens emitted by assets/js/lab.js */
-.lab-prompt__user { color: var(--term-green); font-weight: 600; }
+.lab-prompt__user { color: var(--lab-accent); font-weight: 600; }
 .lab-prompt__path { color: var(--term-cyan); }
 .lab-prompt__sign { color: var(--term-dim); }
 .t-dim { color: var(--term-dim); }
@@ -1838,107 +2093,125 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
 /* window status line */
 .lab-terminal__status {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0.36rem 0.9rem;
-  font-family: var(--term-font); font-size: 0.62rem; letter-spacing: 0.02em;
-  color: rgba(255,255,255,0.36);
-  background: #1a1e24;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 0.32rem 0.9rem;
+  font-family: var(--term-font); font-size: 0.6rem; letter-spacing: 0.02em;
+  color: rgba(226, 232, 240, 0.34);
+  background: #131822;
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 /* narrow screens: the split becomes a stack */
 @media (max-width:800px) {
   .lab-terminal__panes { grid-template-columns: 1fr; }
-  .lab-terminal__fixed { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .lab-terminal__log { height: 280px; }
+  .lab-terminal__fixed { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .lab-terminal__log { height: 196px; }
   .lab-grid { grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:500px) {
   .lab-grid { grid-template-columns:1fr; }
 }
 
-/* ---- tool cards: narrower, shorter, denser than before ---- */
+/* ---- tool cards ---- */
 .lab-grid {
-  margin-top: 2rem;
+  margin-top: 1.3rem;
   display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
-  gap: 0.7rem;
+  gap: 0.6rem;
   max-width: 960px; margin-inline: auto;
 }
 .lab-card {
-  position: relative;
-  display: flex; flex-direction: column; gap: 0.5rem;
-  padding: 0.95rem 1rem;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 0.42rem;
+  padding: 0.8rem 0.9rem;
   border-radius: 12px;
-  background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #e5e7eb;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  background: linear-gradient(160deg, rgba(226, 232, 240, 0.055), rgba(226, 232, 240, 0.015));
+  border: 1px solid var(--lab-line);
+  color: var(--lab-text);
+  transition: transform 0.24s var(--dock-ease), border-color 0.24s ease, background 0.24s ease;
+}
+/* A hairline of accent along the top edge, revealed on hover. It costs no
+   height at rest, which is the whole point of this pass. */
+.lab-card--active::before {
+  content: "";
+  position: absolute; inset: 0 0 auto; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lab-accent), transparent);
+  opacity: 0; transition: opacity 0.24s ease;
 }
 @media (hover: hover) and (pointer: fine) {
   .lab-card--active:hover {
     transform: translateY(-3px);
-    border-color: rgba(74,222,128,0.4);
-    background: linear-gradient(160deg, rgba(74,222,128,0.09), rgba(255,255,255,0.02));
+    border-color: rgba(103, 232, 249, 0.38);
+    background: linear-gradient(160deg, rgba(103, 232, 249, 0.10), rgba(167, 139, 250, 0.04));
   }
+  .lab-card--active:hover::before { opacity: 1; }
 }
 /* touch devices: no vertical lift (it was pushing the card up and
    overlapping the terminal above it) — just a quick, position-safe
    colour response on tap */
 .lab-card--active:active {
-  border-color: rgba(74,222,128,0.4);
-  background: linear-gradient(160deg, rgba(74,222,128,0.12), rgba(255,255,255,0.02));
+  border-color: rgba(103, 232, 249, 0.38);
+  background: linear-gradient(160deg, rgba(103, 232, 249, 0.13), rgba(167, 139, 250, 0.05));
 }
 .lab-card__top { display: flex; align-items: center; justify-content: space-between; }
 .lab-card__icon {
-  width: 30px; height: 30px; border-radius: 8px;
+  width: 28px; height: 28px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(74,222,128,0.12); color: #4ade80;
+  background: rgba(103, 232, 249, 0.11); color: var(--lab-accent);
+  box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.16);
   flex-shrink: 0;
 }
 .lab-card__tag {
-  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.05em;
-  color: #9ca3af; border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 999px; padding: 0.15rem 0.5rem;
+  font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.05em;
+  color: var(--lab-text-dim); border: 1px solid var(--lab-line);
+  border-radius: 999px; padding: 0.13rem 0.45rem;
 }
-.lab-card__name { font-family: 'Inter', -apple-system, sans-serif; font-size: 0.9rem; font-weight: 600; color: #fff; margin: 0; }
-.lab-card__desc { font-size: 0.76rem; color: #9ca3af; line-height: 1.45; margin: 0; flex: 1; }
+.lab-card__name { font-family: var(--font-sans-en); font-size: 0.86rem; font-weight: 600; color: #F8FAFC; margin: 0; }
+/* clamped to three lines so one wordy tool can't set the height of the whole
+   row — every card in the grid is as tall as its tallest sibling */
+.lab-card__desc {
+  font-size: 0.74rem; color: var(--lab-text-dim); line-height: 1.45; margin: 0;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
 .lab-card--rtl .lab-card__name,
 .lab-card--rtl .lab-card__desc { font-family: var(--font-fa); text-align: right; }
 
-.lab-card__foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.1rem; }
+.lab-card__foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 0.1rem; }
 .lab-card__status {
   display: inline-flex; align-items: center; gap: 0.35rem;
-  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em;
-  color: #4ade80;
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.03em;
+  color: var(--lab-live);
 }
 .lab-card__dot {
   width: 5px; height: 5px; border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 0 0 rgba(74,222,128,0.6);
+  background: var(--lab-live);
+  box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.6);
   animation: lab-dot-pulse 1.8s ease-out infinite;
 }
 @keyframes lab-dot-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
-  70%  { box-shadow: 0 0 0 5px rgba(74,222,128,0); }
-  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.5); }
+  70%  { box-shadow: 0 0 0 5px rgba(94, 234, 212, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(94, 234, 212, 0); }
 }
-.lab-card__status--off { color: #f87171; }
-.lab-card__status--off .lab-card__dot { background: #f87171; animation: none; box-shadow: none; }
+.lab-card__status--off { color: var(--lab-off); }
+.lab-card__status--off .lab-card__dot { background: var(--lab-off); animation: none; box-shadow: none; }
 
 .lab-card__cta {
   display: inline-flex; align-items: center; gap: 0.3rem;
-  font-family: var(--font-mono); font-size: 0.7rem; color: #4ade80;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--lab-accent);
 }
 .lab-card__cta svg { transition: transform 0.2s ease; }
 .lab-card--active:hover .lab-card__cta svg { transform: translateX(3px); }
 
+/* A dashed border says "placeholder"; these are real tools that happen to be
+   off. Same solid frame as the live cards, just held further back. */
 .lab-card--inactive {
-  border-style: dashed;
-  border-color: rgba(255,255,255,0.13);
-  background: transparent;
-  opacity: 0.8;
+  border-color: rgba(148, 163, 184, 0.10);
+  background: rgba(226, 232, 240, 0.018);
 }
-.lab-card--inactive:hover { transform: none; border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.02); }
-.lab-card--inactive .lab-card__icon { background: rgba(255,255,255,0.06); color: #9ca3af; }
+.lab-card--inactive:hover { transform: none; border-color: rgba(148, 163, 184, 0.2); background: rgba(226, 232, 240, 0.035); }
+.lab-card--inactive .lab-card__icon {
+  background: rgba(148, 163, 184, 0.08); color: var(--lab-text-dim); box-shadow: none;
+}
+.lab-card--inactive .lab-card__name { color: var(--lab-text); }
 
 /* ---- mobile: dense, modern horizontal scroll-snap row instead of a stack ---- */
 @media (max-width: 640px) {
@@ -1946,8 +2219,10 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
   .lab-terminal__title { font-size: 0.65rem; }
   .lab-terminal__title svg { display: none; }
   .lab-terminal__status { font-size: 0.56rem; }
-  .lab-terminal__log { height: 240px; padding: 0.85rem 0.9rem; }
-  .lab-terminal__fixed { padding: 1.1rem 1.1rem 1.2rem; }
+  .lab-section { padding-block: 2.4rem; }
+  .lab-terminal__log { height: 152px; padding: 0.75rem 0.85rem; }
+  .lab-terminal__fixed { padding: 0.95rem 1rem 1.05rem; }
+  .lab-grid { margin-top: 1.1rem; }
   .lab-grid {
     display: flex;
     overflow-x: auto;
@@ -1965,10 +2240,10 @@ body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
   .lab-card {
     scroll-snap-align: start;
     flex: 0 0 158px;
-    padding: 0.85rem 0.9rem;
+    padding: 0.75rem 0.85rem;
   }
-  .lab-card__name { font-size: 0.84rem; }
-  .lab-card__desc { font-size: 0.72rem; }
+  .lab-card__name { font-size: 0.82rem; }
+  .lab-card__desc { font-size: 0.71rem; }
 }
 
 /* =========================================================================
