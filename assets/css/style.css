@@ -159,7 +159,17 @@ body.lang-fa .mono { letter-spacing: 0; }
    directions. The explicit right/left pair this replaces produced a
    right-flush last line in English — reading as right-aligned text — any time
    the html[dir="ltr"] override didn't win. */
-.justify { text-align: justify; }
+/* Justification kept "low": the browser is told to take up the slack in the
+   word spaces only. Left to `auto` a shaping engine is allowed to stretch the
+   letters themselves — kashida elongation in Arabic script, letter-spacing in
+   Latin — which is what makes justified type look pulled apart. Word spaces
+   are also nudged marginally tight so that the extra the engine adds starts
+   from a smaller base. */
+.justify {
+  text-align: justify;
+  text-justify: inter-word;
+  word-spacing: -0.012em;
+}
 .justify:lang(en) { hyphens: auto; }
 
 /* Persian headings/labels must never get letter-spacing or uppercase —
@@ -169,11 +179,16 @@ body.lang-fa .page-header__eyebrow,
 body.lang-fa .resume__block-title,
 body.lang-fa .interests-band__title,
 body.lang-fa .skills-group__label { font-size: 0.8rem; line-height: 1.7; }
+body.lang-fa .section__eyebrow,
+body.lang-fa .page-header__eyebrow,
+body.lang-fa .resume__block-title,
+body.lang-fa .interests-band__title,
 body.lang-fa .skills-group__label,
 body.lang-fa .pub-card__role,
 body.lang-fa .cert-card__link,
 body.lang-fa .resume__entry-tag,
-body.lang-fa .resume__entry-kicker {
+body.lang-fa .resume__entry-kicker,
+body.lang-fa .dock__label {
   letter-spacing: 0 !important;
   text-transform: none !important;
 }
@@ -728,7 +743,7 @@ html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1
   0%, 100% { background-position: 0% 0; }
   50% { background-position: 100% 0; }
 }
-.section__text { color: var(--ink-dim); max-width: 62ch; font-size: 1.02rem; font-weight: var(--w-prose); line-height: 1.78; margin-top: 0.95rem; }
+.section__text { color: var(--ink-dim); max-width: 62ch; font-size: 0.98rem; font-weight: var(--w-prose); line-height: 1.68; margin-top: 0.95rem; }
 
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
@@ -851,7 +866,15 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem;
   color: var(--umber); margin-bottom: 0.7rem;
 }
-.interests-band__text { color: #000; font-size: 0.98rem; font-weight: var(--w-prose); line-height: 1.78; }
+.interests-band__text { color: #000; font-size: 0.98rem; font-weight: var(--w-prose); line-height: 1.68; }
+/* The About paragraph had no rule of its own, so it fell through to the body:
+   1rem at weight 400 against Interests' 0.98rem at 350 right beside it. Same
+   block of running prose, two different settings. */
+.resume__lorem {
+  font-size: 0.98rem;
+  font-weight: var(--w-prose);
+  line-height: 1.68;
+}
 /* .resume__lorem / .interests-band__text are always paired with .justify
    in the markup, which already handles text-align + text-align-last
    correctly per direction — this rule used to override text-align back
@@ -906,23 +929,42 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
    flowing run — the same content reads in about a third of the height, each
    group is exactly as tall as its own content, and it looks like a résumé
    rather than a search UI. */
-.skills-groups { display: block; }
+.skills-groups { display: block; padding-inline-start: 1.15rem; }
+/* Drawn as a tree, borrowing the spine-and-stub the certificates already use:
+   each group is a branch off one vertical rule, its label the node and its
+   terms the leaf sitting opposite. The spine is built from a per-group
+   segment rather than a border on the container so the first and last branch
+   can start and stop AT their node — a rule running past the last stub reads
+   as an unfinished list. */
 .skills-group {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
   gap: 0.35rem 1.75rem;
-  padding-block: 0.9rem;
-  border-top: 1px solid var(--hairline);
+  padding-block: 0.65rem;
 }
-.skills-group:first-child { border-top: 0; padding-top: 0.25rem; }
-.skills-group:last-child { padding-bottom: 0.25rem; }
+.skills-group::before {
+  content: "";
+  position: absolute; inset-inline-start: -1.15rem;
+  top: 0; bottom: 0; width: 1px;
+  background: var(--hairline);
+}
+.skills-group:first-child::before { top: 1.05rem; }
+.skills-group:last-child::before { bottom: auto; height: 1.05rem; }
 .skills-group__label {
+  position: relative;
   display: block; align-self: start;
   margin: 0.2rem 0 0;
   font-family: var(--font-mono); font-weight: 500;
   font-size: 0.68rem; line-height: 1.55;
   text-transform: uppercase; letter-spacing: 0.07em;
   color: var(--umber);
+}
+.skills-group__label::before {
+  content: "";
+  position: absolute; inset-inline-start: -1.15rem;
+  top: 0.62em; width: 0.8rem; height: 1px;
+  background: var(--hairline);
 }
 .skills-list {
   display: flex; flex-wrap: wrap; align-items: baseline;
@@ -943,13 +985,13 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   color: var(--ink-faint);
 }
 /* Every term in this list is a Latin technical name, even on the Persian
-   page. Laid out RTL the comma lands on the left of the word it follows and
-   reads as a leading comma, so the run itself is set LTR and then pushed to
-   the right-hand (leading) edge of its column — each line reads left to right
-   while the block still rags the way the rest of the page does. */
+   page, so the run is set LTR — laid out RTL the comma lands on the left of
+   the word it follows and reads as a leading comma. It then starts where a
+   Latin run starts, at the left: right-ragging a column of English terms only
+   made them harder to scan. */
 body.lang-fa .skills-list {
   direction: ltr;
-  justify-content: flex-end;
+  text-align: left;
 }
 
 .lang-bars { display: flex; flex-direction: column; gap: 1rem; max-width: 420px; }
@@ -1050,7 +1092,11 @@ body.lang-fa .cert-chip__id {
 .pub-card__citation {
   color: var(--ink-dim); max-width: 62ch;
   font-size: 0.86rem; font-weight: var(--w-prose); line-height: 1.65; margin: 0;
+  text-align: justify;
+  text-justify: inter-word;
+  word-spacing: -0.012em;
 }
+.pub-card__citation:lang(en) { hyphens: auto; }
 .pub-card__title {
   font-family: var(--font-display); font-style: italic; font-weight: 400;
   font-size: 1.12rem; line-height: 1.4;
@@ -1162,8 +1208,15 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   .dock__icon { width: 18px; height: 18px; }
   .dock__sep { margin-inline: 0.2rem 0.1rem; }
   .dock-lang a { min-width: 1.85rem; font-size: 0.52rem; }
-  /* the label has nowhere useful to sit beside a 320px column of terms */
-  .skills-group { grid-template-columns: 1fr; gap: 0.3rem; padding-block: 0.8rem; }
+  /* the label has nowhere useful to sit beside a 320px column of terms, so
+     the branch stacks: node on the stub, leaf indented underneath it */
+  .skills-groups { padding-inline-start: 0.95rem; }
+  .skills-group { grid-template-columns: 1fr; gap: 0.3rem; padding-block: 0.6rem; }
+  .skills-group::before,
+  .skills-group__label::before { inset-inline-start: -0.95rem; }
+  .skills-group__label::before { width: 0.65rem; }
+  .skills-group:first-child::before { top: 0.95rem; }
+  .skills-group:last-child::before { height: 0.95rem; }
   .hero { padding-top: 3.5rem; }
   .resume-surface { padding: 0.5rem 1rem; }
   .contact__buttons { gap: 0.5rem; }
@@ -1545,19 +1598,45 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
    block whose shape changed with the viewport and with the language; stacked
    to a common width they read as what they are — a short list of three
    entries, each the same kind of thing. */
+/* No frame at all. A dashed pill borrows the shape of the live contact cards
+   above and then contradicts it, so the eye reads three more buttons before it
+   reads "unavailable". These are a quiet register instead: hairline-separated
+   rows, and a hollow dot answering the filled, pulsing one on the live
+   channels — off is the absence of the light, not a different box. */
 .contact-more {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0.4rem; max-width: var(--max-w); margin-inline: auto; padding: 0;
+  display: flex; flex-direction: column;
+  gap: 0; width: min(100%, 16rem); margin-inline: auto; padding: 0;
 }
 .contact-chip {
-  min-width: 15rem; text-align: center;
-  font-family: var(--font-mono); font-weight: 300; font-size: 0.72rem; line-height: 1.45;
-  color: var(--ink-dim);            /* was --ink-faint = 3.11:1, fails 1.4.3 */
-  background: rgba(255,255,255,0.34);
-  border: 1px dashed var(--hairline);  /* "unavailable" reads from the dashed
-                                          edge and weak fill, not from text
-                                          contrast that fails AA */
-  border-radius: 999px; padding: 0.4rem 0.8rem;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 0.6rem;
+  padding-block: 0.46rem;
+  background: none; border: 0;
+}
+.contact-chip + .contact-chip {
+  border-top: 1px solid color-mix(in srgb, var(--hairline) 55%, transparent);
+}
+.contact-chip::before {
+  content: "";
+  inline-size: 5px; block-size: 5px; border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--ink-faint);
+}
+.contact-chip__name {
+  font-family: var(--font-title); font-weight: 450;
+  font-size: 0.84rem; line-height: 1.3; letter-spacing: -0.004em;
+  color: var(--ink-dim);
+}
+.contact-chip__state {
+  font-family: var(--font-mono-en); font-weight: 300;
+  font-size: 0.6rem; line-height: 1;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--ink-dim);            /* not --ink-faint: 3.11:1 fails 1.4.3 */
+}
+/* the Persian state is a phrase, not a code: no mono, no caps, no tracking */
+body.lang-fa .contact-chip__state {
+  font-family: var(--font-fa); font-weight: 400;
+  font-size: 0.68rem; line-height: 1.4;
+  text-transform: none; letter-spacing: 0;
 }
 
 /* ---- phone: same logic, retuned tokens only --------------------------- */
@@ -1584,10 +1663,13 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
   .contact-card__icon { border-radius: 11px; }
   .contact-card__label { font-size: 1.02rem; }
   .contact-card__sub { font-size: 0.74rem; }
-  .contact-chip { min-width: min(100%, 13.5rem); font-size: 0.68rem; padding: 0.36rem 0.6rem; }
+  .contact-more { width: min(100%, 14.5rem); }
+  .contact-chip { padding-block: 0.42rem; }
+  .contact-chip__name { font-size: 0.8rem; }
 }
 @media (max-width: 380px) {
-  .contact-chip { font-size: 0.64rem; padding: 0.34rem 0.5rem; }
+  .contact-chip__name { font-size: 0.78rem; }
+  .contact-chip__state { font-size: 0.56rem; }
 }
 
 /* ---- reduced motion: keep the shingle, drop the travel ----------------- */
@@ -1764,6 +1846,9 @@ body.lang-fa .contact-card__badge { text-transform: none; letter-spacing: 0; }
 body.lang-fa .spotify-panel__head { direction: rtl; }
 body.lang-fa .spotify-panel__count,
 body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
+/* Arabic script is joined: tracking prises the letters of a word apart rather
+   than spacing the word out. Zero everywhere Persian is set. */
+body.lang-fa .spotify-panel__count { letter-spacing: 0; }
 
 /* ---- the list reads like a Spotify track list: an index that becomes a
    play triangle under the cursor, and nothing else competing with it ---- */
