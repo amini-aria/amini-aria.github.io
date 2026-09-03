@@ -447,18 +447,36 @@ class ResumeBuilder:
 
     def _spine(self, paragraph):
         """One hairline rule down the start edge of a paragraph — the trunk the
-        group labels branch off. Word and LibreOffice mirror w:left for bidi
-        paragraphs the same way they mirror w:ind/w:left, so the Persian build
-        gets the rule on the right without a second code path."""
+        group labels branch off.
+
+        The side is chosen here rather than left to the renderer. w:pBdr has no
+        start/end pair, only physical left and right, and LibreOffice honours
+        that literally even on a w:bidi paragraph: the first Persian build put
+        the rule down the left margin with the text against the right. So the
+        Persian document asks for w:right and indents from the right, which is
+        the same figure mirrored, and neither build depends on a renderer
+        guessing what "left" means in an RTL paragraph.
+
+        pBdr goes at the head of pPr because the schema orders it ahead of
+        w:bidi, w:spacing, w:ind and w:jc — all of which _para and the caller
+        have already written by the time this runs."""
         pPr = paragraph._p.get_or_add_pPr()
         pBdr = OxmlElement("w:pBdr")
-        left = OxmlElement("w:left")
-        left.set(qn("w:val"), "single")
-        left.set(qn("w:sz"), "6")
-        left.set(qn("w:space"), "6")
-        left.set(qn("w:color"), "999999")
-        pBdr.append(left)
-        pPr.append(pBdr)
+        edge = OxmlElement("w:right" if self.is_fa else "w:left")
+        edge.set(qn("w:val"), "single")
+        edge.set(qn("w:sz"), "6")
+        edge.set(qn("w:space"), "6")
+        edge.set(qn("w:color"), "999999")
+        pBdr.append(edge)
+        pPr.insert(0, pBdr)
+
+    def _indent_from_spine(self, paragraph, cm):
+        """Indent off the edge the spine is on, for the same reason: w:ind
+        left/right are physical here too."""
+        if self.is_fa:
+            paragraph.paragraph_format.right_indent = Cm(cm)
+        else:
+            paragraph.paragraph_format.left_indent = Cm(cm)
 
     def _skill_tree(self, groups):
         """The site draws this section as a tree — one spine, a node per group,
@@ -475,12 +493,12 @@ class ResumeBuilder:
         items = list(groups.items())
         for i, (label, terms) in enumerate(items):
             head = self._para(space_before=0 if i == 0 else 3, space_after=0)
-            head.paragraph_format.left_indent = Cm(0.5)
+            self._indent_from_spine(head, 0.5)
             self._spine(head)
             self._run(head, label, weight="demibold", size=SIZE_BODY)
 
             leaf = self._para(space_before=0, space_after=2 if i == len(items) - 1 else 0)
-            leaf.paragraph_format.left_indent = Cm(0.5)
+            self._indent_from_spine(leaf, 0.5)
             leaf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._spine(leaf)
             self._run(leaf, "  \u2022  ".join(terms), weight="regular", size=SIZE_BODY)
