@@ -53,6 +53,205 @@
     }
   }
 
+
+  /* ---------- Scroll with weight ----------
+     A wheel notch is a step function: the browser is handed ~100px and moves
+     the page there over a fixed, short animation of its own. Read a long page
+     that way and the motion is a series of small shoves — there is nothing
+     between where you were and where you land, so the eye has to re-find its
+     place after every notch. Trackpads make it worse, not better: they fire
+     dozens of tiny deltas a second and each one is its own little jump.
+
+     So the wheel stops driving the page directly. It drives a TARGET, and a
+     single requestAnimationFrame loop walks the real scroll position toward
+     that target on every frame the display offers — 60, 120, whatever the
+     panel does. The reader's own inertia arrives as more target, so flicks
+     accumulate instead of fighting, and when the fingers stop the page keeps
+     going and settles rather than stopping dead.
+
+     The step is exponential damping, not a fixed-duration tween:
+
+         position += (target - position) * (1 - e^(-lambda * dt))
+
+     Two reasons for that shape. It has no end time, so a new delta mid-glide
+     just moves the target and the motion stays continuous — a tween would
+     have to be restarted, which is the stutter that makes most "smooth
+     scroll" scripts feel worse than none. And because dt is real elapsed
+     time, the curve is identical at any refresh rate: the same gesture takes
+     the same time on a 60Hz panel and a 120Hz one, the faster panel simply
+     draws more of it. (This is the same integrator Lenis and friends settle
+     on; the shape is worth borrowing, the 3kb of library is not.)
+
+     What is deliberately NOT touched:
+       - touch. Native touch scrolling is already momentum-based, runs on the
+         compositor thread, and carries the rubber band, the address-bar hide
+         and pull-to-refresh with it. Re-implementing it in JS trades all of
+         that for input lag. There are no touch handlers here at all.
+       - anything the reader drives directly: scrollbar drags, find-in-page,
+         focus jumps, the language hand-off. Any scroll we did not write
+         cancels the glide on the next frame and hands the page back.
+       - inner scrollers (the playlist, the lab strip on phones), the pinch
+         gesture, horizontal swipes, and the ends of the page, where letting
+         the event through is what keeps the platform's overscroll alive.
+       - reduced motion. Then this whole block is inert and the browser's own
+         scrolling is what you get. */
+  (function inertialScroll() {
+    var docEl = document.documentElement;
+    if (!window.requestAnimationFrame) { return; }
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { return; }
+
+    /* Rate of approach, per second. Time to cover 90% of the remaining gap is
+       ln(10)/LAMBDA: at 7.5 that is ~0.3s, which is long enough to read as
+       weight and short enough that the page still feels attached to the hand.
+       Lower is floatier, higher is snappier; below ~5 it starts to feel like
+       the page is being towed. */
+    var LAMBDA = 7.5;
+    var LINE = 34;        /* px per line, for the browsers that report lines */
+    var SETTLE = 0.08;    /* px: closer than this and the glide is over */
+
+    var target = 0;
+    var position = 0;
+    var written = -1;     /* the last position WE asked for */
+    var running = false;
+    var lastT = 0;
+    var maxY = 0;
+
+    function readMax() {
+      maxY = Math.max(0, docEl.scrollHeight - window.innerHeight);
+      return maxY;
+    }
+    function clamp(v) { return v < 0 ? 0 : (v > maxY ? maxY : v); }
+    function now() { return window.pageYOffset || docEl.scrollTop || 0; }
+
+    function frame(t) {
+      var dt = lastT ? (t - lastT) / 1000 : 1 / 60;
+      lastT = t;
+      /* a tab that was hidden, or a frame the browser had to skip, must not
+         be paid off in one enormous step */
+      if (dt > 0.05) { dt = 0.05; }
+
+      var real = now();
+      if (Math.abs(real - written) > 2) {
+        /* somebody else moved the page. Whoever it was outranks us. */
+        running = false;
+        lastT = 0;
+        written = -1;
+        return;
+      }
+      readMax();
+      target = clamp(target);
+
+      var gap = target - position;
+      if (gap > -SETTLE && gap < SETTLE) {
+        position = target;
+        window.scrollTo(0, position);
+        running = false;
+        lastT = 0;
+        written = -1;
+        return;
+      }
+      position += gap * (1 - Math.exp(-LAMBDA * dt));
+      written = position;
+      window.scrollTo(0, position);
+      window.requestAnimationFrame(frame);
+    }
+
+    function push(delta) {
+      readMax();
+      if (!running) {
+        position = now();
+        target = position;
+      }
+      var next = clamp(target + delta);
+      /* Nothing left in that direction: hand the event back to the browser so
+         the platform's own end-of-page feel (the rubber band, the overscroll
+         glow) still happens. The comparison has to carry a tolerance, because
+         once the page is resting on an edge the real offset is usually a
+         fraction of a pixel away from it and an exact test never fires. */
+      if (Math.abs(next - target) < 1) { return false; }
+      target = next;
+      if (!running) {
+        running = true;
+        lastT = 0;
+        written = position;
+        window.requestAnimationFrame(frame);
+      }
+      return true;
+    }
+
+    /* Does the pointer sit over something that scrolls on its own and still
+       has room to move the way the wheel is asking? Then it is not ours. */
+    function innerScroller(node, delta) {
+      while (node && node !== document.body && node !== docEl) {
+        if (node.nodeType === 1 && node.scrollHeight - node.clientHeight > 1) {
+          var flow = window.getComputedStyle(node).overflowY;
+          if (flow === "auto" || flow === "scroll") {
+            var room = delta < 0
+              ? node.scrollTop > 1
+              : node.scrollTop < node.scrollHeight - node.clientHeight - 1;
+            if (room) { return true; }
+          }
+        }
+        node = node.parentNode;
+      }
+      return false;
+    }
+
+    window.addEventListener("wheel", function (e) {
+      /* ctrl/cmd + wheel is zoom, and a trackpad pinch arrives as exactly
+         that; a sideways gesture is a swipe, sometimes the back gesture */
+      if (e.ctrlKey || e.metaKey || e.defaultPrevented) { return; }
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { return; }
+      var delta = e.deltaY;
+      if (!delta) { return; }
+      if (e.deltaMode === 1) { delta *= LINE; }
+      else if (e.deltaMode === 2) { delta *= window.innerHeight * 0.9; }
+      if (innerScroller(e.target, delta)) { return; }
+      /* push() reports false at the top and the bottom of the page, and the
+         event goes through untouched so the platform can rubber-band */
+      if (push(delta)) { e.preventDefault(); }
+    }, { passive: false });
+
+    var TYPING = /^(INPUT|TEXTAREA|SELECT)$/;
+    window.addEventListener("keydown", function (e) {
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) { return; }
+      var el = e.target;
+      if (el && (TYPING.test(el.tagName) || el.isContentEditable)) { return; }
+      var page = window.innerHeight * 0.9;
+      var key = e.key;
+      var delta = null;
+      if (key === "PageDown") { delta = page; }
+      else if (key === "PageUp") { delta = -page; }
+      else if (key === "ArrowDown") { delta = 110; }
+      else if (key === "ArrowUp") { delta = -110; }
+      else if (key === " " || key === "Spacebar") {
+        /* space belongs to whatever is focused if that thing can take it */
+        if (el && el.closest && el.closest("a, button, summary, [tabindex]")) { return; }
+        delta = e.shiftKey ? -page : page;
+      } else if (key === "Home" || key === "End") {
+        readMax();
+        if (!running) { position = now(); }
+        target = key === "Home" ? 0 : maxY;
+        if (Math.abs(target - position) < 1) { return; }
+        e.preventDefault();
+        if (!running) {
+          running = true;
+          lastT = 0;
+          written = position;
+          window.requestAnimationFrame(frame);
+        }
+        return;
+      }
+      if (delta === null) { return; }
+      if (innerScroller(el, delta)) { return; }
+      if (push(delta)) { e.preventDefault(); }
+    });
+
+    /* html { scroll-behavior: smooth } would put a second animation between
+       every scrollTo above and the pixels, i.e. one animation per frame */
+    docEl.classList.add("has-inertia");
+  })();
+
   var revealObserver;
   function observeReveals() {
     if (!revealObserver) {
@@ -385,6 +584,21 @@
       if (!spotifyDropdown.contains(e.target)) closeSpotify();
     });
   }
+  /* ---------- Marks with nowhere to go ----------
+     Three of the profile marks in the hero (Scholar, ResearchGate, GitHub)
+     are still waiting on their addresses and carry href="#". A bare "#" is a
+     link to the top of the document, so pressing one threw the reader back
+     to the top of the page — the one thing a dead link should not do. Until
+     the real addresses land they announce themselves as unavailable and do
+     nothing at all. */
+  Array.prototype.forEach.call(
+    document.querySelectorAll('.hero__socials a[href="#"]'),
+    function (a) {
+      a.setAttribute("aria-disabled", "true");
+      a.addEventListener("click", function (e) { e.preventDefault(); });
+    }
+  );
+
   /* ---------- One highlight, travelling ----------
      Every dock item used to fade in its own background on hover. Two
      rectangles cross-fading reads as two events; one rectangle moving reads
@@ -452,17 +666,42 @@
       });
     }
   }
+  /* The hand-off itself. One requestAnimationFrame was not enough and the
+     feature was silently doing nothing: at that point the new page is a
+     fraction of its final height — fonts still swapping, images still
+     arriving — so the ratio resolved against almost no page, and whatever
+     little scroll it did ask for was then overwritten by the browser's own
+     reset for a fresh navigation. So hold the position instead of setting
+     it: re-place it every frame while the page is still growing, and give
+     that up the moment the reader touches anything, because from then on
+     where the page sits is their business and not ours. */
   (function restoreScroll() {
     var val;
     try { val = sessionStorage.getItem("scrollRatio"); } catch (e) { val = null; }
     if (val === null) return;
     try { sessionStorage.removeItem("scrollRatio"); } catch (e) {}
     var ratio = parseFloat(val);
-    if (isNaN(ratio)) return;
-    requestAnimationFrame(function () {
+    if (isNaN(ratio) || ratio <= 0) return;
+
+    var giveUpAt = Date.now() + 1800;
+    var events = ["wheel", "touchstart", "pointerdown", "keydown"];
+    var live = true;
+
+    function stop() {
+      live = false;
+      events.forEach(function (name) { window.removeEventListener(name, stop); });
+    }
+    function place() {
+      if (!live) return;
       var docH = document.documentElement.scrollHeight - window.innerHeight;
-      window.scrollTo(0, Math.max(0, docH * ratio));
+      if (docH > 0) window.scrollTo(0, Math.round(docH * ratio));
+      if (Date.now() > giveUpAt) { stop(); return; }
+      requestAnimationFrame(place);
+    }
+    events.forEach(function (name) {
+      window.addEventListener(name, stop, { passive: true });
     });
+    place();
   })();
   /* Aria's Lab title typewriter, card rendering, and terminal log now live
      in assets/js/lab.js (single source of truth for that section). */

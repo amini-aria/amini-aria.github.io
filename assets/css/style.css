@@ -89,12 +89,23 @@ body.lang-fa {
    between pages in browsers that support it (Chromium). Degrades to a
    plain swap everywhere else — no JS required, purely progressive. */
 @view-transition { navigation: auto; }
+/* The site-wide reduced-motion block below cannot reach these: the view
+   transition pseudo-elements live in their own tree and * never matches
+   them. Turning the navigation off is the honest way to say the same thing. */
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
 
 /* =========================================================================
    RESET
    ========================================================================= */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* ...unless app.js is driving the scroll itself (see inertialScroll). It
+   moves the page a fraction of the remaining distance every frame, and with
+   scroll-behavior: smooth each of those would start its own animation to a
+   destination the next frame overwrites — smooth twice over is stutter. */
+html.has-inertia { scroll-behavior: auto; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
@@ -245,6 +256,15 @@ html[dir="rtl"] .fossil-field { transform: scaleX(-1); }
   position: sticky; z-index: 90;
   bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
   margin-inline: auto;
+  /* The bar is the one thing on the site that is meant to survive a page
+     change, so it is captured as a single shared element rather than left to
+     the root cross-fade. Without a name of its own it was captured twice —
+     once per page — and near the end of a page, where it lifts off the bottom
+     to sit above the footer, the two copies were 168px apart: for the length
+     of the transition you saw the old bar high, the new bar low, and the
+     cream pill sailing between them. Named, there is exactly one bar, and it
+     glides from wherever it was to wherever it belongs. */
+  view-transition-name: dock;
   width: max-content; max-width: calc(100% - 1.5rem);
   display: flex; align-items: stretch; gap: 2px;
   padding: 5px;
