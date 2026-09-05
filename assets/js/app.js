@@ -440,11 +440,19 @@
   }
 
   /* ---------- Publications page: auto-mirror sections from the resume page ----------
-     Single source of truth stays the resume page. This just fetches its HTML
+     Single source of truth stays the resume page. This fetches its HTML
      (same-origin) and clones the matching .resume__block sections in place,
-     so nothing has to be typed twice. */
+     so nothing has to be typed twice.
+
+     Normally there is nothing to do: scripts/build_publications.py does the
+     same clone at build time, so the sections are already in the HTML. Doing
+     it here was the whole problem -- until the fetch came back the page was
+     about a viewport tall, and the dock, which sticks to the bottom of the
+     document, snapped down 489px the moment the sections landed. This is now
+     only the fallback for a mount that arrived empty, which means the resume
+     page was edited by hand and is being previewed before CI has run. */
   var mirrorMount = document.getElementById("mirror-mount");
-  if (mirrorMount) {
+  if (mirrorMount && !mirrorMount.firstElementChild) {
     var sourcePath = mirrorMount.getAttribute("data-source");
     var titlesAttr = mirrorMount.getAttribute("data-titles") || "";
     var wantedTitles = titlesAttr.split("|").map(function (s) { return s.trim(); });

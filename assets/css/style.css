@@ -1134,6 +1134,16 @@ body.lang-fa .cert-chip__id {
   word-spacing: -0.012em;
 }
 .pub-card__citation:lang(en) { hyphens: auto; }
+/* Persian has nowhere else to give. English justifies against hyphens: auto,
+   so a line that is short of the measure can break a word and its spaces stay
+   near normal. Persian does not hyphenate, so every pixel a line is short
+   comes out of its word spaces alone -- in these cards that measured 12.8px
+   against a natural 3.7px, which is what reads as the words drifting apart.
+   For a bibliography in this script the flush edge is not worth that. */
+.pub-card__citation:lang(fa) {
+  text-align: start;
+  word-spacing: normal;
+}
 .pub-card__title {
   font-family: var(--font-display); font-style: italic; font-weight: 400;
   font-size: 1.12rem; line-height: 1.4;

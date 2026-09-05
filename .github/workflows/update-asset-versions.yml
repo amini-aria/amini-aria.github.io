@@ -1,6 +1,7 @@
-name: Update asset cache-busting versions
+name: Bake pages and stamp assets
 
-# On every push to main, rewrites each HTML page's ?v=... query string to
+# On every push to main, mirrors the resume sections into the publications
+# pages and rewrites each HTML page's ?v=... query string to
 # that commit's short SHA and republishes version.json. Without this, a
 # browser that already cached the old files has no reason to notice a
 # deploy happened and can keep serving them for hours (see
@@ -33,6 +34,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      # Before the stamping, so anything copied into the publications pages
+      # gets stamped in the same run.
+      - name: Mirror resume sections into the publications pages
+        run: python3 scripts/build_publications.py
 
       - name: Update asset versions in HTML
         run: python3 scripts/update_asset_versions.py
