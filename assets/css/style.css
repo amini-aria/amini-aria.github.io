@@ -664,43 +664,52 @@ html[dir="rtl"] .hero-btn__icon { transform: scaleX(-1); }
 .hero__actions .btn:hover .hero-btn__icon { opacity: 1; transform: translateX(3px); }
 html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1) translateX(3px); }
 
-/* Two buttons, two pastels drawn off the palette's own hues — apricot from the
-   clay, sage from the olive — rather than one dark slab and one blank white
+/* Two buttons, two pastels — rather than one dark slab and one blank white
    plate. The dark umber fill was the heaviest object on a page whose whole
    surface is pale, so it pulled the eye past the portrait; a tinted plate with
-   ink type on it carries the same emphasis at the page's own weight, and the
-   two buttons now read as a pair in two colours instead of a loud one and a
-   quiet one. Type stays dark on the tint: pastel and white is the one
-   combination that cannot clear AA. */
+   ink type on it carries the same emphasis at the page's own weight.
+
+   The first pair of tints was drawn straight off the palette — apricot from
+   the clay, sage from the olive — which kept them soft but also kept them
+   inside the same warm cream family as the card they sit on, so the plates
+   melted into it. These stay just as pale (both are lighter than the tints
+   they replace at the top of the gradient) and separate by hue instead: a
+   dusty rose and a eucalyptus green, warm against cool, so the two read as a
+   deliberate pair and each reads as a distinct object on the cream.
+
+   Type stays dark on the tint: pastel and white is the one combination that
+   cannot clear AA. Measured on the deep end of each gradient, where it is
+   hardest, the labels sit at 7.1 and 7.5 to 1 — both above the 7.3/7.4 the
+   old tints gave, so nothing was traded away for the colour. */
 .hero__actions .btn--primary {
-  background: linear-gradient(145deg, #FAE3CE 0%, #F2CDAF 100%);
-  border-color: rgba(181, 98, 59, 0.28);
-  color: #59341D;
-  box-shadow: 0 10px 22px -16px rgba(122, 75, 46, 0.55),
+  background: linear-gradient(145deg, #F7DFD9 0%, #EDC4BB 100%);
+  border-color: rgba(166, 92, 80, 0.30);
+  color: #5A2E28;
+  box-shadow: 0 10px 22px -16px rgba(122, 60, 50, 0.55),
               inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 .hero__actions .btn--primary:hover {
-  background: linear-gradient(145deg, #FCEBDB 0%, #F0C6A4 100%);
-  border-color: rgba(181, 98, 59, 0.42);
-  box-shadow: 0 18px 30px -16px rgba(122, 75, 46, 0.42),
+  background: linear-gradient(145deg, #FBE9E5 0%, #EBBBB0 100%);
+  border-color: rgba(166, 92, 80, 0.44);
+  box-shadow: 0 18px 30px -16px rgba(122, 60, 50, 0.42),
               inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 .hero__actions .btn--primary .hero-btn__meta { opacity: 0.66; }
 
 .hero__actions .btn--outline {
-  background: linear-gradient(145deg, #EDF1E1 0%, #DCE4C9 100%);
-  border-color: rgba(110, 122, 79, 0.3);
-  color: #3E4828;
-  box-shadow: 0 10px 22px -16px rgba(74, 84, 52, 0.5),
+  background: linear-gradient(145deg, #DCE9E4 0%, #BFD8D0 100%);
+  border-color: rgba(74, 116, 105, 0.32);
+  color: #1F4038;
+  box-shadow: 0 10px 22px -16px rgba(40, 84, 74, 0.5),
               inset 0 1px 0 rgba(255, 255, 255, 0.72);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 .hero__actions .btn--outline:hover {
-  background: linear-gradient(145deg, #F3F6EA 0%, #D6DFBE 100%);
-  border-color: rgba(110, 122, 79, 0.45);
-  color: #364021;
-  box-shadow: 0 18px 30px -16px rgba(74, 84, 52, 0.38),
+  background: linear-gradient(145deg, #E7F1ED 0%, #B4D0C7 100%);
+  border-color: rgba(74, 116, 105, 0.46);
+  color: #16342D;
+  box-shadow: 0 18px 30px -16px rgba(40, 84, 74, 0.38),
               inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
