@@ -664,58 +664,43 @@ html[dir="rtl"] .hero-btn__icon { transform: scaleX(-1); }
 .hero__actions .btn:hover .hero-btn__icon { opacity: 1; transform: translateX(3px); }
 html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1) translateX(3px); }
 
-/* Two buttons, two pastels — rather than one dark slab and one blank white
+/* Two buttons, two pastels drawn off the palette's own hues — apricot from the
+   clay, sage from the olive — rather than one dark slab and one blank white
    plate. The dark umber fill was the heaviest object on a page whose whole
    surface is pale, so it pulled the eye past the portrait; a tinted plate with
-   ink type on it carries the same emphasis at the page's own weight.
-
-   Three earlier pairs failed, each for its own reason. Apricot and sage were
-   mixed down from the clay and the olive, so they were the cream card's own
-   colours at lower strength and the plates dissolved into it. The rose that
-   replaced the apricot separated by hue but landed in a pink the page has no
-   other use for. The blue and periwinkle after that avoided both traps and
-   then sat 33 degrees apart, close enough that the pair read as one colour
-   printed twice.
-
-   So the constraint is three-sided: outside the warm palette, outside pink,
-   and far enough apart to be told apart. A pale cyan and a periwinkle violet
-   satisfy all three — 71 degrees of hue between them, both at 19-20% chroma
-   so neither stops being a pastel.
-
-   Type stays dark on the tint: pastel and white is the one combination that
-   cannot clear AA. Measured on the deep end of each gradient, where it is
-   hardest, the labels sit at 7.8 and 7.3 to 1 and the dimmed meta line at
-   3.5 and 3.4. */
+   ink type on it carries the same emphasis at the page's own weight, and the
+   two buttons now read as a pair in two colours instead of a loud one and a
+   quiet one. Type stays dark on the tint: pastel and white is the one
+   combination that cannot clear AA. */
 .hero__actions .btn--primary {
-  background: linear-gradient(145deg, #DAF0F0 0%, #B3DCDD 100%);
-  border-color: rgba(28, 106, 110, 0.30);
-  color: #123F41;
-  box-shadow: 0 10px 22px -16px rgba(16, 78, 82, 0.55),
+  background: linear-gradient(145deg, #FAE3CE 0%, #F2CDAF 100%);
+  border-color: rgba(181, 98, 59, 0.28);
+  color: #59341D;
+  box-shadow: 0 10px 22px -16px rgba(122, 75, 46, 0.55),
               inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 .hero__actions .btn--primary:hover {
-  background: linear-gradient(145deg, #E9F7F7 0%, #A6D6D8 100%);
-  border-color: rgba(28, 106, 110, 0.44);
-  color: #0C3234;
-  box-shadow: 0 18px 30px -16px rgba(16, 78, 82, 0.42),
+  background: linear-gradient(145deg, #FCEBDB 0%, #F0C6A4 100%);
+  border-color: rgba(181, 98, 59, 0.42);
+  box-shadow: 0 18px 30px -16px rgba(122, 75, 46, 0.42),
               inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 .hero__actions .btn--primary .hero-btn__meta { opacity: 0.66; }
 
 .hero__actions .btn--outline {
-  background: linear-gradient(145deg, #E6E1F9 0%, #C5BCEA 100%);
-  border-color: rgba(88, 74, 160, 0.30);
-  color: #2F2A5B;
-  box-shadow: 0 10px 22px -16px rgba(60, 48, 120, 0.5),
+  background: linear-gradient(145deg, #EDF1E1 0%, #DCE4C9 100%);
+  border-color: rgba(110, 122, 79, 0.3);
+  color: #3E4828;
+  box-shadow: 0 10px 22px -16px rgba(74, 84, 52, 0.5),
               inset 0 1px 0 rgba(255, 255, 255, 0.72);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 .hero__actions .btn--outline:hover {
-  background: linear-gradient(145deg, #F0EDFC 0%, #BAAFE6 100%);
-  border-color: rgba(88, 74, 160, 0.44);
-  color: #241F4B;
-  box-shadow: 0 18px 30px -16px rgba(60, 48, 120, 0.38),
+  background: linear-gradient(145deg, #F3F6EA 0%, #D6DFBE 100%);
+  border-color: rgba(110, 122, 79, 0.45);
+  color: #364021;
+  box-shadow: 0 18px 30px -16px rgba(74, 84, 52, 0.38),
               inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
