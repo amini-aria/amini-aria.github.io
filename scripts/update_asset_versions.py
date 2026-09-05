@@ -8,9 +8,8 @@ HTML file (e.g. style.css?v=20260802c) — easy to forget to bump, and
 when that happened a browser that had already cached the old file kept
 serving it silently after a deploy, with no way to tell without a hard
 refresh. This runs from CI (see
-.github/workflows/update-asset-versions.yml) whenever style.css or
-app.js/lab.js actually change, so it's automatic and there's nothing
-to remember when editing them by hand.
+.github/workflows/update-asset-versions.yml) on every push to main, so
+it's automatic and there's nothing to remember when editing by hand.
 
 Usage:
     python3 update_asset_versions.py
@@ -33,10 +32,15 @@ HTML_FILES = [
     "fa/contact/index.html",
 ]
 
-# Matches href="/assets/css/whatever.css" or src="/assets/js/whatever.js",
-# with or without an existing ?v=... suffix, and rewrites the suffix.
+# Matches href="/assets/css/whatever.css", src="/assets/js/whatever.js" or
+# src="/assets/img/whatever.jpg", with or without an existing ?v=... suffix,
+# and rewrites the suffix. Images are in here because replacing one in place
+# is exactly the case the ?v= exists for: the URL stays the same, so a
+# browser holding the old picture has no reason to ask for it again, and
+# GitHub Pages tells it not to for four hours.
 ASSET_PATTERN = re.compile(
-    r'((?:href|src)="/assets/(?:css|js)/[a-zA-Z0-9_.-]+\.(?:css|js))(?:\?v=[^"]*)?(")'
+    r'((?:href|src)="/assets/(?:css|js|img)/[a-zA-Z0-9_.-]+'
+    r'\.(?:css|js|svg|png|jpe?g|webp|avif|ico))(?:\?v=[^"]*)?(")'
 )
 
 

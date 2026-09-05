@@ -20,12 +20,27 @@
      stretch that further), so someone can sit on an old page that keeps
      asking for the old assets by name and never learns a deploy happened.
 
-     CI writes the stamp it used into /version.json, uncached. This script
-     knows its own stamp from its src, so comparing the two answers "am I
-     the current build?" directly. When they disagree, refetching the page
-     with cache: "reload" replaces the stale entry in the HTTP cache -- a
-     plain location.reload() would just re-read it -- and then the reload
-     lands on the new HTML.
+     CI writes the stamp it used into /version.json. This script knows its
+     own stamp from its src, so comparing the two answers "am I the current
+     build?" directly. When they disagree, refetching the page with
+     cache: "reload" replaces the stale entry in the HTTP cache -- a plain
+     location.reload() would just re-read it -- and then the reload lands on
+     the new HTML.
+
+     The check is asked for by a URL nobody has seen before. cache: "no-store"
+     only tells THIS browser not to answer from its own cache; the CDNs in
+     front of the site are under no such instruction, and version.json goes out
+     with max-age=600, so a plain request can be answered with a copy up to ten
+     minutes old -- which is exactly the window where the answer matters. A
+     unique query string per check has no cached copy to be answered with.
+
+     Once is not enough, either. A tab that was opened yesterday and left alone
+     runs this script exactly once, at a time when it WAS current, and never
+     asks again; the same goes for a page brought back with the Back button,
+     which is restored whole from memory without running anything. So the check
+     is repeated when the page is restored from the back/forward cache, and
+     when a tab that has been in the background for more than a few minutes is
+     looked at again.
 
      Guarded by a per-version sessionStorage flag so a bad deploy or a
      half-published version.json can cost at most one reload rather than
@@ -35,21 +50,43 @@
   if (window.fetch && thisScript) {
     var stamp = /[?&]v=([^&]+)/.exec(thisScript.src || "");
     if (stamp) {
-      fetch("/version.json", { cache: "no-store" }).then(function (res) {
-        return res.ok ? res.json() : null;
-      }).then(function (data) {
-        if (!data || !data.v || data.v === stamp[1]) { return; }
-        var flag = "build-reload:" + data.v;
-        try {
-          if (sessionStorage.getItem(flag)) { return; }
-          sessionStorage.setItem(flag, "1");
-        } catch (e) { return; }
-        fetch(window.location.href, { cache: "reload" }).then(function () {
-          window.location.reload();
-        }, function () {
-          window.location.reload();
-        });
-      }, function () {});
+      var checking = false;
+      var checkBuild = function () {
+        if (checking) { return; }
+        checking = true;
+        fetch("/version.json?t=" + Date.now(), { cache: "no-store" }).then(function (res) {
+          return res.ok ? res.json() : null;
+        }).then(function (data) {
+          checking = false;
+          if (!data || !data.v || data.v === stamp[1]) { return; }
+          var flag = "build-reload:" + data.v;
+          try {
+            if (sessionStorage.getItem(flag)) { return; }
+            sessionStorage.setItem(flag, "1");
+          } catch (e) { return; }
+          fetch(window.location.href, { cache: "reload" }).then(function () {
+            window.location.reload();
+          }, function () {
+            window.location.reload();
+          });
+        }, function () { checking = false; });
+      };
+
+      checkBuild();
+
+      window.addEventListener("pageshow", function (e) {
+        if (e.persisted) { checkBuild(); }
+      });
+
+      var hiddenAt = 0;
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          hiddenAt = Date.now();
+        } else if (hiddenAt && Date.now() - hiddenAt > 300000) {
+          hiddenAt = 0;
+          checkBuild();
+        }
+      });
     }
   }
 

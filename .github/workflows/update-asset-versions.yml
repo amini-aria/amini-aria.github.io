@@ -1,21 +1,24 @@
 name: Update asset cache-busting versions
 
-# Whenever style.css or app.js/lab.js actually change, rewrites every
-# HTML page's ?v=... query string to that commit's short SHA. Without
-# this, a browser that already cached the old style.css/app.js has no
-# reason to notice a deploy happened and can keep serving the stale
-# file for hours (see scripts/update_asset_versions.py for the rest of
-# the story) — this used to be a date typed by hand into each page.
+# On every push to main, rewrites each HTML page's ?v=... query string to
+# that commit's short SHA and republishes version.json. Without this, a
+# browser that already cached the old files has no reason to notice a
+# deploy happened and can keep serving them for hours (see
+# scripts/update_asset_versions.py for the rest of the story) — this used
+# to be a date typed by hand into each page.
+#
+# It used to run only when style.css or app.js/lab.js changed, which left
+# a hole big enough to walk through: a commit that edits only HTML (new
+# wording, a rebuilt card, a different mark) changed the page but not the
+# stamp, so version.json still agreed with the copy in the reader's cache
+# and the stale-page guard in app.js stayed quiet. The stamp has to move
+# whenever anything published moves, so the trigger is now every push.
+# The bump commit below carries [skip ci], which is what keeps this from
+# triggering itself.
 
 on:
   push:
     branches: [main]
-    paths:
-      - "assets/css/style.css"
-      - "assets/js/app.js"
-      - "assets/js/lab.js"
-      - "scripts/update_asset_versions.py"
-      - ".github/workflows/update-asset-versions.yml"
   workflow_dispatch: {}
 
 permissions:
