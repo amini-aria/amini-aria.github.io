@@ -33,7 +33,7 @@ RESUME_EN = {
         {"text": "Tehran, Iran"},
         {"text": "mo.aria.am@gmail.com"},
         {"text": "linkedin.com/in/mo-aria-amini", "url": "https://www.linkedin.com/in/mo-aria-amini"},
-        {"text": "aria-amini.ir", "url": "https://aria-amini.ir"},
+        {"text": "amini.info", "url": "https://amini.info"},
     ],
     "about": (
         "I am Mohammad Aria Amini, a Bachelor's graduate in Geology and a researcher, writer, and "
@@ -71,7 +71,7 @@ RESUME_EN = {
     ],
     # org is the heading; role + period follow on the next line
     "experience": [
-        {"org": "Varjavand Intelligent Creative Software & Hardware Services Co.", "role": "Chief Executive Officer (CEO) and Chairman of the Board", "period": "Jul 2025 \u2013 Present"},
+        {"org": "Varjavand Intelligent Creative Software & Hardware Services Co.", "role": "Chief Executive Officer (CEO) and Chairman of the Board", "period": "Jul 2025 \u2013 Present", "url": "https://varjavand.org/", "url_text": "varjavand.org"},
         {"org": "Arian Zamin Publishing House", "roles": [
             {"role": "Director", "period": "Apr 2026 \u2013 Present"},
             {"role": "Editorial Specialist and Publications Researcher", "period": "Mar 2023 \u2013 Apr 2026"},
@@ -284,6 +284,73 @@ RESUME_EN = {
             {"title": "COVID-19 Contact Tracing", "org": "Johns Hopkins University", "period": "2023", "id": "CTXPE9DBBSWB", "url": "https://www.coursera.org/account/accomplishments/records/CTXPE9DBBSWB"},
             {"title": "High Stakes Leadership: Leading in Times of Crisis", "org": "University of Michigan", "period": "2023", "id": "XWTEBYE99LJU", "url": "https://www.coursera.org/account/accomplishments/records/XWTEBYE99LJU"},
         ],
+        "certificates": [
+            {
+                "title": "Vocational Skill Certificate — WordPress CMS Developer",
+                "org": "Technical and Vocational Training Organization of Iran",
+                "standard_id": "7321205300201",
+                "cert_no": "42245009",
+                "period": "2025",
+                "url": "/assets/files/certificates/wordpress-cms-developer-certificate.pdf",
+            },
+            {
+                "title": "Vocational Skill Certificate — Goldsmith",
+                "org": "Technical and Vocational Training Organization of Iran",
+                "standard_id": "7313207900301",
+                "cert_no": "42788555",
+                "period": "2025",
+                "url": "/assets/files/certificates/goldsmith-certificate.pdf",
+            },
+            {
+                "title": "Petroleum Engineering with AI Applications",
+                "org": "Coursera Specialization",
+                "label": "View Specialization Certificate",
+                "url": "https://www.coursera.org/account/accomplishments/specialization/B4YTG7OK3VTG",
+            },
+            {
+                "title": "Introduction to Environmental Science",
+                "org": "Coursera Specialization",
+                "label": "View Specialization Certificate",
+                "url": "https://www.coursera.org/account/accomplishments/specialization/6YGL16PGMYOE",
+            },
+            {
+                "title": "Google Digital Marketing & E-commerce Professional Certificate",
+                "org": "Coursera Professional Certificate",
+                "label": "View Professional Certificate",
+                "url": "https://www.coursera.org/account/accomplishments/professional-cert/FUR8P4I0Q1JT",
+            },
+        ],
+        "licenses": [
+            {
+                "title": "Varjavand Intelligent Creative Software Co. — Activity License",
+                "org": "Tehran Provincial Computer Trade Organization",
+                "url": "/assets/files/licenses/varjavand-company-activity-license.jpg",
+            },
+            {
+                "title": "Home Business License — Artificial Intelligence",
+                "url": "/assets/files/licenses/ai-home-business-license.pdf",
+            },
+            {
+                "title": "Home Business License — Software System Architecture Design",
+                "url": "/assets/files/licenses/software-architecture-home-business-license.pdf",
+            },
+            {
+                "title": "Home Business License — Gold & Jewelry Design",
+                "url": "/assets/files/licenses/jewelry-design-home-business-license.pdf",
+            },
+            {
+                "title": "Home Business License — Precious & Semi-Precious Gemstone Cutting",
+                "url": "/assets/files/licenses/gemstone-cutting-home-business-license.pdf",
+            },
+            {
+                "title": "Home Business License — Software Programming",
+                "url": "/assets/files/licenses/software-programming-home-business-license.pdf",
+            },
+            {
+                # TODO: document file not yet supplied — add url once available
+                "title": "Business License — Software Installation & Setup Services and Related Activities (Legal Entity)",
+            },
+        ],
     },
 }
 
@@ -294,7 +361,7 @@ RESUME_FA = {
         {"text": "\u062a\u0647\u0631\u0627\u0646\u060c \u0627\u06cc\u0631\u0627\u0646"},
         {"text": "mo.aria.am@gmail.com"},
         {"text": "linkedin.com/in/mo-aria-amini", "url": "https://www.linkedin.com/in/mo-aria-amini"},
-        {"text": "aria-amini.ir", "url": "https://aria-amini.ir"},
+        {"text": "amini.info", "url": "https://amini.info"},
     ],
     "about": (
         "من محمدآریا امینی، فارغ‌التحصیل مقطع کارشناسی در رشته زمین‌شناسی و "
@@ -333,7 +400,7 @@ RESUME_FA = {
         },
     ],
     "experience": [
-        {"org": "\u0634\u0631\u06a9\u062a \u062e\u062f\u0645\u0627\u062a \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0648 \u0633\u062e\u062a\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0647\u0648\u0634\u0645\u0646\u062f \u0627\u0641\u0632\u0627\u0631 \u062e\u0644\u0627\u0642 (\u0648\u064e\u0631\u062c\u0627\u0648\u064e\u0646\u062f)", "role": "\u0645\u062f\u06cc\u0631\u0639\u0627\u0645\u0644 \u0648 \u0631\u0626\u06cc\u0633 \u0647\u06cc\u0626\u062a \u0645\u062f\u06cc\u0631\u0647", "period": "\u062a\u06cc\u0631 \u06f1\u06f4\u06f0\u06f4 \u2013 \u0627\u06a9\u0646\u0648\u0646"},
+        {"org": "\u0634\u0631\u06a9\u062a \u062e\u062f\u0645\u0627\u062a \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0648 \u0633\u062e\u062a\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0647\u0648\u0634\u0645\u0646\u062f \u0627\u0641\u0632\u0627\u0631 \u062e\u0644\u0627\u0642 (\u0648\u064e\u0631\u062c\u0627\u0648\u064e\u0646\u062f)", "role": "\u0645\u062f\u06cc\u0631\u0639\u0627\u0645\u0644 \u0648 \u0631\u0626\u06cc\u0633 \u0647\u06cc\u0626\u062a \u0645\u062f\u06cc\u0631\u0647", "period": "\u062a\u06cc\u0631 \u06f1\u06f4\u06f0\u06f4 \u2013 \u0627\u06a9\u0646\u0648\u0646", "url": "https://varjavand.org/", "url_text": "varjavand.org"},
         {"org": "\u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a \u0622\u0631\u06cc\u0646 \u0632\u0645\u06cc\u0646", "roles": [
             {"role": "\u0645\u062f\u06cc\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5 \u2013 \u0627\u06a9\u0646\u0648\u0646"},
             {"role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0648 \u067e\u0698\u0648\u0647\u0634\u06af\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0627\u0633\u0641\u0646\u062f \u06f1\u06f4\u06f0\u06f1 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5"},
@@ -544,6 +611,73 @@ RESUME_FA = {
             {"title": "Build a Full Website using WordPress", "org": "Coursera", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "FLH3PRW9CBDC", "url": "https://www.coursera.org/account/accomplishments/records/FLH3PRW9CBDC"},
             {"title": "COVID-19 Contact Tracing", "org": "Johns Hopkins University", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "CTXPE9DBBSWB", "url": "https://www.coursera.org/account/accomplishments/records/CTXPE9DBBSWB"},
             {"title": "High Stakes Leadership: Leading in Times of Crisis", "org": "University of Michigan", "period": "\u06f2\u06f0\u06f2\u06f3", "id": "XWTEBYE99LJU", "url": "https://www.coursera.org/account/accomplishments/records/XWTEBYE99LJU"},
+        ],
+        "certificates": [
+            {
+                "title": "\u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u0645\u0647\u0627\u0631\u062a \u0634\u063a\u0644\u06cc \u062a\u0648\u0633\u0639\u0647\u200c\u062f\u0647\u0646\u062f\u0647 \u0633\u06cc\u0633\u062a\u0645\u200c\u0647\u0627\u06cc \u0645\u062f\u06cc\u0631\u06cc\u062a \u0645\u062d\u062a\u0648\u0627 \u0628\u0627 WordPress",
+                "org": "\u0633\u0627\u0632\u0645\u0627\u0646 \u0622\u0645\u0648\u0632\u0634 \u0641\u0646\u06cc \u0648 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u06a9\u0634\u0648\u0631",
+                "standard_id": "\u06f7\u06f3\u06f2\u06f1\u06f2\u06f0\u06f5\u06f3\u06f0\u06f0\u06f2\u06f0\u06f0\u06f0\u06f1",
+                "cert_no": "\u06f4\u06f2\u06f2\u06f4\u06f5\u06f0\u06f0\u06f9",
+                "period": "\u06f1\u06f4\u06f0\u06f4/\u06f2/\u06f2\u06f3",
+                "url": "/assets/files/certificates/wordpress-cms-developer-certificate.pdf",
+            },
+            {
+                "title": "\u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u0645\u0647\u0627\u0631\u062a \u0634\u063a\u0644\u06cc \u0637\u0644\u0627\u0633\u0627\u0632",
+                "org": "\u0633\u0627\u0632\u0645\u0627\u0646 \u0622\u0645\u0648\u0632\u0634 \u0641\u0646\u06cc \u0648 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u06a9\u0634\u0648\u0631",
+                "standard_id": "\u06f7\u06f3\u06f1\u06f3\u06f2\u06f0\u06f7\u06f9\u06f0\u06f0\u06f3\u06f0\u06f0\u06f0\u06f1",
+                "cert_no": "\u06f4\u06f2\u06f7\u06f8\u06f8\u06f5\u06f5\u06f5",
+                "period": "\u06f1\u06f4\u06f0\u06f4/\u06f4/\u06f2\u06f5",
+                "url": "/assets/files/certificates/goldsmith-certificate.pdf",
+            },
+            {
+                "title": "Petroleum Engineering with AI Applications",
+                "org": "\u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc \u06a9\u0648\u0631\u0633\u0631\u0627",
+                "label": "\u0645\u0634\u0627\u0647\u062f\u0647 \u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc",
+                "url": "https://www.coursera.org/account/accomplishments/specialization/B4YTG7OK3VTG",
+            },
+            {
+                "title": "Introduction to Environmental Science",
+                "org": "\u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc \u06a9\u0648\u0631\u0633\u0631\u0627",
+                "label": "\u0645\u0634\u0627\u0647\u062f\u0647 \u06af\u0648\u0627\u0647\u06cc\u0646\u0627\u0645\u0647 \u062a\u062e\u0635\u0635\u06cc",
+                "url": "https://www.coursera.org/account/accomplishments/specialization/6YGL16PGMYOE",
+            },
+            {
+                "title": "Google Digital Marketing & E-commerce Professional Certificate",
+                "org": "\u06af\u0648\u0627\u0647\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc \u06a9\u0648\u0631\u0633\u0631\u0627",
+                "label": "\u0645\u0634\u0627\u0647\u062f\u0647 \u06af\u0648\u0627\u0647\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc",
+                "url": "https://www.coursera.org/account/accomplishments/professional-cert/FUR8P4I0Q1JT",
+            },
+        ],
+        "licenses": [
+            {
+                "title": "\u0645\u062c\u0648\u0632 \u0641\u0639\u0627\u0644\u06cc\u062a \u0634\u0631\u06a9\u062a \u0647\u0648\u0634\u0645\u0646\u062f \u0627\u0641\u0632\u0627\u0631 \u062e\u0644\u0627\u0642 (\u0648\u0631\u062c\u0627\u0648\u0646\u062f)",
+                "org": "\u0633\u0627\u0632\u0645\u0627\u0646 \u0646\u0638\u0627\u0645 \u0635\u0646\u0641\u06cc \u0631\u0627\u06cc\u0627\u0646\u0647\u200c\u0627\u06cc \u0627\u0633\u062a\u0627\u0646 \u062a\u0647\u0631\u0627\u0646",
+                "url": "/assets/files/licenses/varjavand-company-activity-license.jpg",
+            },
+            {
+                "title": "\u0645\u062c\u0648\u0632 \u06a9\u0633\u0628 \u0648 \u06a9\u0627\u0631 \u062e\u0627\u0646\u06af\u06cc \u0647\u0648\u0634 \u0645\u0635\u0646\u0648\u0639\u06cc",
+                "url": "/assets/files/licenses/ai-home-business-license.pdf",
+            },
+            {
+                "title": "\u0645\u062c\u0648\u0632 \u06a9\u0633\u0628 \u0648 \u06a9\u0627\u0631 \u062e\u0627\u0646\u06af\u06cc \u0637\u0631\u0627\u062d\u06cc \u0645\u0639\u0645\u0627\u0631\u06cc \u0633\u06cc\u0633\u062a\u0645 \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631",
+                "url": "/assets/files/licenses/software-architecture-home-business-license.pdf",
+            },
+            {
+                "title": "\u0645\u062c\u0648\u0632 \u06a9\u0633\u0628 \u0648 \u06a9\u0627\u0631 \u062e\u0627\u0646\u06af\u06cc \u0637\u0631\u0627\u062d\u06cc \u0637\u0644\u0627 \u0648 \u062c\u0648\u0627\u0647\u0631",
+                "url": "/assets/files/licenses/jewelry-design-home-business-license.pdf",
+            },
+            {
+                "title": "\u0645\u062c\u0648\u0632 \u06a9\u0633\u0628 \u0648 \u06a9\u0627\u0631 \u062e\u0627\u0646\u06af\u06cc \u062a\u0631\u0627\u0634 \u0633\u0646\u06af\u200c\u0647\u0627\u06cc \u0642\u06cc\u0645\u062a\u06cc \u0648 \u0646\u06cc\u0645\u0647\u200c\u0642\u06cc\u0645\u062a\u06cc",
+                "url": "/assets/files/licenses/gemstone-cutting-home-business-license.pdf",
+            },
+            {
+                "title": "\u0645\u062c\u0648\u0632 \u06a9\u0633\u0628 \u0648 \u06a9\u0627\u0631 \u062e\u0627\u0646\u06af\u06cc \u0628\u0631\u0646\u0627\u0645\u0647\u200c\u0646\u0648\u06cc\u0633\u06cc \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631",
+                "url": "/assets/files/licenses/software-programming-home-business-license.pdf",
+            },
+            {
+                # TODO: document file not yet supplied \u2014 add url once available
+                "title": "\u067e\u0631\u0648\u0627\u0646\u0647 \u06a9\u0633\u0628 \u062e\u062f\u0645\u0627\u062a \u0646\u0635\u0628 \u0648 \u0631\u0627\u0647\u200c\u0627\u0646\u062f\u0627\u0632\u06cc \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631 \u0648 \u0633\u0627\u06cc\u0631 \u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u0645\u0631\u062a\u0628\u0637 \u0628\u0647 \u0622\u0646 (\u0634\u062e\u0635\u06cc\u062a \u062d\u0642\u0648\u0642\u06cc)",
+            },
         ],
     },
 }

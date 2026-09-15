@@ -361,6 +361,15 @@ class ResumeBuilder:
                     self._entry_head_line(r["role"], r["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
             else:
                 self._entry_head_line(e["role"], e["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
+            if e.get("url"):
+                p2 = self._para(space_after=2)
+                label = "Website: " if not self.is_fa else "وبسایت: "
+                self._run(p2, label, weight="light", size=SIZE_SMALL, color=SECONDARY)
+                add_hyperlink(
+                    p2, e.get("url_text", e["url"]), e["url"],
+                    font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                    weight_bold=False, rtl=self.is_fa,
+                )
 
     def research(self):
         title = "Research Experience" if not self.is_fa else "\u062a\u062c\u0631\u0628\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc"
@@ -588,6 +597,37 @@ class ResumeBuilder:
                 font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                 weight_bold=False, rtl=self.is_fa,
             )
+        for c in self.data["certifications"].get("certificates", []):
+            p = self._para(space_after=0)
+            self._run(p, c["title"] + "   ", weight="regular", size=SIZE_SMALL)
+            if c.get("org"):
+                self._run(p, c["org"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            if c.get("standard_id"):
+                std_label = "Standard ID " if not self.is_fa else "شناسه استاندارد "
+                self._run(p, std_label + c["standard_id"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            if c.get("period") and c.get("cert_no"):
+                self._run(p, c["period"] + " · ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                self._run(p, c["cert_no"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            if c.get("url"):
+                add_hyperlink(
+                    p, c.get("label", view_cert), c["url"],
+                    font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                    weight_bold=False, rtl=self.is_fa,
+                )
+        view_license = "View license" if not self.is_fa else "مشاهده مجوز"
+        for lic in self.data["certifications"].get("licenses", []):
+            p = self._para(space_after=0)
+            self._run(p, lic["title"] + ("   " if (lic.get("org") or lic.get("url")) else ""), weight="regular", size=SIZE_SMALL)
+            if lic.get("org"):
+                self._run(p, lic["org"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                if lic.get("url"):
+                    self._run(p, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+            if lic.get("url"):
+                add_hyperlink(
+                    p, view_license, lic["url"],
+                    font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                    weight_bold=False, rtl=self.is_fa,
+                )
 
     def footer(self):
         section = self.doc.sections[0]

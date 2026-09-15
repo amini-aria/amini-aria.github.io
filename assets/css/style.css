@@ -188,6 +188,7 @@ body.lang-fa .mono { letter-spacing: 0; }
 body.lang-fa .section__eyebrow,
 body.lang-fa .page-header__eyebrow,
 body.lang-fa .resume__block-title,
+body.lang-fa .resume__group-title,
 body.lang-fa .interests-band__title,
 body.lang-fa .skills-group__label { font-size: 0.8rem; line-height: 1.7; }
 body.lang-fa .section__eyebrow,
@@ -1076,6 +1077,13 @@ body.lang-fa .skills-list {
 .cert-card__course { font-size: 0.86rem; }
 .cert-card__id { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); white-space: nowrap; }
 .cert-card__tree .cert-card__link { margin-top: 0.15rem; }
+
+.resume__group-title {
+  font-family: var(--font-title); font-weight: 600; font-size: 0.84rem;
+  color: var(--ink-dim); margin: 1.2rem 0 0.6rem; padding-top: 0.8rem;
+  border-top: 1px solid var(--hairline);
+}
+.resume__group-title:first-of-type { margin-top: 1.5rem; }
 
 .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.9rem; }
 .cert-chip {
