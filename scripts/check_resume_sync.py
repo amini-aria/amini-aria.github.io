@@ -50,7 +50,7 @@ SECTIONS = [
     ("Professional Memberships",       "عضویت‌های حرفه‌ای",                      "memberships",    True),
     ("Voluntary & Social Activities",  "سوابق داوطلبانه و فعالیت‌های اجتماعی",   "volunteer",      True),
     ("Technical & Specialized Skills", "مهارت‌های فنی و تخصصی",                  "skills",         False),
-    ("Courses, Certificates & Licenses", "دوره‌ها، گواهی‌ها و مجوزها",           "certifications", False),
+    ("Certificates, Licenses & Courses", "گواهی‌ها، مجوزها و دوره‌ها",           "certifications", False),
 ]
 
 ENTRY_RE = re.compile(r'<div class="(?:resume__entry|pub-card)[ "]')

@@ -967,32 +967,39 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
    flowing run — the same content reads in about a third of the height, each
    group is exactly as tall as its own content, and it looks like a résumé
    rather than a search UI. */
-.skills-groups { display: block; padding-inline-start: 1.15rem; }
+.skills-groups { display: block; padding-inline-start: 1.5rem; }
 /* Drawn as a tree, borrowing the spine-and-stub the certificates already use:
    each group is a branch off one vertical rule, its label the node and its
    terms the leaf sitting opposite. The spine is built from a per-group
    segment rather than a border on the container so the first and last branch
    can start and stop AT their node — a rule running past the last stub reads
-   as an unfinished list. */
+   as an unfinished list.
+
+   The stub reaches almost all the way to the label rather than stopping
+   a third of the way there — a short stub with empty space after it read as
+   a disconnected line floating near the text, not a branch pointing at it.
+   The label column is wide enough for most group names on one line, and the
+   stub centers on the label's own height (not a fixed offset from its top)
+   so a name that still wraps to two lines keeps its branch pointing at the
+   node instead of at the first line only. */
 .skills-group {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
-  gap: 0.35rem 1.75rem;
-  padding-block: 0.65rem;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+  gap: 0.35rem 2.25rem;
+  padding-block: 0.75rem;
 }
 .skills-group::before {
   content: "";
-  position: absolute; inset-inline-start: -1.15rem;
-  top: 0; bottom: 0; width: 1px;
-  background: var(--hairline);
+  position: absolute; inset-inline-start: -1.5rem;
+  top: 0; bottom: 0; width: 1.5px;
+  background: var(--ink-faint);
 }
 .skills-group:first-child::before { top: 1.05rem; }
 .skills-group:last-child::before { bottom: auto; height: 1.05rem; }
 .skills-group__label {
   position: relative;
-  display: block; align-self: start;
-  margin: 0.2rem 0 0;
+  display: block; align-self: center;
   font-family: var(--font-mono); font-weight: 500;
   font-size: 0.68rem; line-height: 1.55;
   text-transform: uppercase; letter-spacing: 0.07em;
@@ -1000,9 +1007,10 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 }
 .skills-group__label::before {
   content: "";
-  position: absolute; inset-inline-start: -1.15rem;
-  top: 0.62em; width: 0.8rem; height: 1px;
-  background: var(--hairline);
+  position: absolute; inset-inline-start: -1.5rem;
+  top: 50%; transform: translateY(-50%);
+  width: 1.3rem; height: 1.5px;
+  background: var(--ink-faint);
 }
 .skills-list {
   display: flex; flex-wrap: wrap; align-items: baseline;
@@ -1084,6 +1092,41 @@ body.lang-fa .skills-list {
   border-top: 1px solid var(--hairline);
 }
 .resume__group-title:first-of-type { margin-top: 1.5rem; }
+.resume__group-title--first { border-top: none; padding-top: 0; margin-top: 0.6rem; }
+
+/* One document per row, full width, instead of a multi-column grid of
+   chips — a license/certificate title is a sentence, not a two-word course
+   name, and cramming it into a ~200px chip forced awkward mid-word wraps.
+   A colored left rail (set per list via --accent/--accent-soft, the same
+   custom-property pattern the contact cards already use) gives Certificates
+   and Licenses their own visual identity instead of both reading as more
+   grey chips. Already responsive by construction: a single flex column that
+   just wraps its own content on narrow screens, no breakpoint needed. */
+.doc-row-list { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.7rem; }
+.doc-row {
+  display: flex; align-items: center; flex-wrap: wrap;
+  justify-content: space-between; gap: 0.3rem 1.2rem;
+  padding: 0.65rem 0.95rem;
+  border: 1px solid var(--hairline); border-radius: 8px;
+  border-inline-start: 3px solid var(--accent, var(--sand-gold));
+  background: var(--accent-soft, var(--gold-soft));
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.doc-row:hover { border-color: var(--accent, var(--sand-gold)); transform: translateY(-1px); box-shadow: 0 3px 12px rgba(58, 46, 34, 0.08); }
+.doc-row__main { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1 1 260px; }
+.doc-row__title { font-size: 0.86rem; font-weight: 500; line-height: 1.35; color: var(--ink); }
+.doc-row__meta { font-size: 0.72rem; color: var(--ink-dim); line-height: 1.4; }
+.doc-row__link {
+  font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500;
+  color: var(--accent, var(--olive)); white-space: nowrap; flex-shrink: 0;
+}
+.doc-row--nolink { background: var(--surface); border-inline-start-color: var(--hairline); opacity: 0.75; }
+.doc-row--nolink .doc-row__title { color: var(--ink-dim); }
+/* the three Coursera credential names repeated inside the FA "گواهی‌ها" group
+   are English/Latin (their meta line is still the Persian description of
+   that credential type, so only the title itself needs the flip), same
+   reasoning as the course chips further down */
+body.lang-fa .doc-row--en .doc-row__title { text-align: left; }
 
 .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.9rem; }
 .cert-chip {
