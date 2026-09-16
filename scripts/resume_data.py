@@ -77,10 +77,6 @@ RESUME_EN = {
             {"role": "Editorial Specialist and Publications Researcher", "period": "Mar 2023 \u2013 Apr 2026"},
         ]},
         {"org": "Pars Geological Research Center (Arian Zamin)", "role": "Geology Specialist", "period": "Feb 2023 \u2013 Present"},
-        {"org": "Shahid Beheshti University, Tehran, Iran", "roles": [
-            {"role": "Research Collaborator", "period": "Feb 2025 \u2013 Sep 2026"},
-            {"role": "Technical Manager, SARMAD High-Performance Computing (HPC) System", "period": "Feb 2025 \u2013 Aug 2026"},
-        ]},
         {"org": "Gemology Science and Art Development Co. (Gemsa), Knowledge-Based Company", "role": "Research & Development (R&D) Manager", "period": "Sep 2024 \u2013 Apr 2025"},
     ],
     "research": [
@@ -88,19 +84,31 @@ RESUME_EN = {
             "title": "Academic Internship",
             "period": "May 2025 \u2013 Aug 2025",
             "org": "National Iranian Oil Company",
-            "note": "Internship report: National Iranian South Oilfields Company, Geological Operations Department \u00b7 Grade A",
-        },
-        {
-            "title": "Researcher and Research Collaborator",
-            "period": "Feb 2025 \u2013 Sep 2026",
-            "org": "Shahid Beheshti University, Tehran",
-            "note": "Developing HPC infrastructure, supporting faculty with computational code, contributing to papers, and debugging scientific programs.",
+            "note": "Internship report: National Iranian South Oilfields Company, Geological Operations Department \u00b7 Grade A \u00b7 Supervised by Eng. Afshin Amini, Manager of NISOC's South Dezful Districts",
         },
         {
             "title": "Research & Development",
             "period": "Sep 2024 \u2013 Apr 2025",
             "org": "Gemology Science and Art Development Co. (Gemsa)",
-            "note": "Research on Raman spectroscopy using spectrophotometric methods.",
+            "note": "Research on Raman spectroscopy using spectrophotometric methods \u00b7 Supervised by Prof. Fariborz Masoudi (Full Professor)",
+        },
+        {
+            "title": "Research Collaborator",
+            "period": "Oct 2024 \u2013 Present",
+            "org": "Institute of Medicinal Plants and Raw Materials, Shahid Beheshti University",
+            "note": "Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
+        },
+        {
+            "title": "Research Collaborator and Manager, Physical Chemistry HPC Core",
+            "period": "Apr 2025 \u2013 Present",
+            "org": "Faculty of Chemistry and Petroleum, Shahid Beheshti University, Tehran",
+            "note": "Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
+        },
+        {
+            "title": "Earth Sciences Researcher",
+            "period": "Jan 2026 \u2013 Present",
+            "org": "Pars Geological Research Center (Arian Zamin)",
+            "note": "Supervised by Prof. Mansour Ghorbani (Full Professor) \u00b7 m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
@@ -406,10 +414,6 @@ RESUME_FA = {
             {"role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0648 \u067e\u0698\u0648\u0647\u0634\u06af\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0627\u0633\u0641\u0646\u062f \u06f1\u06f4\u06f0\u06f1 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5"},
         ]},
         {"org": "\u0645\u0648\u0633\u0633\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u067e\u0627\u0631\u0633 \u0622\u0631\u06cc\u0646 \u0632\u0645\u06cc\u0646", "role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633", "period": "\u0628\u0647\u0645\u0646 \u06f1\u06f4\u06f0\u06f1 \u2013 \u0627\u06a9\u0646\u0648\u0646"},
-        {"org": "\u062f\u0627\u0646\u0634\u06af\u0627\u0647 \u0634\u0647\u06cc\u062f \u0628\u0647\u0634\u062a\u06cc\u060c \u062a\u0647\u0631\u0627\u0646", "roles": [
-            {"role": "\u0647\u0645\u06a9\u0627\u0631 \u067e\u0698\u0648\u0647\u0634\u06cc", "period": "\u0628\u0647\u0645\u0646 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0634\u0647\u0631\u06cc\u0648\u0631 \u06f1\u06f4\u06f0\u06f5"},
-            {"role": "\u0645\u062f\u06cc\u0631 \u0641\u0646\u06cc \u0633\u06cc\u0633\u062a\u0645 \u0627\u0628\u0631\u0631\u0627\u06cc\u0627\u0646\u0647 \u0633\u0631\u0645\u062f", "period": "\u0628\u0647\u0645\u0646 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0645\u0631\u062f\u0627\u062f \u06f1\u06f4\u06f0\u06f5"},
-        ]},
         {"org": "\u0634\u0631\u06a9\u062a \u062a\u0648\u0633\u0639\u0647 \u062f\u0627\u0646\u0634 \u0648 \u0647\u0646\u0631 \u06af\u0648\u0647\u0631\u0634\u0646\u0627\u0633\u06cc (\u062c\u0650\u0645\u0633\u0627) - \u062f\u0627\u0646\u0634\u200c\u0628\u0646\u06cc\u0627\u0646", "role": "\u0645\u062f\u06cc\u0631 \u062a\u062d\u0642\u06cc\u0642 \u0648 \u062a\u0648\u0633\u0639\u0647 (R&D)", "period": "\u0634\u0647\u0631\u06cc\u0648\u0631 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f4"},
     ],
     "research": [
@@ -417,19 +421,31 @@ RESUME_FA = {
             "title": "کارآموزی (به‌عنوان واحد درسی)",
             "period": "اردیبهشت ۱۴۰۴ – مرداد ۱۴۰۴",
             "org": "شرکت ملی نفت ایران",
-            "note": "عنوان گزارش: گزارش دوره کارآموزی شرکت ملی مناطق نفت‌خیز جنوب، اداره عملیات زمین‌شناسی · نمره: گرید A",
-        },
-        {
-            "title": "پژوهشگر و همکار پژوهشی",
-            "period": "بهمن ۱۴۰۳ – شهریور ۱۴۰۵",
-            "org": "دانشگاه شهید بهشتی، تهران",
-            "note": "توسعه زیرساخت‌های HPC، همکاری با اعضای هیئت علمی در اجرای کدها، مشارکت در نگارش مقالات و رفع اشکال کدهای محاسباتی.",
+            "note": "عنوان گزارش: گزارش دوره کارآموزی شرکت ملی مناطق نفت‌خیز جنوب، اداره عملیات زمین‌شناسی · نمره: گرید A · تحت نظر: مهندس افشین امینی، مدیر مناطق دزفول جنوبی شرکت NISOC",
         },
         {
             "title": "تحقیق و توسعه",
             "period": "شهریور ۱۴۰۳ – فروردین ۱۴۰۴",
             "org": "شرکت دانش‌بنیان توسعه دانش و هنر گوهرشناسی (جِمسا)",
-            "note": "پژوهش و تحقیقات بر روی طیف‌سنجی رامان (Raman Spectroscopy) با استفاده از روش اسپکتروفتومتری.",
+            "note": "پژوهش و تحقیقات بر روی طیف‌سنجی رامان (Raman Spectroscopy) با استفاده از روش اسپکتروفتومتری · تحت نظر: پرفسور فریبرز مسعودی (فول پروفسور)",
+        },
+        {
+            "title": "همکار پژوهشی",
+            "period": "مهر ۱۴۰۳ – اکنون",
+            "org": "پژوهشکده گیاهان و مواد اولیه دارویی، دانشگاه شهید بهشتی",
+            "note": "تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
+        },
+        {
+            "title": "همکار پژوهشی و مدیر هسته محاسباتی شیمی فیزیک (HPC)",
+            "period": "فروردین ۱۴۰۴ – اکنون",
+            "org": "دانشکده شیمی و نفت، دانشگاه شهید بهشتی، تهران",
+            "note": "تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
+        },
+        {
+            "title": "پژوهشگر علوم زمین",
+            "period": "دی ۱۴۰۴ – اکنون",
+            "org": "موسسه پژوهشی زمین‌شناسی پارس آرین زمین",
+            "note": "تحت نظر: پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [

@@ -995,8 +995,16 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   top: 0; bottom: 0; width: 1.5px;
   background: var(--ink-faint);
 }
-.skills-group:first-child::before { top: 1.05rem; }
-.skills-group:last-child::before { bottom: auto; height: 1.05rem; }
+/* The first/last segment must stop exactly at its own stub, not at a fixed
+   distance from the row's edge — a fixed rem value only happened to work
+   when that row's label was one line; a two-line label (or a long terms
+   list) makes the row taller, the stub (also at 50%) drifts down with it,
+   and a fixed-height segment then stops short of it, reading as a spine
+   that gives up right before the last branch. 50% always lands on the
+   stub's own center because the stub uses the same 50% to position itself
+   (see .skills-group__label::before below), whatever that row's height. */
+.skills-group:first-child::before { top: 50%; }
+.skills-group:last-child::before { bottom: auto; height: 50%; }
 .skills-group__label {
   position: relative;
   display: block; align-self: center;
@@ -1313,8 +1321,8 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   .skills-group::before,
   .skills-group__label::before { inset-inline-start: -0.95rem; }
   .skills-group__label::before { width: 0.65rem; }
-  .skills-group:first-child::before { top: 0.95rem; }
-  .skills-group:last-child::before { height: 0.95rem; }
+  /* first/last still stop at 50% (set once, above) — that already adapts to
+     any row height, so no breakpoint-specific override is needed here */
   .hero { padding-top: 3.5rem; }
   .resume-surface { padding: 0.5rem 1rem; }
   .contact__buttons { gap: 0.5rem; }

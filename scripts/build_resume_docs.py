@@ -372,7 +372,7 @@ class ResumeBuilder:
                 )
 
     def research(self):
-        title = "Research Experience" if not self.is_fa else "\u062a\u062c\u0631\u0628\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc"
+        title = "Research & Investigative Experience" if not self.is_fa else "\u062a\u062c\u0631\u0628\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc \u0648 \u062a\u062d\u0642\u06cc\u0642\u0627\u062a\u06cc"
         self._section_title(title)
         for r in self.data["research"]:
             self._entry_head_line(r["title"], r["period"], left_weight="demibold")
@@ -661,10 +661,10 @@ class ResumeBuilder:
         self.education()
         self.experience()
         self.research()
+        self.teaching()
         self.books()
         self.conferences()
         self.patents()
-        self.teaching()
         self.honors()
         self.languages()
         self.memberships()
