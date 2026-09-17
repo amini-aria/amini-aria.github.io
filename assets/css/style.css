@@ -16,11 +16,13 @@
   --clay: #B5623B;
   --olive: #6E7A4F;
   --sand-gold: #C9A227;
+  --pastel-blue: #6C93B0;
 
   --umber-soft: rgba(122, 75, 46, 0.07);
   --clay-soft: rgba(181, 98, 59, 0.09);
   --olive-soft: rgba(110, 122, 79, 0.07);
   --gold-soft: rgba(201, 162, 39, 0.10);
+  --pastel-blue-soft: rgba(108, 147, 176, 0.10);
 
   /* Three voices, deliberately unequal.
 
@@ -1087,21 +1089,20 @@ body.lang-fa .skills-list {
 .lang-scores__row span:last-child { color: var(--ink); font-family: var(--font-mono); }
 
 /* certificates */
-/* Courses take the same soft-tint-and-rail language as the certificate/
-   license rows above (gold, its own hue in that family) rather than a
-   bigger white card with its own border treatment — one consistent card
-   grammar across the whole section instead of a different frame per
-   group, and a tinted rail reads as "a fact about this item" without
-   spending much padding on it. The sub-course list keeps its inset
-   spine-and-stub "tree" (a single continuous border on the list itself,
-   not a per-item calculation, so it doesn't share the skills section's
-   old dynamic-height bug) — a specialization's courses are a level below
-   the card's own title, and the branch reads that hierarchy at a glance. */
+/* Courses, Books, Certificates and Licenses now share one card grammar —
+   same pastel-blue rail, same soft tint, same radius/padding/hover — so
+   the whole "Certificates, Licenses & Courses" section plus Books reads
+   as one consistent frame rather than a different color and card shape
+   per group. The sub-course list keeps its inset spine-and-stub "tree"
+   (a single continuous border on the list itself, not a per-item
+   calculation, so it doesn't share the skills section's old dynamic-
+   height bug) — a specialization's courses are a level below the card's
+   own title, and the branch reads that hierarchy at a glance. */
 .cert-card {
-  border: 1px solid var(--hairline); border-inline-start: 3px solid var(--sand-gold);
+  border: 1px solid var(--hairline); border-inline-start: 3px solid var(--pastel-blue);
   border-radius: 8px;
-  padding: 0.8rem 1rem; margin-bottom: 0.6rem;
-  background: var(--gold-soft);
+  padding: 0.75rem 0.95rem; margin-bottom: 0.6rem;
+  background: var(--pastel-blue-soft);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .cert-card:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -18px rgba(58, 46, 34, 0.35); }
@@ -1109,7 +1110,7 @@ body.lang-fa .skills-list {
 .cert-card__meta { color: var(--ink-dim); font-size: 0.8rem; margin-top: 0.3rem; }
 .cert-card__link {
   font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500;
-  color: color-mix(in srgb, var(--sand-gold) 55%, var(--ink));
+  color: color-mix(in srgb, var(--pastel-blue) 65%, var(--ink));
   margin-top: 0.7rem; display: inline-block;
 }
 
@@ -1139,28 +1140,30 @@ body.lang-fa .skills-list {
 /* One document per row, full width, instead of a multi-column grid of
    chips — a license/certificate title is a sentence, not a two-word course
    name, and cramming it into a ~200px chip forced awkward mid-word wraps.
-   A colored left rail (set per list via --accent/--accent-soft, the same
-   custom-property pattern the contact cards already use) gives Certificates
-   and Licenses their own visual identity instead of both reading as more
-   grey chips. Already responsive by construction: a single flex column that
-   just wraps its own content on narrow screens, no breakpoint needed. */
+   Certificates, Licenses, Courses and Books all share the same pastel-
+   blue rail-and-tint frame now (still exposed as --accent/--accent-soft,
+   the same custom-property pattern the contact cards use, in case a caller
+   ever wants to override it) rather than a different hue per group —
+   one calm, consistent card language for the whole credentials section.
+   Already responsive by construction: a single flex column that just
+   wraps its own content on narrow screens, no breakpoint needed. */
 .doc-row-list { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.7rem; }
 .doc-row {
   display: flex; align-items: center; flex-wrap: wrap;
   justify-content: space-between; gap: 0.3rem 1.2rem;
-  padding: 0.65rem 0.95rem;
+  padding: 0.75rem 0.95rem;
   border: 1px solid var(--hairline); border-radius: 8px;
-  border-inline-start: 3px solid var(--accent, var(--sand-gold));
-  background: var(--accent-soft, var(--gold-soft));
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  border-inline-start: 3px solid var(--accent, var(--pastel-blue));
+  background: var(--accent-soft, var(--pastel-blue-soft));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.doc-row:hover { border-color: var(--accent, var(--sand-gold)); transform: translateY(-1px); box-shadow: 0 3px 12px rgba(58, 46, 34, 0.08); }
+.doc-row:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -18px rgba(58, 46, 34, 0.35); }
 .doc-row__main { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1 1 260px; }
 .doc-row__title { font-size: 0.86rem; font-weight: 500; line-height: 1.35; color: var(--ink); }
 .doc-row__meta { font-size: 0.72rem; color: var(--ink-dim); line-height: 1.4; }
 .doc-row__link {
   font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500;
-  color: var(--accent, var(--olive)); white-space: nowrap; flex-shrink: 0;
+  color: color-mix(in srgb, var(--accent, var(--pastel-blue)) 65%, var(--ink)); white-space: nowrap; flex-shrink: 0;
 }
 .doc-row--nolink { background: var(--surface); border-inline-start-color: var(--hairline); opacity: 0.75; }
 .doc-row--nolink .doc-row__title { color: var(--ink-dim); }
@@ -1173,10 +1176,10 @@ body.lang-fa .doc-row--en .doc-row__title { text-align: left; }
 .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; margin-top: 0.9rem; }
 .cert-chip {
   display: flex; flex-direction: column; gap: 0.2rem;
-  border: 1px solid var(--hairline); border-inline-start: 3px solid var(--sand-gold);
+  border: 1px solid var(--hairline); border-inline-start: 3px solid var(--pastel-blue);
   border-radius: 8px;
   padding: 0.5rem 0.65rem;
-  background: var(--gold-soft);
+  background: var(--pastel-blue-soft);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .cert-chip:hover { transform: translateY(-1px); box-shadow: 0 8px 18px -14px rgba(58, 46, 34, 0.3); }
@@ -1194,20 +1197,16 @@ body.lang-fa .cert-chip__id {
   direction: ltr;
 }
 
-/* Books and publications — the same soft-tint-and-rail card the
-   certificates/licenses/courses above use, so this section stops reading
-   as a different frame per group: a colored rail plus a matching tinted
-   wash (--accent/--accent-soft, same custom-property pattern as the
-   contact cards), tighter padding than the old white card, and the role
-   named in plain colored text next to the ISBN rather than in its own
-   pill — one fact on a wash instead of a chip on a card on a page. Clay
-   for the author credit, umber for scientific editor (the rail's own
-   default), olive for editor (.pub-card--editor below). */
+/* Books and publications — the same pastel-blue soft-tint-and-rail card
+   as certificates/licenses/courses, so the role (author/editor/scientific
+   editor) is named in plain colored text next to the ISBN rather than in
+   its own pill or its own hue — one calm card grammar for the whole page
+   instead of a different frame and color per group. */
 .pub-card {
   display: flex; flex-direction: column; align-items: flex-start;
-  background: var(--accent-soft, var(--umber-soft));
+  background: var(--pastel-blue-soft);
   border: 1px solid var(--hairline);
-  border-inline-start: 3px solid var(--accent, var(--umber));
+  border-inline-start: 3px solid var(--pastel-blue);
   border-radius: 8px;
   padding: 0.75rem 0.95rem;
   margin-bottom: 0.5rem;
@@ -1262,7 +1261,7 @@ body.lang-fa .pub-card__title {
 .pub-card__role {
   font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600;
   letter-spacing: 0.09em; text-transform: uppercase;
-  color: color-mix(in srgb, var(--accent, var(--umber)) 80%, var(--ink));
+  color: color-mix(in srgb, var(--pastel-blue) 80%, var(--ink));
 }
 /* Persian never takes tracking or uppercasing — both break letter joining */
 body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-size: 0.74rem; }
@@ -1270,9 +1269,6 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
   color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.68rem;
 }
 .pub-card__isbn-code { unicode-bidi: isolate; }
-
-.pub-card--authored { --accent: var(--clay); --accent-soft: var(--clay-soft); }
-.pub-card--editor { --accent: var(--olive); --accent-soft: var(--olive-soft); }
 
 /* =========================================================================
    FOOTER — centered, thin, unobtrusive
