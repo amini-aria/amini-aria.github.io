@@ -1091,10 +1091,11 @@ body.lang-fa .skills-list {
    solid gold top border — deliberately different from the colored
    left-rail rows used for Certificates (clay) and Licenses (olive) just
    above, so the three groups read as distinct kinds of thing rather than
-   three copies of one card. The old inset hairline-and-stub "tree" for the
-   sub-course list is dropped in favor of plain divider rules between rows:
-   it was the same fragile spine idea that broke on the skills section, and
-   a course list is one level deep, not a hierarchy that needs a trunk. */
+   three copies of one card. The sub-course list keeps its inset spine-and-
+   stub "tree" (a single continuous border on the list itself, not a
+   per-item calculation, so it doesn't share the skills section's old
+   dynamic-height bug) — a specialization's courses are a level below the
+   card's own title, and the branch reads that hierarchy at a glance. */
 .cert-card {
   border: 1px solid var(--hairline); border-top: 3px solid var(--sand-gold);
   border-radius: 12px;
@@ -1112,11 +1113,15 @@ body.lang-fa .skills-list {
 }
 
 .cert-card__tree {
-  list-style: none; margin: 0.85rem 0 0; padding: 0;
-  display: flex; flex-direction: column; gap: 0.55rem;
+  list-style: none; margin: 0.7rem 0 0; padding-inline-start: 1rem;
+  border-inline-start: 1px solid var(--hairline);
+  display: flex; flex-direction: column; gap: 0.5rem;
 }
-.cert-card__tree li { border-top: 1px solid var(--hairline); padding-top: 0.55rem; }
-.cert-card__tree li:first-child { border-top: none; padding-top: 0; }
+.cert-card__tree li { position: relative; }
+.cert-card__tree li::before {
+  content: ""; position: absolute; inset-inline-start: -1rem; top: 0.7em;
+  width: 0.7rem; height: 1px; background: var(--hairline);
+}
 .cert-card__course-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.2rem 0.8rem; }
 .cert-card__course { font-size: 0.86rem; }
 .cert-card__id { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); white-space: nowrap; }
