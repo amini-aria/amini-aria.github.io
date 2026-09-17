@@ -162,16 +162,22 @@ RESUME_EN = {
     ],
     "teaching": [
         {
+            "title": "Teaching Assistant (TA) — Mining Engineering Technical Services and Mining Regulations",
+            "period": "Feb 2026 – Sep 2026",
+            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
+            "note": "Course for 8th-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+        },
+        {
             "title": "Teaching Assistant (TA) — Igneous Petrology",
             "period": "Oct 2025 – Feb 2026",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
         },
         {
             "title": "Teaching Assistant (TA) — Igneous Petrology",
             "period": "Oct 2024 – Feb 2025",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
         },
         {
             "title": "Research Week Events & Workshops Series",
@@ -511,16 +517,22 @@ RESUME_FA = {
     ],
     "teaching": [
         {
+            "title": "دستیار استاد (TA) - خدمات فنی مهندسی معدن و قوانین معدنی",
+            "period": "بهمن ۱۴۰۴ – شهریور ۱۴۰۵",
+            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۸ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+        },
+        {
             "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
             "period": "مهر ۱۴۰۴ – بهمن ۱۴۰۴",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
         },
         {
             "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
             "period": "مهر ۱۴۰۳ – بهمن ۱۴۰۳",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
         },
         {
             "title": "مجموعه رویدادها و کارگاه‌های هفته پژوهش",
