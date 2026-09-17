@@ -93,22 +93,22 @@ RESUME_EN = {
             "note": "Research on Raman spectroscopy using spectrophotometric methods \u00b7 Supervised by Prof. Fariborz Masoudi (Full Professor)",
         },
         {
-            "title": "Research Collaborator",
+            "title": "Research Collaborator and Manager of HPC Infrastructure",
             "period": "Oct 2024 \u2013 Present",
             "org": "Institute of Medicinal Plants and Raw Materials, Shahid Beheshti University",
             "note": "Designed, built, and operated the group's computing infrastructure and processing environment \u00b7 Directly assisted with running and compiling code, and supported its users \u00b7 Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
         },
         {
-            "title": "Research Collaborator and Manager, Physical Chemistry HPC Core",
+            "title": "Research Collaborator and Manager, Physical Chemistry Computing (HPC) Core",
             "period": "Apr 2025 \u2013 Present",
             "org": "Faculty of Chemistry and Petroleum, Shahid Beheshti University, Tehran",
             "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Also assisted with managing computing users, compiling code, and running computations \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
         },
         {
-            "title": "Earth Sciences Researcher",
+            "title": "Earth Sciences and Petroleum Researcher",
             "period": "Jan 2023 \u2013 Present",
             "org": "Pars Geological Research Center (Arian Zamin)",
-            "note": "Research on economic geology and mineral deposits, including petrographic and geochemical data analysis \u00b7 Supervised by Prof. Mansour Ghorbani (Full Professor) \u00b7 m-ghorbani@sbu.ac.ir",
+            "note": "Research on economic geology, mineral deposits, and petroleum geology, including petrographic and geochemical data analysis \u00b7 Supervised by Prof. Mansour Ghorbani (Full Professor) \u00b7 m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
@@ -442,22 +442,22 @@ RESUME_FA = {
             "note": "پژوهش و تحقیقات بر روی طیف‌سنجی رامان (Raman Spectroscopy) با استفاده از روش اسپکتروفتومتری · تحت نظر: پرفسور فریبرز مسعودی (فول پروفسور)",
         },
         {
-            "title": "همکار پژوهشی",
+            "title": "همکار پژوهشی و مدیر زیرساخت پردازش سریع (HPC)",
             "period": "مهر ۱۴۰۳ – اکنون",
             "org": "پژوهشکده گیاهان و مواد اولیه دارویی، دانشگاه شهید بهشتی",
             "note": "طراحی، ساخت و راه‌اندازی زیرساخت و محیط پردازشی گروه · همکاری مستقیم در اجرا و کامپایل کدها و راهنمایی کاربران پردازشی · تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
         },
         {
-            "title": "همکار پژوهشی و مدیر هسته محاسباتی شیمی فیزیک (HPC)",
+            "title": "همکار پژوهشی و مدیر هسته محاسباتی (HPC) شیمی فیزیک",
             "period": "فروردین ۱۴۰۴ – اکنون",
             "org": "دانشکده شیمی و نفت، دانشگاه شهید بهشتی، تهران",
             "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · همچنین همکاری در مدیریت کاربران پردازشی، کامپایل کدها و اجرای پردازش‌ها · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
         },
         {
-            "title": "پژوهشگر علوم زمین",
+            "title": "محقق و پژوهشگر علوم زمین و نفت",
             "period": "دی ۱۴۰۱ – اکنون",
             "org": "موسسه پژوهشی زمین‌شناسی پارس آرین زمین",
-            "note": "پژوهش در زمینه زمین‌شناسی اقتصادی و کانسارها، شامل تحلیل داده‌های پتروگرافی و ژئوشیمیایی · تحت نظر: پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
+            "note": "پژوهش در زمینه زمین‌شناسی اقتصادی، کانسارها و زمین‌شناسی نفت، شامل تحلیل داده‌های پتروگرافی و ژئوشیمیایی · تحت نظر: پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
