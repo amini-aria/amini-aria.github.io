@@ -394,9 +394,18 @@ class ResumeBuilder:
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, r["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
-            if r.get("note"):
+            if r.get("note") or r.get("email"):
                 p2 = self._para(space_after=2)
-                self._run(p2, r["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                if r.get("note"):
+                    self._run(p2, r["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                if r.get("email"):
+                    if r.get("note"):
+                        self._run(p2, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                    add_hyperlink(
+                        p2, r["email"], "mailto:" + r["email"],
+                        font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                        weight_bold=False, rtl=self.is_fa,
+                    )
 
     def books(self):
         self._section_title("Books" if not self.is_fa else "\u06a9\u062a\u0627\u0628\u200c\u0647\u0627")
@@ -419,7 +428,7 @@ class ResumeBuilder:
         self._section_title("Conferences" if not self.is_fa else "کنفرانس‌ها")
         id_label = "National Sci-Doc ID: " if not self.is_fa else "شناسه ملی سند علمی: "
         link_label = "View on Civilica" if not self.is_fa else "مشاهده در سیویلیکا"
-        kicker = "Paper:" if not self.is_fa else "مقاله:"
+        kicker = "Paper Title:" if not self.is_fa else "عنوان مقاله:"
         for c in self.data["conferences"]:
             self._entry_head_line(c["title"], c["period"], left_weight="demibold", kicker=kicker)
             p = self._para(space_after=0)
@@ -455,8 +464,18 @@ class ResumeBuilder:
             p = self._para(space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, t["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
-            p2 = self._para(space_after=2)
-            self._run(p2, t["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+            if t.get("note") or t.get("email"):
+                p2 = self._para(space_after=2)
+                if t.get("note"):
+                    self._run(p2, t["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                if t.get("email"):
+                    if t.get("note"):
+                        self._run(p2, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                    add_hyperlink(
+                        p2, t["email"], "mailto:" + t["email"],
+                        font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                        weight_bold=False, rtl=self.is_fa,
+                    )
 
     def honors(self):
         self._section_title("Honors & Awards" if not self.is_fa else "افتخارات و جوایز")
@@ -511,10 +530,11 @@ class ResumeBuilder:
         title = "Professional Memberships" if not self.is_fa else "\u0639\u0636\u0648\u06cc\u062a\u200c\u0647\u0627\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"
         self._section_title(title)
         for m in self.data["memberships"]:
-            self._entry_head_line(m["role"], m["period"], left_weight="demibold")
-            p = self._para(space_after=0)
-            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._run(p, m["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            self._entry_head_line(m["role"], m.get("period", ""), left_weight="demibold")
+            if m.get("org"):
+                p = self._para(space_after=0)
+                p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+                self._run(p, m["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
     def volunteer(self):
         title = "Voluntary & Social Activities" if not self.is_fa else "\u0633\u0648\u0627\u0628\u0642 \u062f\u0627\u0648\u0637\u0644\u0628\u0627\u0646\u0647 \u0648 \u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u0627\u062c\u062a\u0645\u0627\u0639\u06cc"

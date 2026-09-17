@@ -31,7 +31,7 @@ RESUME_EN = {
     "role": "Geology Graduate",
     "contact_parts": [
         {"text": "Tehran, Iran"},
-        {"text": "aria@amini.info"},
+        {"text": "aria@amini.info", "url": "mailto:aria@amini.info"},
         {"text": "linkedin.com/in/mo-aria-amini", "url": "https://www.linkedin.com/in/mo-aria-amini"},
         {"text": "amini.info", "url": "https://amini.info"},
     ],
@@ -84,7 +84,7 @@ RESUME_EN = {
             "title": "Academic Internship",
             "period": "May 2025 \u2013 Aug 2025",
             "org": "National Iranian Oil Company",
-            "note": "Internship report: National Iranian South Oilfields Company, Geological Operations Department \u00b7 Grade A \u00b7 Supervised by Eng. Afshin Amini, Manager of NISOC's South Dezful Districts",
+            "note": "Internship report: National Iranian South Oilfields Company, Geological Operations Department \u00b7 Grade A",
         },
         {
             "title": "Research & Development",
@@ -96,19 +96,22 @@ RESUME_EN = {
             "title": "Research Collaborator and Manager of HPC Infrastructure",
             "period": "Oct 2024 \u2013 Present",
             "org": "Institute of Medicinal Plants and Raw Materials, Shahid Beheshti University",
-            "note": "Designed, built, and operated the group's computing infrastructure and processing environment \u00b7 Directly assisted with running and compiling code, and supported its users \u00b7 Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
+            "note": "Designed, built, and operated the group's computing infrastructure and processing environment \u00b7 Directly assisted with running and compiling code, and supported its users \u00b7 Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor)",
+            "email": "h_rezadoost@sbu.ac.ir",
         },
         {
             "title": "Research Collaborator and Manager, Physical Chemistry Computing (HPC) Core",
             "period": "Apr 2025 \u2013 Present",
             "org": "Faculty of Chemistry and Petroleum, Shahid Beheshti University, Tehran",
-            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Also assisted with managing computing users, compiling code, and running computations \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 m-zahedi@sbu.ac.ir",
+            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Also assisted with managing computing users, compiling code, and running computations \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor)",
+            "email": "m-zahedi@sbu.ac.ir",
         },
         {
             "title": "Earth Sciences and Petroleum Researcher",
             "period": "Jan 2023 \u2013 Present",
             "org": "Pars Geological Research Center (Arian Zamin)",
-            "note": "Research on economic geology, mineral deposits, and petroleum geology, including petrographic and geochemical data analysis \u00b7 Supervised by Prof. Mansour Ghorbani (Full Professor) \u00b7 m-ghorbani@sbu.ac.ir",
+            "note": "Research on economic geology, mineral deposits, and petroleum geology, including petrographic and geochemical data analysis \u00b7 Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
@@ -165,19 +168,22 @@ RESUME_EN = {
             "title": "Teaching Assistant (TA) — Mining Engineering Technical Services and Mining Regulations",
             "period": "Feb 2026 – Sep 2026",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for 8th-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor) · m-ghorbani@sbu.ac.ir",
+            "note": "Course for 8th-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "Teaching Assistant (TA) — Igneous Petrology",
             "period": "Oct 2025 – Feb 2026",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor) · m-ghorbani@sbu.ac.ir",
+            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "Teaching Assistant (TA) — Igneous Petrology",
             "period": "Oct 2024 – Feb 2025",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor) · m-ghorbani@sbu.ac.ir",
+            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "Research Week Events & Workshops Series",
@@ -214,8 +220,9 @@ RESUME_EN = {
     ],
     # role is the heading here (org below) — unchanged format
     "memberships": [
-        {"role": "Executive Secretary and Website Manager of the Iranian Geological Society", "period": "Apr 2023 – Present", "org": "Iranian Geological Society"},
-        {"role": "Member of the Organizing Committee", "period": "", "org": "Five National Geological Congresses of the Iranian Geological Society"},
+        {"role": "Member of the Iranian Geological Society", "period": "Oct 2022 – Present", "org": "Full (regular) member of the society, and also Executive Secretary and Website Manager of the Iranian Geological Society"},
+        {"role": "Member of the Geological Society of America (GSA)"},
+        {"role": "Member of the American Association of Petroleum Geologists (AAPG)"},
     ],
     "volunteer": [
         {
@@ -385,7 +392,7 @@ RESUME_FA = {
     "role": "\u062f\u0627\u0646\u0634\u200c\u0622\u0645\u0648\u062e\u062a\u0647\u200c\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc",
     "contact_parts": [
         {"text": "\u062a\u0647\u0631\u0627\u0646\u060c \u0627\u06cc\u0631\u0627\u0646"},
-        {"text": "aria@amini.info"},
+        {"text": "aria@amini.info", "url": "mailto:aria@amini.info"},
         {"text": "linkedin.com/in/mo-aria-amini", "url": "https://www.linkedin.com/in/mo-aria-amini"},
         {"text": "amini.info", "url": "https://amini.info"},
     ],
@@ -439,7 +446,7 @@ RESUME_FA = {
             "title": "کارآموزی (به‌عنوان واحد درسی)",
             "period": "اردیبهشت ۱۴۰۴ – مرداد ۱۴۰۴",
             "org": "شرکت ملی نفت ایران",
-            "note": "عنوان گزارش: گزارش دوره کارآموزی شرکت ملی مناطق نفت‌خیز جنوب، اداره عملیات زمین‌شناسی · نمره: گرید A · تحت نظر: مهندس افشین امینی، مدیر مناطق دزفول جنوبی شرکت NISOC",
+            "note": "عنوان گزارش: گزارش دوره کارآموزی شرکت ملی مناطق نفت‌خیز جنوب، اداره عملیات زمین‌شناسی · نمره: گرید A",
         },
         {
             "title": "تحقیق و توسعه",
@@ -451,19 +458,22 @@ RESUME_FA = {
             "title": "همکار پژوهشی و مدیر زیرساخت پردازش سریع (HPC)",
             "period": "مهر ۱۴۰۳ – اکنون",
             "org": "پژوهشکده گیاهان و مواد اولیه دارویی، دانشگاه شهید بهشتی",
-            "note": "طراحی، ساخت و راه‌اندازی زیرساخت و محیط پردازشی گروه · همکاری مستقیم در اجرا و کامپایل کدها و راهنمایی کاربران پردازشی · تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
+            "note": "طراحی، ساخت و راه‌اندازی زیرساخت و محیط پردازشی گروه · همکاری مستقیم در اجرا و کامپایل کدها و راهنمایی کاربران پردازشی · تحت نظر: دکتر حسن رضادوست چهارده (دانشیار)",
+            "email": "h_rezadoost@sbu.ac.ir",
         },
         {
             "title": "همکار پژوهشی و مدیر هسته محاسباتی (HPC) شیمی فیزیک",
             "period": "فروردین ۱۴۰۴ – اکنون",
             "org": "دانشکده شیمی و نفت، دانشگاه شهید بهشتی، تهران",
-            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · همچنین همکاری در مدیریت کاربران پردازشی، کامپایل کدها و اجرای پردازش‌ها · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · m-zahedi@sbu.ac.ir",
+            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · همچنین همکاری در مدیریت کاربران پردازشی، کامپایل کدها و اجرای پردازش‌ها · تحت نظر: پروفسور منصور زاهدی (فول پروفسور)",
+            "email": "m-zahedi@sbu.ac.ir",
         },
         {
             "title": "محقق و پژوهشگر علوم زمین و نفت",
             "period": "دی ۱۴۰۱ – اکنون",
             "org": "موسسه پژوهشی زمین‌شناسی پارس آرین زمین",
-            "note": "پژوهش در زمینه زمین‌شناسی اقتصادی، کانسارها و زمین‌شناسی نفت، شامل تحلیل داده‌های پتروگرافی و ژئوشیمیایی · تحت نظر: پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
+            "note": "پژوهش در زمینه زمین‌شناسی اقتصادی، کانسارها و زمین‌شناسی نفت، شامل تحلیل داده‌های پتروگرافی و ژئوشیمیایی · تحت نظر: پروفسور منصور قربانی (فول پروفسور)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
@@ -520,19 +530,22 @@ RESUME_FA = {
             "title": "دستیار استاد (TA) - درس خدمات فنی مهندسی معدن و قوانین معدنی",
             "period": "بهمن ۱۴۰۴ – شهریور ۱۴۰۵",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان ترم ۸ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۸ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
             "period": "مهر ۱۴۰۴ – بهمن ۱۴۰۴",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان ترم ۳ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۳ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
             "period": "مهر ۱۴۰۳ – بهمن ۱۴۰۳",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان ترم ۳ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۳ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "email": "m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "مجموعه رویدادها و کارگاه‌های هفته پژوهش",
@@ -568,8 +581,9 @@ RESUME_FA = {
         {"name": "فرانسوی", "level": "در حال یادگیری"},
     ],
     "memberships": [
-        {"role": "دبیر اجرایی انجمن و مدیر وبسایت انجمن زمین‌شناسی ایران", "period": "فروردین ۱۴۰۲ – اکنون", "org": "انجمن زمین‌شناسی ایران"},
-        {"role": "عضو کمیته برگزاری", "period": "", "org": "پنج همایش ملی زمین‌شناسی انجمن زمین‌شناسی ایران"},
+        {"role": "عضو انجمن زمین‌شناسی ایران", "period": "مهر ۱۴۰۱ – اکنون", "org": "عضو پیوسته انجمن و نیز دبیر اجرایی انجمن و مدیر وبسایت انجمن زمین‌شناسی ایران"},
+        {"role": "عضو انجمن زمین‌شناسان امریکا"},
+        {"role": "عضو انجمن نفت امریکا"},
     ],
     "volunteer": [
         {
