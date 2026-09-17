@@ -31,7 +31,7 @@ RESUME_EN = {
     "role": "Geology Graduate",
     "contact_parts": [
         {"text": "Tehran, Iran"},
-        {"text": "mo.aria.am@gmail.com"},
+        {"text": "aria@amini.info"},
         {"text": "linkedin.com/in/mo-aria-amini", "url": "https://www.linkedin.com/in/mo-aria-amini"},
         {"text": "amini.info", "url": "https://amini.info"},
     ],
@@ -385,7 +385,7 @@ RESUME_FA = {
     "role": "\u062f\u0627\u0646\u0634\u200c\u0622\u0645\u0648\u062e\u062a\u0647\u200c\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc",
     "contact_parts": [
         {"text": "\u062a\u0647\u0631\u0627\u0646\u060c \u0627\u06cc\u0631\u0627\u0646"},
-        {"text": "mo.aria.am@gmail.com"},
+        {"text": "aria@amini.info"},
         {"text": "linkedin.com/in/mo-aria-amini", "url": "https://www.linkedin.com/in/mo-aria-amini"},
         {"text": "amini.info", "url": "https://amini.info"},
     ],
