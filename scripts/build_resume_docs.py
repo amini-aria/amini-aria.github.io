@@ -358,15 +358,11 @@ class ResumeBuilder:
             self._run(p, e["org"], weight="demibold", size=SIZE_BODY)
             if "roles" in e:
                 for r in e["roles"]:
-                    self._entry_head_line(r["role"], r["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
-                    if r.get("tag"):
-                        pt = self._para(space_after=0)
-                        self._run(pt, r["tag"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                    role_text = r["role"] + ("  ·  " + r["tag"] if r.get("tag") else "")
+                    self._entry_head_line(role_text, r["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
             else:
-                self._entry_head_line(e["role"], e["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
-                if e.get("tag"):
-                    pt = self._para(space_after=0)
-                    self._run(pt, e["tag"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                role_text = e["role"] + ("  ·  " + e["tag"] if e.get("tag") else "")
+                self._entry_head_line(role_text, e["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
             if e.get("url"):
                 p2 = self._para(space_after=2)
                 label = "Website: " if not self.is_fa else "وبسایت: "

@@ -74,7 +74,7 @@ RESUME_EN = {
         {"org": "Varjavand Intelligent Creative Software & Hardware Services Co.", "role": "Chief Executive Officer (CEO) and Chairman of the Board", "period": "Jul 2025 \u2013 Present", "tag": "Full-Time", "url": "https://varjavand.org/", "url_text": "varjavand.org"},
         {"org": "Arian Zamin Publishing House", "roles": [
             {"role": "Director", "period": "Apr 2026 \u2013 Present", "tag": "Full-Time"},
-            {"role": "Editorial Specialist and Publications Researcher", "period": "Mar 2023 \u2013 Apr 2026", "tag": "Full-Time"},
+            {"role": "Editorial Specialist and Publications Researcher", "period": "Mar 2023 \u2013 Apr 2026", "tag": "Part-Time"},
         ]},
         {"org": "Pars Geological Research Center (Arian Zamin)", "role": "Geology Specialist", "period": "Feb 2023 \u2013 Present", "tag": "Full-Time"},
         {"org": "Gemology Science and Art Development Co. (Gemsa), Knowledge-Based Company", "role": "Research & Development (R&D) Manager", "period": "Sep 2024 \u2013 Apr 2025", "tag": "Full-Time"},
@@ -96,19 +96,19 @@ RESUME_EN = {
             "title": "Research Collaborator",
             "period": "Oct 2024 \u2013 Present",
             "org": "Institute of Medicinal Plants and Raw Materials, Shahid Beheshti University",
-            "note": "Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
+            "note": "Research on chemical characterization and data analysis of medicinal plant and raw material samples \u00b7 Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
         },
         {
             "title": "Research Collaborator and Manager, Physical Chemistry HPC Core",
             "period": "Apr 2025 \u2013 Present",
             "org": "Faculty of Chemistry and Petroleum, Shahid Beheshti University, Tehran",
-            "note": "Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
+            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
         },
         {
             "title": "Earth Sciences Researcher",
-            "period": "Jan 2026 \u2013 Present",
+            "period": "Jan 2023 \u2013 Present",
             "org": "Pars Geological Research Center (Arian Zamin)",
-            "note": "Supervised by Prof. Mansour Ghorbani (Full Professor) \u00b7 m-ghorbani@sbu.ac.ir",
+            "note": "Research on economic geology and mineral deposits, including petrographic and geochemical data analysis \u00b7 Supervised by Prof. Mansour Ghorbani (Full Professor) \u00b7 m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
@@ -166,6 +166,18 @@ RESUME_EN = {
             "period": "Jan 2026 – Feb 2026",
             "org": "Shahid Beheshti University, Tehran",
             "note": "Instructor · Workshop: Introduction to Parallel Processing Systems and Linux-Based High-Performance Computing Environments",
+        },
+        {
+            "title": "Igneous Petrology",
+            "period": "Oct 2025 – Feb 2026",
+            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
+            "note": "Teaching Assistant · Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+        },
+        {
+            "title": "Igneous Petrology",
+            "period": "Oct 2024 – Feb 2025",
+            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
+            "note": "Teaching Assistant · Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
         },
     ],
     "honors": [
@@ -411,7 +423,7 @@ RESUME_FA = {
         {"org": "\u0634\u0631\u06a9\u062a \u062e\u062f\u0645\u0627\u062a \u0646\u0631\u0645\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0648 \u0633\u062e\u062a\u200c\u0627\u0641\u0632\u0627\u0631\u06cc \u0647\u0648\u0634\u0645\u0646\u062f \u0627\u0641\u0632\u0627\u0631 \u062e\u0644\u0627\u0642 (\u0648\u064e\u0631\u062c\u0627\u0648\u064e\u0646\u062f)", "role": "\u0645\u062f\u06cc\u0631\u0639\u0627\u0645\u0644 \u0648 \u0631\u0626\u06cc\u0633 \u0647\u06cc\u0626\u062a \u0645\u062f\u06cc\u0631\u0647", "period": "\u062a\u06cc\u0631 \u06f1\u06f4\u06f0\u06f4 \u2013 \u0627\u06a9\u0646\u0648\u0646", "url": "https://varjavand.org/", "url_text": "varjavand.org", "tag": "تمام‌وقت"},
         {"org": "\u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a \u0622\u0631\u06cc\u0646 \u0632\u0645\u06cc\u0646", "roles": [
             {"role": "\u0645\u062f\u06cc\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5 \u2013 \u0627\u06a9\u0646\u0648\u0646", "tag": "تمام‌وقت"},
-            {"role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0648 \u067e\u0698\u0648\u0647\u0634\u06af\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0627\u0633\u0641\u0646\u062f \u06f1\u06f4\u06f0\u06f1 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5", "tag": "تمام‌وقت"},
+            {"role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0648 \u067e\u0698\u0648\u0647\u0634\u06af\u0631 \u0627\u0646\u062a\u0634\u0627\u0631\u0627\u062a", "period": "\u0627\u0633\u0641\u0646\u062f \u06f1\u06f4\u06f0\u06f1 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f5", "tag": "پاره‌وقت"},
         ]},
         {"org": "\u0645\u0648\u0633\u0633\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc \u067e\u0627\u0631\u0633 \u0622\u0631\u06cc\u0646 \u0632\u0645\u06cc\u0646", "role": "\u06a9\u0627\u0631\u0634\u0646\u0627\u0633 \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633", "period": "\u0628\u0647\u0645\u0646 \u06f1\u06f4\u06f0\u06f1 \u2013 \u0627\u06a9\u0646\u0648\u0646", "tag": "تمام‌وقت"},
         {"org": "\u0634\u0631\u06a9\u062a \u062a\u0648\u0633\u0639\u0647 \u062f\u0627\u0646\u0634 \u0648 \u0647\u0646\u0631 \u06af\u0648\u0647\u0631\u0634\u0646\u0627\u0633\u06cc (\u062c\u0650\u0645\u0633\u0627) - \u062f\u0627\u0646\u0634\u200c\u0628\u0646\u06cc\u0627\u0646", "role": "\u0645\u062f\u06cc\u0631 \u062a\u062d\u0642\u06cc\u0642 \u0648 \u062a\u0648\u0633\u0639\u0647 (R&D)", "period": "\u0634\u0647\u0631\u06cc\u0648\u0631 \u06f1\u06f4\u06f0\u06f3 \u2013 \u0641\u0631\u0648\u0631\u062f\u06cc\u0646 \u06f1\u06f4\u06f0\u06f4", "tag": "تمام‌وقت"},
@@ -433,19 +445,19 @@ RESUME_FA = {
             "title": "همکار پژوهشی",
             "period": "مهر ۱۴۰۳ – اکنون",
             "org": "پژوهشکده گیاهان و مواد اولیه دارویی، دانشگاه شهید بهشتی",
-            "note": "تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
+            "note": "پژوهش بر روی شناسایی شیمیایی و تحلیل داده‌های نمونه‌های گیاهان و مواد اولیه دارویی · تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
         },
         {
             "title": "همکار پژوهشی و مدیر هسته محاسباتی شیمی فیزیک (HPC)",
             "period": "فروردین ۱۴۰۴ – اکنون",
             "org": "دانشکده شیمی و نفت، دانشگاه شهید بهشتی، تهران",
-            "note": "تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
+            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
         },
         {
             "title": "پژوهشگر علوم زمین",
-            "period": "دی ۱۴۰۴ – اکنون",
+            "period": "دی ۱۴۰۱ – اکنون",
             "org": "موسسه پژوهشی زمین‌شناسی پارس آرین زمین",
-            "note": "تحت نظر: پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
+            "note": "پژوهش در زمینه زمین‌شناسی اقتصادی و کانسارها، شامل تحلیل داده‌های پتروگرافی و ژئوشیمیایی · تحت نظر: پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
         },
     ],
     "books": [
@@ -503,6 +515,18 @@ RESUME_FA = {
             "period": "دی ۱۴۰۴ – بهمن ۱۴۰۴",
             "org": "دانشگاه شهید بهشتی، تهران",
             "note": "مدرس · عنوان کارگاه: آشنایی با محیط سامانه‌های پردازش موازی و پردازش سریع مبتنی بر لینوکس",
+        },
+        {
+            "title": "سنگ‌شناسی آذرین",
+            "period": "مهر ۱۴۰۴ – بهمن ۱۴۰۴",
+            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
+            "note": "دستیار استاد · درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+        },
+        {
+            "title": "سنگ‌شناسی آذرین",
+            "period": "مهر ۱۴۰۳ – بهمن ۱۴۰۳",
+            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
+            "note": "دستیار استاد · درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
         },
     ],
     "honors": [
