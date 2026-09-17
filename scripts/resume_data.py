@@ -102,7 +102,7 @@ RESUME_EN = {
             "title": "Research Collaborator and Manager, Physical Chemistry Computing (HPC) Core",
             "period": "Apr 2025 \u2013 Present",
             "org": "Faculty of Chemistry and Petroleum, Shahid Beheshti University, Tehran",
-            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Also assisted with managing computing users, compiling code, and running computations \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
+            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Also assisted with managing computing users, compiling code, and running computations \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 m-zahedi@sbu.ac.ir",
         },
         {
             "title": "Earth Sciences and Petroleum Researcher",
@@ -156,7 +156,7 @@ RESUME_EN = {
     "patents": [
         {
             "title": "System and Method for Depth-Aware Identification and Zonation of Productive (Net Pay) Intervals in Oil Wells Using Multi-Model Probabilistic Fusion of Well-Log Data",
-            "status": "Under Review",
+            "status": "2026 · Under Review",
             "org": "Iranian Patent Application · Sole Inventor",
         },
     ],
@@ -165,19 +165,19 @@ RESUME_EN = {
             "title": "Teaching Assistant (TA) — Mining Engineering Technical Services and Mining Regulations",
             "period": "Feb 2026 – Sep 2026",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for 8th-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "note": "Course for 8th-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor) · m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "Teaching Assistant (TA) — Igneous Petrology",
             "period": "Oct 2025 – Feb 2026",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor) · m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "Teaching Assistant (TA) — Igneous Petrology",
             "period": "Oct 2024 – Feb 2025",
             "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+            "note": "Course for third-semester undergraduate Geology students · Supervised by Prof. Mansour Ghorbani (Full Professor) · m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "Research Week Events & Workshops Series",
@@ -457,7 +457,7 @@ RESUME_FA = {
             "title": "همکار پژوهشی و مدیر هسته محاسباتی (HPC) شیمی فیزیک",
             "period": "فروردین ۱۴۰۴ – اکنون",
             "org": "دانشکده شیمی و نفت، دانشگاه شهید بهشتی، تهران",
-            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · همچنین همکاری در مدیریت کاربران پردازشی، کامپایل کدها و اجرای پردازش‌ها · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
+            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · همچنین همکاری در مدیریت کاربران پردازشی، کامپایل کدها و اجرای پردازش‌ها · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · m-zahedi@sbu.ac.ir",
         },
         {
             "title": "محقق و پژوهشگر علوم زمین و نفت",
@@ -511,28 +511,28 @@ RESUME_FA = {
     "patents": [
         {
             "title": "سامانه و روش هوشمند شناسایی و زون‌بندی زون‌های تولیدی (Net Pay/Pay Zone) در چاه‌های نفت بر پایه همجوشی احتمالاتی چندمدلی و تحلیل عمقی داده‌های لاگ",
-            "status": "در دست داوری",
+            "status": "۱۴۰۵ · در دست داوری",
             "org": "درخواست ثبت اختراع ایران · مخترع منفرد",
         },
     ],
     "teaching": [
         {
-            "title": "دستیار استاد (TA) - خدمات فنی مهندسی معدن و قوانین معدنی",
+            "title": "دستیار استاد (TA) - درس خدمات فنی مهندسی معدن و قوانین معدنی",
             "period": "بهمن ۱۴۰۴ – شهریور ۱۴۰۵",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان ترم ۸ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۸ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
             "period": "مهر ۱۴۰۴ – بهمن ۱۴۰۴",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۳ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
             "period": "مهر ۱۴۰۳ – بهمن ۱۴۰۳",
             "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+            "note": "درس ارائه‌شده برای دانشجویان ترم ۳ کارشناسی رشته زمین‌شناسی · دستیار پروفسور منصور قربانی (فول پروفسور) · m-ghorbani@sbu.ac.ir",
         },
         {
             "title": "مجموعه رویدادها و کارگاه‌های هفته پژوهش",
