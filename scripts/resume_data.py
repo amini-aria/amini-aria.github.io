@@ -96,13 +96,13 @@ RESUME_EN = {
             "title": "Research Collaborator",
             "period": "Oct 2024 \u2013 Present",
             "org": "Institute of Medicinal Plants and Raw Materials, Shahid Beheshti University",
-            "note": "Research on chemical characterization and data analysis of medicinal plant and raw material samples \u00b7 Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
+            "note": "Designed, built, and operated the group's computing infrastructure and processing environment \u00b7 Directly assisted with running and compiling code, and supported its users \u00b7 Supervised by Dr. Hassan Rezadoost Chahardehi (Associate Professor) \u00b7 h_rezadoost@sbu.ac.ir",
         },
         {
             "title": "Research Collaborator and Manager, Physical Chemistry HPC Core",
             "period": "Apr 2025 \u2013 Present",
             "org": "Faculty of Chemistry and Petroleum, Shahid Beheshti University, Tehran",
-            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
+            "note": "Managing and developing the faculty's HPC infrastructure to support computational and physical chemistry research \u00b7 Also assisted with managing computing users, compiling code, and running computations \u00b7 Supervised by Prof. Mansour Zahedi (Full Professor) \u00b7 M-Zahedi@sbu.ac.ir",
         },
         {
             "title": "Earth Sciences Researcher",
@@ -162,22 +162,22 @@ RESUME_EN = {
     ],
     "teaching": [
         {
+            "title": "Teaching Assistant (TA) — Igneous Petrology",
+            "period": "Oct 2025 – Feb 2026",
+            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
+            "note": "Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+        },
+        {
+            "title": "Teaching Assistant (TA) — Igneous Petrology",
+            "period": "Oct 2024 – Feb 2025",
+            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
+            "note": "Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
+        },
+        {
             "title": "Research Week Events & Workshops Series",
             "period": "Jan 2026 – Feb 2026",
             "org": "Shahid Beheshti University, Tehran",
             "note": "Instructor · Workshop: Introduction to Parallel Processing Systems and Linux-Based High-Performance Computing Environments",
-        },
-        {
-            "title": "Igneous Petrology",
-            "period": "Oct 2025 – Feb 2026",
-            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Teaching Assistant · Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
-        },
-        {
-            "title": "Igneous Petrology",
-            "period": "Oct 2024 – Feb 2025",
-            "org": "Shahid Beheshti University, Tehran, Faculty of Earth Sciences",
-            "note": "Teaching Assistant · Course for third-semester undergraduate students · Supervised by Prof. Mansour Ghorbani (Full Professor)",
         },
     ],
     "honors": [
@@ -445,13 +445,13 @@ RESUME_FA = {
             "title": "همکار پژوهشی",
             "period": "مهر ۱۴۰۳ – اکنون",
             "org": "پژوهشکده گیاهان و مواد اولیه دارویی، دانشگاه شهید بهشتی",
-            "note": "پژوهش بر روی شناسایی شیمیایی و تحلیل داده‌های نمونه‌های گیاهان و مواد اولیه دارویی · تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
+            "note": "طراحی، ساخت و راه‌اندازی زیرساخت و محیط پردازشی گروه · همکاری مستقیم در اجرا و کامپایل کدها و راهنمایی کاربران پردازشی · تحت نظر: دکتر حسن رضادوست چهارده (دانشیار) · h_rezadoost@sbu.ac.ir",
         },
         {
             "title": "همکار پژوهشی و مدیر هسته محاسباتی شیمی فیزیک (HPC)",
             "period": "فروردین ۱۴۰۴ – اکنون",
             "org": "دانشکده شیمی و نفت، دانشگاه شهید بهشتی، تهران",
-            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
+            "note": "مدیریت و توسعه زیرساخت محاسبات پرسرعت (HPC) دانشکده برای پشتیبانی از پژوهش‌های شیمی محاسباتی و شیمی فیزیک · همچنین همکاری در مدیریت کاربران پردازشی، کامپایل کدها و اجرای پردازش‌ها · تحت نظر: پروفسور منصور زاهدی (فول پروفسور) · M-Zahedi@sbu.ac.ir",
         },
         {
             "title": "پژوهشگر علوم زمین",
@@ -511,22 +511,22 @@ RESUME_FA = {
     ],
     "teaching": [
         {
+            "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
+            "period": "مهر ۱۴۰۴ – بهمن ۱۴۰۴",
+            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
+            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+        },
+        {
+            "title": "دستیار استاد (TA) - درس سنگ‌شناسی آذرین",
+            "period": "مهر ۱۴۰۳ – بهمن ۱۴۰۳",
+            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
+            "note": "درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
+        },
+        {
             "title": "مجموعه رویدادها و کارگاه‌های هفته پژوهش",
             "period": "دی ۱۴۰۴ – بهمن ۱۴۰۴",
             "org": "دانشگاه شهید بهشتی، تهران",
             "note": "مدرس · عنوان کارگاه: آشنایی با محیط سامانه‌های پردازش موازی و پردازش سریع مبتنی بر لینوکس",
-        },
-        {
-            "title": "سنگ‌شناسی آذرین",
-            "period": "مهر ۱۴۰۴ – بهمن ۱۴۰۴",
-            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "دستیار استاد · درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
-        },
-        {
-            "title": "سنگ‌شناسی آذرین",
-            "period": "مهر ۱۴۰۳ – بهمن ۱۴۰۳",
-            "org": "دانشگاه شهید بهشتی تهران، دانشکده علوم زمین",
-            "note": "دستیار استاد · درس ارائه‌شده برای دانشجویان نیمسال سوم مقطع کارشناسی · دستیار پروفسور منصور قربانی (فول پروفسور)",
         },
     ],
     "honors": [

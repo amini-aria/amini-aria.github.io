@@ -47,6 +47,19 @@ from jalali import today_jalali_string  # noqa: E402
 
 OUT_DIR = Path(__file__).parent.parent / "assets" / "files"
 
+# resume_data.py stores hosted documents (licenses, non-Coursera certificates)
+# as root-relative site paths ("/assets/files/..."), same as the HTML pages
+# use — correct there since the browser resolves them against the page's own
+# domain. A standalone .docx/.pdf has no such base, so a relative link opens
+# as broken (or tries the local filesystem) once the file leaves the site.
+# absolute_url() is the one place that gap gets closed for the download.
+SITE_BASE_URL = "https://amini.info"
+
+
+def absolute_url(url):
+    return SITE_BASE_URL + url if url.startswith("/") else url
+
+
 INK = RGBColor(0x1A, 0x1A, 0x1A)
 SECONDARY = RGBColor(0x4D, 0x4D, 0x4D)
 ACCENT_BLUE = RGBColor(0x1F, 0x4E, 0x79)
@@ -456,62 +469,19 @@ class ResumeBuilder:
                 p2 = self._para(space_after=2)
                 self._run(p2, h["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
 
-    def _spine(self, paragraph):
-        """One hairline rule down the start edge of a paragraph — the trunk the
-        group labels branch off.
-
-        The side is chosen here rather than left to the renderer. w:pBdr has no
-        start/end pair, only physical left and right, and LibreOffice honours
-        that literally even on a w:bidi paragraph: the first Persian build put
-        the rule down the left margin with the text against the right. So the
-        Persian document asks for w:right and indents from the right, which is
-        the same figure mirrored, and neither build depends on a renderer
-        guessing what "left" means in an RTL paragraph.
-
-        pBdr goes at the head of pPr because the schema orders it ahead of
-        w:bidi, w:spacing, w:ind and w:jc — all of which _para and the caller
-        have already written by the time this runs."""
-        pPr = paragraph._p.get_or_add_pPr()
-        pBdr = OxmlElement("w:pBdr")
-        edge = OxmlElement("w:right" if self.is_fa else "w:left")
-        edge.set(qn("w:val"), "single")
-        edge.set(qn("w:sz"), "6")
-        edge.set(qn("w:space"), "6")
-        edge.set(qn("w:color"), "999999")
-        pBdr.append(edge)
-        pPr.insert(0, pBdr)
-
-    def _indent_from_spine(self, paragraph, cm):
-        """Indent off the edge the spine is on, for the same reason: w:ind
-        left/right are physical here too."""
-        if self.is_fa:
-            paragraph.paragraph_format.right_indent = Cm(cm)
-        else:
-            paragraph.paragraph_format.left_indent = Cm(cm)
-
     def _skill_tree(self, groups):
-        """The site draws this section as a tree — one spine, a node per group,
-        the terms sitting opposite as the leaf — and the document keeps the same
-        reading rather than reverting to "Label: a * b * c" run together.
-
-        The spine is a paragraph border, not a character: neither Times New Roman
-        nor Dana carries the box-drawing glyphs, and a border stays out of the
-        text layer entirely, so an ATS still extracts plain paragraphs and the
-        file keeps its no-tables promise. Each group is a node line with an
-        indented leaf line under it, which is the form the tree has to take in a
-        single narrow column — the same stacking the site falls back to on a
-        phone."""
+        """Plain label-then-terms pairs, no rule or indent — the tree/spine
+        drawing this used to carry over from the site was decoration the
+        document doesn't need; a bold group label followed by its terms
+        reads cleanly on its own and matches the rest of the document's
+        plain, ATS-safe paragraphs."""
         items = list(groups.items())
         for i, (label, terms) in enumerate(items):
             head = self._para(space_before=0 if i == 0 else 3, space_after=0)
-            self._indent_from_spine(head, 0.5)
-            self._spine(head)
             self._run(head, label, weight="demibold", size=SIZE_BODY)
 
             leaf = self._para(space_before=0, space_after=2 if i == len(items) - 1 else 0)
-            self._indent_from_spine(leaf, 0.5)
             leaf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-            self._spine(leaf)
             self._run(leaf, "  \u2022  ".join(terms), weight="regular", size=SIZE_BODY)
 
     def skills(self):
@@ -582,7 +552,7 @@ class ResumeBuilder:
                 self._run(p, c["cert_no"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
             if c.get("url"):
                 add_hyperlink(
-                    p, c.get("label", view_cert), c["url"],
+                    p, c.get("label", view_cert), absolute_url(c["url"]),
                     font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                     weight_bold=False, rtl=self.is_fa,
                 )
@@ -598,7 +568,7 @@ class ResumeBuilder:
                     self._run(p, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
             if lic.get("url"):
                 add_hyperlink(
-                    p, view_license, lic["url"],
+                    p, view_license, absolute_url(lic["url"]),
                     font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                     weight_bold=False, rtl=self.is_fa,
                 )
