@@ -336,12 +336,37 @@ def webpage_nodes(info, works=()):
     return [node, crumbs]
 
 
+NAV_NAME = {"en": "Site navigation", "fa": "ناوبری سایت"}
+
+
+def navigation_node(lang):
+    """The four pages of this language as SiteNavigationElements. Google says
+    sitelinks come from site structure and page titles, not from markup, so
+    this is a hint at best; it costs a few hundred bytes and mirrors the
+    dock exactly (same order, same targets)."""
+    pages = [p for p in S.PAGES if p["lang"] == lang]
+    home = home_page(S.PAGES, lang)
+    return {
+        "@type": "ItemList",
+        "@id": page_url(home["path"]) + "#nav",
+        "name": NAV_NAME[lang],
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": i + 1,
+                "item": {"@type": "SiteNavigationElement", "name": p["crumb"], "url": page_url(p["path"])},
+            }
+            for i, p in enumerate(pages)
+        ],
+    }
+
+
 def jsonld(info, data, data_en):
     works = publication_nodes(info, data, data_en) if info["kind"] == "publications" else []
     graph = {
         "@context": "https://schema.org",
         "@graph": [person_node(info["lang"], data), website_node(info["lang"])]
-        + webpage_nodes(info, works) + works,
+        + webpage_nodes(info, works) + works + [navigation_node(info["lang"])],
     }
     text = json.dumps(graph, ensure_ascii=False, indent=2)
     # "</script>" inside a string would end the element early; "<\/" is the

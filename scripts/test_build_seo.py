@@ -363,6 +363,19 @@ class BuildSeoTests(unittest.TestCase):
         self.assertEqual(len(node(g, "ScholarlyArticle")), 1)
         self.assertNotIn("datePublished", node(g, "ScholarlyArticle")[0])
 
+    def test_every_page_lists_its_languages_navigation(self):
+        out = self.render()
+        for rel, lang, first in (("resume/index.html", "en", "Home"), ("fa/contact/index.html", "fa", "خانه")):
+            nav = node(jsonld_of(out[rel]), "ItemList")
+            self.assertEqual(len(nav), 1, rel)
+            items = nav[0]["itemListElement"]
+            self.assertEqual(len(items), 4)
+            self.assertEqual(items[0]["item"]["name"], first)
+            self.assertEqual(items[0]["item"]["@type"], "SiteNavigationElement")
+            self.assertEqual([i["position"] for i in items], [1, 2, 3, 4])
+            self.assertTrue(all(i["item"]["url"].startswith("https://amini.info/") for i in items))
+            self.assertTrue(all(("/fa/" in i["item"]["url"]) == (lang == "fa") for i in items), rel)
+
     # -- site verification / IndexNow ----------------------------------------
 
     def test_verification_tags_only_when_a_code_is_set(self):

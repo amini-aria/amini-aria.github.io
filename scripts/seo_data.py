@@ -102,16 +102,16 @@ OG_IMAGE = {"path": "/assets/img/og-image.jpg", "width": 1200, "height": 630}
 OG_LOCALE = {"en": "en_US", "fa": "fa_IR"}
 
 # Every published page, its language, and its translation. `crumb` is the
-# label used in the breadcrumb trail (the home page's crumb is the first
+# label used in the breadcrumb trail and the SiteNavigationElement list (the home page's crumb is the first
 # item of every other page's trail in that language). `kind` "home" gets
 # ProfilePage + og:type=profile; everything else is a plain WebPage.
 PAGES = [
     {"path": "index.html",                 "lang": "en", "pair": "fa/index.html",              "kind": "home",         "crumb": "Home"},
     {"path": "resume/index.html",          "lang": "en", "pair": "fa/resume/index.html",       "kind": "resume",       "crumb": "Resume"},
-    {"path": "publications/index.html",    "lang": "en", "pair": "fa/publications/index.html", "kind": "publications", "crumb": "Research"},
+    {"path": "publications/index.html",    "lang": "en", "pair": "fa/publications/index.html", "kind": "publications", "crumb": "Research & Publications"},
     {"path": "contact/index.html",         "lang": "en", "pair": "fa/contact/index.html",      "kind": "contact",      "crumb": "Contact"},
     {"path": "fa/index.html",              "lang": "fa", "pair": "index.html",                 "kind": "home",         "crumb": "خانه"},
-    {"path": "fa/resume/index.html",       "lang": "fa", "pair": "resume/index.html",          "kind": "resume",       "crumb": "رزومه"},
-    {"path": "fa/publications/index.html", "lang": "fa", "pair": "publications/index.html",    "kind": "publications", "crumb": "پژوهش"},
-    {"path": "fa/contact/index.html",      "lang": "fa", "pair": "contact/index.html",         "kind": "contact",      "crumb": "ارتباط"},
+    {"path": "fa/resume/index.html",       "lang": "fa", "pair": "resume/index.html",          "kind": "resume",       "crumb": "رزومه من"},
+    {"path": "fa/publications/index.html", "lang": "fa", "pair": "publications/index.html",    "kind": "publications", "crumb": "پژوهش‌ها و مقالات"},
+    {"path": "fa/contact/index.html",      "lang": "fa", "pair": "contact/index.html",         "kind": "contact",      "crumb": "ارتباط با من"},
 ]

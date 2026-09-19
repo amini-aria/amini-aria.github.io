@@ -1321,6 +1321,7 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
    reads right-to-left like the rest of the page. */
 .lang-fa .rights { font-family: var(--font-fa); font-weight: 300; letter-spacing: 0; direction: rtl; }
 .lang-fa .rights__name { letter-spacing: 0; font-weight: 500; }
+.rights__name a:hover, .rights__name a:focus-visible { text-decoration: underline; text-underline-offset: 0.18em; }
 
 /* =========================================================================
    RESPONSIVE
