@@ -1,7 +1,9 @@
 name: Bake pages and stamp assets
 
 # On every push to main, mirrors the resume sections into the publications
-# pages and rewrites each HTML page's ?v=... query string to
+# pages, bakes the SEO block into every page's <head> and rebuilds
+# sitemap.xml (scripts/build_seo.py), and rewrites each HTML page's ?v=...
+# query string to
 # that commit's short SHA and republishes version.json. Without this, a
 # browser that already cached the old files has no reason to notice a
 # deploy happened and can keep serving them for hours (see
@@ -30,6 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # build_seo.py reads each page's last real commit date for the
+          # sitemap's <lastmod>; a shallow clone has no history to read.
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -40,6 +46,10 @@ jobs:
       - name: Mirror resume sections into the publications pages
         run: python3 scripts/build_publications.py
 
+      # After the mirror, so the publications pages it reads are final.
+      - name: Bake the SEO block into every page and rebuild sitemap.xml
+        run: python3 scripts/build_seo.py
+
       - name: Update asset versions in HTML
         run: python3 scripts/update_asset_versions.py
 
@@ -49,7 +59,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html resume/index.html publications/index.html contact/index.html \
                   fa/index.html fa/resume/index.html fa/publications/index.html fa/contact/index.html \
-                  version.json
+                  version.json sitemap.xml
           git diff --staged --quiet && exit 0
           git commit -m "chore: bump asset cache-busting versions [skip ci]"
           # Another workflow (e.g. build-resume-docs) can push to main
@@ -62,3 +72,10 @@ jobs:
             sleep $((RANDOM % 5 + 1))
           done
           git push
+
+      # Bing, Yandex and the other IndexNow engines fetch the pages now
+      # instead of on their next scheduled crawl. Google is not part of
+      # IndexNow; the sitemap in Search Console covers it. The script
+      # always exits 0, so a hiccup at the API cannot fail the run.
+      - name: Ping IndexNow with every page
+        run: python3 scripts/indexnow.py

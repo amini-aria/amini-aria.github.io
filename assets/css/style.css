@@ -1316,6 +1316,11 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
 }
 .rights__mark { font-size: 0.92em; opacity: 0.7; }
 .rights__sep { margin-inline: 0.15em; color: var(--ink-faint); }
+/* The Persian pages sign off in Persian. Letter-spacing would pull the
+   joined letters apart, Vazirmatn is loaded from 300 up, and the line
+   reads right-to-left like the rest of the page. */
+.lang-fa .rights { font-family: var(--font-fa); font-weight: 300; letter-spacing: 0; direction: rtl; }
+.lang-fa .rights__name { letter-spacing: 0; font-weight: 500; }
 
 /* =========================================================================
    RESPONSIVE
