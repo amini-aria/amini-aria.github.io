@@ -159,8 +159,8 @@ RESUME_EN = {
     "patents": [
         {
             "title": "System and Method for Depth-Aware Identification and Zonation of Productive (Net Pay) Intervals in Oil Wells Using Multi-Model Probabilistic Fusion of Well-Log Data",
-            "status": "Published · 2026",
-            "org": "Iranian Patent Application · Owner and Sole Inventor",
+            "status": "Registered · 2026",
+            "org": "Iranian Patent · Owner and Sole Inventor",
             "note": "Application No. 140450140003008805 · Filed 18 Dec 2025 (1404/09/27) · Publication No. 140550440003003800 · Published 19 Sep 2026 (1405/06/28) · IPC: E21B 43/00",
             "summary": "A depth-aware software system that standardizes and quality-controls multi-well log data, builds depth-based features, trains several classifiers, calibrates their probabilities and fuses them into per-depth zone labels with an uncertainty index.",
             "url": "https://ipm.ssaa.ir/Issue-IssueResult?page=1&DecNo=140450140003008805&IssueId=7007e91773564b4d891344f2a232e917&RN=",
@@ -524,8 +524,8 @@ RESUME_FA = {
     "patents": [
         {
             "title": "سامانه یادگیری ماشین برای شناسایی زون‌های تولیدی چاه نفت",
-            "status": "منتشرشده · ۲۰۲۶",
-            "org": "درخواست ثبت اختراع ایران · مالک و مخترع منفرد",
+            "status": "ثبت‌شده · ۲۰۲۶",
+            "org": "ثبت اختراع ایران · مالک و مخترع منفرد",
             "note": "شماره اظهارنامه: ۱۴۰۴۵۰۱۴۰۰۰۳۰۰۸۸۰۵ · تاریخ ثبت: ۱۴۰۴/۰۹/۲۷ · شماره انتشار: ۱۴۰۵۵۰۴۴۰۰۰۳۰۰۳۸۰۰ · تاریخ انتشار: ۱۴۰۵/۰۶/۲۸ · طبقه‌بندی بین‌المللی: E21B 43/00",
             "summary": "سامانه‌ای نرم‌افزاری و عمق‌آگاه که داده‌های لاگ چندچاهی را استانداردسازی و کنترل کیفیت می‌کند، چند رده‌بند را آموزش می‌دهد، احتمال‌های خروجی را کالیبره و با همجوشی احتمالاتی ترکیب می‌کند و برای هر عمق برچسب زون و شاخص عدم‌قطعیت تولید می‌کند.",
             "url": "https://ipm.ssaa.ir/Issue-IssueResult?page=1&DecNo=140450140003008805&IssueId=7007e91773564b4d891344f2a232e917&RN=",
