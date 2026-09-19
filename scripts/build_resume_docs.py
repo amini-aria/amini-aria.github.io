@@ -451,11 +451,28 @@ class ResumeBuilder:
 
     def patents(self):
         self._section_title("Patents" if not self.is_fa else "اختراعات")
+        link_label = "View on Iranian Patent Office" if not self.is_fa else "مشاهده در سامانه مالکیت صنعتی"
         for pt in self.data["patents"]:
             self._entry_head_line(pt["title"], pt["status"], left_weight="demibold")
             p = self._para(space_after=2)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
             self._run(p, pt["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
+            if pt.get("note") or pt.get("url"):
+                p2 = self._para(space_after=0)
+                if pt.get("note"):
+                    self._run(p2, pt["note"], weight="light", size=SIZE_SMALL, color=SECONDARY)
+                if pt.get("url"):
+                    if pt.get("note"):
+                        self._run(p2, "  \u00b7  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                    add_hyperlink(
+                        p2, link_label, pt["url"],
+                        font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                        weight_bold=False, rtl=self.is_fa,
+                    )
+            if pt.get("summary"):
+                p3 = self._para(space_after=2)
+                p3.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+                self._run(p3, pt["summary"], weight="light", size=SIZE_SMALL, color=SECONDARY)
 
     def teaching(self):
         self._section_title("Teaching Activities" if not self.is_fa else "فعالیت‌های تدریس")
