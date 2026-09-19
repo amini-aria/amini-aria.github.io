@@ -12,8 +12,9 @@ name: Build resume documents
 # Without that trigger and that check, editing the page changed the site and
 # silently left the downloadable files behind.
 #
-# All four files are linked from the resume pages' download buttons and
-# are overwritten in place, so these four URLs are permanent:
+# Only the .pdf files are linked from the resume pages' download buttons;
+# the .docx files are deliberately not shown in the UI but are built to the
+# same folder. All four are overwritten in place, so these URLs are permanent:
 #   https://amini.info/assets/files/Aria-CV-En.pdf
 #   https://amini.info/assets/files/Aria-CV-En.docx
 #   https://amini.info/assets/files/Aria-CV-Fa.pdf
