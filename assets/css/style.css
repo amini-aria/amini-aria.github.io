@@ -1657,10 +1657,8 @@ body.lang-fa .contact-stack { --dir: -1; }
   inline-size: 5px; block-size: 5px; flex: none;
   border-radius: 50%;
   background: #2B95CE;
-
   position: relative;
-  top: 1.5px;
-   
+  top: 0.5px;
   animation: badge-pulse 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 /* Faster, wider, and the dot itself breathes rather than only emitting a ring —
