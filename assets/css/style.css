@@ -1659,7 +1659,7 @@ body.lang-fa .contact-stack { --dir: -1; }
   background: #2B95CE;
 
   position: relative;
-  top: 1px;
+  top: 1.5px;
    
   animation: badge-pulse 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
