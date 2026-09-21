@@ -1,5 +1,4 @@
 # Mohammad Aria Amini's Personal Website!
 
-سلام دنیا!
-
+Hello WORLD!
 🌐 [amini.info](https://amini.info)
