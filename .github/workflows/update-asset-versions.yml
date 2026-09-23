@@ -37,6 +37,14 @@ jobs:
           # sitemap's <lastmod>; a shallow clone has no history to read.
           fetch-depth: 0
 
+      # A queued workflow can start after another write-back workflow has
+      # advanced main. Always process the current main, not the triggering
+      # event's stale SHA.
+      - name: Refresh checkout to latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
