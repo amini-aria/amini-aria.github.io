@@ -113,4 +113,10 @@ jobs:
                   backup/resume-docs
           git diff --staged --quiet && exit 0
           git commit -m "chore: regenerate resume documents [skip ci]"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git fetch origin main
+            git rebase -X theirs origin/main
+            sleep $((RANDOM % 5 + 1))
+          done
           git push
