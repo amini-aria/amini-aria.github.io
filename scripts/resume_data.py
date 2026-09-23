@@ -164,6 +164,7 @@ RESUME_EN = {
             "note": "Application No. 140450140003008805 · Filed 18 Dec 2025 (1404/09/27) · Registration No. 114471 · Published 23 Sep 2026 (1405/07/01) · IPC: E21B 43/00",
             "summary": "A depth-aware software system that standardizes and quality-controls multi-well log data, builds depth-based features, trains several classifiers, calibrates their probabilities and fuses them into per-depth zone labels with an uncertainty index.",
             "url": "https://ipm.ssaa.ir/Issue-IssueResult?page=1&DecNo=140450140003008805&IssueId=7007e91773564b4d891344f2a232e917&RN=",
+            "certificate_url": "/assets/files/licenses/draftCertificate.pdf",
         },
     ],
     "teaching": [
@@ -529,6 +530,7 @@ RESUME_FA = {
             "note": "شماره اظهارنامه: ۱۴۰۴۵۰۱۴۰۰۰۳۰۰۸۸۰۵ · تاریخ ثبت: ۱۴۰۴/۰۹/۲۷ · شماره ثبت: ۱۱۴۴۷۱ · تاریخ انتشار: ۱۴۰۵/۰۷/۰۱ · طبقه‌بندی بین‌المللی: E21B 43/00",
             "summary": "سامانه‌ای نرم‌افزاری و عمق‌آگاه که داده‌های لاگ چندچاهی را استانداردسازی و کنترل کیفیت می‌کند، چند رده‌بند (Classifier) را آموزش می‌دهد، احتمال‌های خروجی را کالیبره و با همجوشی احتمالاتی ترکیب می‌کند و برای هر عمق برچسب زون و شاخص عدم‌قطعیت تولید می‌کند.",
             "url": "https://ipm.ssaa.ir/Issue-IssueResult?page=1&DecNo=140450140003008805&IssueId=7007e91773564b4d891344f2a232e917&RN=",
+            "certificate_url": "/assets/files/licenses/draftCertificate.pdf",
         },
     ],
     "teaching": [
