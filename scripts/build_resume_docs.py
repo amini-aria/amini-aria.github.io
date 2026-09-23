@@ -469,6 +469,14 @@ class ResumeBuilder:
                         font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
                         weight_bold=False, rtl=self.is_fa,
                     )
+                if pt.get("certificate_url"):
+                    self._run(p2, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
+                    certificate_label = "View Patent Registration Certificate" if not self.is_fa else "مشاهده گواهینامه ثبت اختراع"
+                    add_hyperlink(
+                        p2, certificate_label, absolute_url(pt["certificate_url"]),
+                        font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
+                        weight_bold=False, rtl=self.is_fa,
+                    )
             if pt.get("summary"):
                 p3 = self._para(space_after=2)
                 p3.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
