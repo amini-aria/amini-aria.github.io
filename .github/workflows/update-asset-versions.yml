@@ -3,19 +3,12 @@ name: Bake pages and stamp assets
 # On every push to main, mirrors the resume sections into the publications
 # pages, bakes the SEO block into every page's <head> and rebuilds
 # sitemap.xml (scripts/build_seo.py), and rewrites each HTML page's ?v=...
-# query string to
-# that commit's short SHA and republishes version.json. Without this, a
-# browser that already cached the old files has no reason to notice a
-# deploy happened and can keep serving them for hours (see
-# scripts/update_asset_versions.py for the rest of the story) — this used
-# to be a date typed by hand into each page.
+# query string to that commit's short SHA and republishes version.json.
 #
 # It used to run only when style.css or app.js/lab.js changed, which left
-# a hole big enough to walk through: a commit that edits only HTML (new
-# wording, a rebuilt card, a different mark) changed the page but not the
-# stamp, so version.json still agreed with the copy in the reader's cache
-# and the stale-page guard in app.js stayed quiet. The stamp has to move
-# whenever anything published moves, so the trigger is now every push.
+# a hole big enough to walk through: a commit that edits only HTML changed
+# the page but not the stamp. The stamp has to move whenever anything
+# published moves, so the trigger is now every push.
 # The bump commit below carries [skip ci], which is what keeps this from
 # triggering itself.
 
@@ -23,6 +16,13 @@ on:
   push:
     branches: [main]
   workflow_dispatch: {}
+
+# Both write-back workflows commit to main. They must never run their
+# checkout/build/push windows at the same time: the resume artifacts are
+# binary files and cannot be rebased/merged safely after a concurrent push.
+concurrency:
+  group: main-writeback
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -41,12 +41,9 @@ jobs:
         with:
           python-version: "3.11"
 
-      # Before the stamping, so anything copied into the publications pages
-      # gets stamped in the same run.
       - name: Mirror resume sections into the publications pages
         run: python3 scripts/build_publications.py
 
-      # After the mirror, so the publications pages it reads are final.
       - name: Bake the SEO block into every page and rebuild sitemap.xml
         run: python3 scripts/build_seo.py
 
@@ -62,20 +59,7 @@ jobs:
                   version.json sitemap.xml
           git diff --staged --quiet && exit 0
           git commit -m "chore: bump asset cache-busting versions [skip ci]"
-          # Another workflow (e.g. build-resume-docs) can push to main
-          # between our checkout and this push -- retry with a rebase
-          # instead of failing outright on a non-fast-forward rejection.
-          for i in 1 2 3 4 5; do
-            git push && exit 0
-            git fetch origin main
-            git rebase origin/main
-            sleep $((RANDOM % 5 + 1))
-          done
           git push
 
-      # Bing, Yandex and the other IndexNow engines fetch the pages now
-      # instead of on their next scheduled crawl. Google is not part of
-      # IndexNow; the sitemap in Search Console covers it. The script
-      # always exits 0, so a hiccup at the API cannot fail the run.
       - name: Ping IndexNow with every page
         run: python3 scripts/indexnow.py
