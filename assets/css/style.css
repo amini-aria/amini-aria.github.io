@@ -24,42 +24,35 @@
   --gold-soft: rgba(201, 162, 39, 0.10);
   --pastel-blue-soft: rgba(108, 147, 176, 0.10);
 
-  /* Three voices, deliberately unequal.
+  /* One family carries the whole site, in both languages: IRANSansX, through
+     its variable file. Hierarchy comes from the weight axis alone (see the
+     scale in the weight tokens below). Before variable-font support the guide
+     that ships with the font falls back to its static cuts, hence the
+     @supports swap under this block; those browsers get Regular and Bold only.
 
-     Instrument Serif is the editorial one: one weight, very high stroke
-     contrast, hairline serifs. It is only ever used large, where those
-     hairlines survive — page and section titles, the surname in the
-     wordmark. It supplies the delicacy.
+     --font-title and --font-mono stay separate tokens because the rules are
+     written against those roles, even though they now name the same face.
+     IRANSansX has no Latin italic, and Persian has no italic convention, so
+     nothing on the site asks for one.
 
-     Geist is the working voice and carries the whole weight axis, 200 to
-     700, so emphasis is made with weight rather than with a second family.
-     Geist Mono is its sibling, not a stranger: labels, dates, IDs and
-     figures stay in the same skeleton as the prose around them.
+     English uses the same file at a larger size (see fonts.css): its Latin
+     x-height is low next to its Persian, which is right for Latin words inside
+     Persian text but small for a page of English. */
+  --font-en: iransansx, Tahoma, 'Segoe UI', sans-serif;
+  --font-fa: iransansx, Tahoma, 'Segoe UI', sans-serif;
+  --font-sans-en: var(--font-en);
+  --font-mono-en: var(--font-en);
 
-     --font-title exists because a display serif set at 1rem is a weak,
-     muddy thing. Small headings stay in the grotesque at 600; only type
-     large enough to show the contrast is allowed to use the serif. */
-  --font-serif-en: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  --font-sans-en: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono-en: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-fa: 'Vazirmatn', Tahoma, sans-serif;
+  --font-display: var(--font-en);
+  --font-title: var(--font-en);
+  --font-body: var(--font-en);
+  --font-mono: var(--font-en);
 
-  --font-display: var(--font-serif-en);
-  --font-title: var(--font-sans-en);
-  --font-body: var(--font-sans-en);
-  --font-mono: var(--font-mono-en);
+  /* Kept as a hook for the display sizes; IRANSansX needs no correction. */
+  --display-scale: 1;
 
-  /* Instrument Serif runs optically smaller than the grotesque at the same
-     size, and Persian needs no such correction — one number, applied to
-     every display size, instead of eight hand-tuned clamps. */
-  --display-scale: 1.16;
-
-  /* Running prose is set below the UI weight. Geist's 400 is a working
-     weight built for labels and buttons; at paragraph length on a warm,
-     low-contrast page it reads heavier than it needs to. 350 keeps the
-     stems open without going papery. Persian stays at 400 — Vazirmatn's
-     lighter grades thin the connecting strokes, not just the stems. */
-  --w-prose: 350;
+  /* Running prose sits at Regular in both languages. */
+  --w-prose: 400;
 
   --edge: clamp(1.25rem, 5vw, 4.5rem);
   --dock-air: 1.75rem;
@@ -74,14 +67,26 @@ body.lang-fa {
   --font-title: var(--font-fa);
   --font-body: var(--font-fa);
   --font-mono: var(--font-fa);
-  --display-scale: 1;
-  --w-prose: 400;
 }
 
+/* The guide's fallback pattern: @supports decides between the variable file and
+   the static cuts, so a browser only ever downloads one of the two. */
+@supports (font-variation-settings: normal) {
+  :root {
+    --font-en: 'IRANSansXVF Latin', Tahoma, 'Segoe UI', sans-serif;
+    --font-fa: 'IRANSansXVF', Tahoma, 'Segoe UI', sans-serif;
+  }
+}
+
+/* The site's dot style is Dots 6. Weight is left to font-weight, which drives
+   the wght axis because @font-face declares the range. Set on everything, not
+   just body: buttons and inputs do not inherit it, and any `font:` shorthand
+   would reset an inherited value. */
+*, *::before, *::after { font-variation-settings: "DOTS" 6; }
+
 /* Safety net: if Persian text is ever marked up with lang="fa" inside an
-   English-language page, it always renders in the site's Persian font
-   (Vazirmatn) rather than inheriting the Latin stack, which has no
-   Persian glyphs and would fall back to a generic system font. */
+   English-language page, it always renders at the Persian size of the
+   site's font rather than the enlarged English one. */
 :lang(fa) { font-family: var(--font-fa); }
 
 @property --mx { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
@@ -123,26 +128,34 @@ body {
   font-family: var(--font-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
-  /* Every family here ships the weights and the italic the site asks for, so
-     the browser is never allowed to fake one. If a weight is ever missing the
-     page shows it instead of hiding it behind a smeared synthetic bold. */
+  /* The variable file has every weight, so nothing is ever faked. If a weight
+     or an italic is asked for and missing, the page shows that plainly. */
   font-synthesis: none;
   font-optical-sizing: auto;
   text-align: left;
   position: relative;
 }
-/* The serif has exactly one weight, so headings are set at 400 and get
-   their presence from size and contrast rather than from bolding. Persian
-   has no serif twin here, so it takes the same emphasis in weight instead. */
+/* The weight scale, the same in both languages:
+     900 Black      the name in the hero, once per site
+     800 ExtraBold  page titles
+     700 Bold       section titles and block labels
+     600 DemiBold   entry and card titles, small headings, buttons
+     500 Medium     roles, badges, sub-entries
+     400 Regular    prose
+     300 Light      secondary lines (school, footer, contact addresses)
+     200 UltraLight and 100 Thin  the contact page's big title only: they thin
+                    out below about 2rem, so Thin waits for the 3rem desktop size */
 h1, h2 {
   font-family: var(--font-display);
   margin: 0;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.16;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
+  word-spacing: 0.08em;
   text-wrap: balance;
   color: var(--ink);
 }
+h1 { font-weight: 800; }
 h3 {
   font-family: var(--font-title);
   margin: 0;
@@ -151,7 +164,7 @@ h3 {
   letter-spacing: -0.006em;
   color: var(--ink);
 }
-body.lang-fa :is(h1, h2, h3) { letter-spacing: 0; font-weight: 700; line-height: 1.5; }
+body.lang-fa :is(h1, h2, h3) { letter-spacing: 0; line-height: 1.5; }
 p { margin: 0; text-wrap: pretty; }
 a { color: inherit; text-decoration: none; }
 ul { margin: 0; padding: 0; list-style: none; }
@@ -351,7 +364,7 @@ html[dir="rtl"] .dock { direction: ltr; }
 .dock__item.is-active .dock__icon { transform: none; }
 .dock__label {
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 0.66rem;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -366,7 +379,7 @@ html[dir="rtl"] .dock { direction: ltr; }
 .dock__item.is-active,
 .dock__item.is-active:hover { color: #0E0C0A; }
 .dock__item.is-active:hover::before { background: var(--cream); }
-.dock__item.is-active .dock__label { font-weight: 400; }
+.dock__item.is-active .dock__label { font-weight: 600; }
 .dock__item:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
 
 /* Language lives in the dock now, stacked rather than side by side: two rows
@@ -552,9 +565,8 @@ html[dir="rtl"] .dock { direction: ltr; }
   stroke-linejoin: round;
 }
 
-.hero__name { position: relative; z-index: 4; font-size: calc(clamp(1.5rem, 4vw, 1.9rem) * var(--display-scale)); }
-.hero__role { position: relative; z-index: 4; color: var(--umber); font-size: calc(0.98rem * var(--display-scale)); margin-top: 0.55rem; font-family: var(--font-display); font-style: italic; line-height: 1.35; text-wrap: balance; }
-body.lang-fa .hero__role { font-style: normal; }
+.hero__name { position: relative; z-index: 4; font-weight: 900; font-size: calc(clamp(1.5rem, 4vw, 1.9rem) * var(--display-scale)); }
+.hero__role { position: relative; z-index: 4; color: var(--umber); font-size: calc(0.98rem * var(--display-scale)); margin-top: 0.55rem; font-family: var(--font-display); font-weight: 500; line-height: 1.35; text-wrap: balance; }
 .hero__school { position: relative; z-index: 4; color: var(--ink-dim); font-family: var(--font-body); font-size: 0.8rem; font-weight: 300; margin-top: 0.3rem; }
 .hero__bio { position: relative; z-index: 4; color: var(--ink-dim); font-size: 0.92rem; font-weight: var(--w-prose); line-height: 1.72; margin-top: 1rem; max-width: 34ch; margin-inline: auto; }
 
@@ -771,7 +783,7 @@ html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1
 #about.section { padding-top: 3rem; }
 .section--alt { background: linear-gradient(180deg, var(--cream-deep), var(--cream)); }
 .section__inner { max-width: var(--max-w); margin-inline: auto; position: relative; z-index: 1; }
-.section__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.section__eyebrow { font-family: var(--font-mono); font-weight: 600; color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
 .section__title { font-size: calc(clamp(1.6rem, 3vw, 2.1rem) * var(--display-scale)); margin-bottom: 1.5rem; position: relative; display: inline-block; }
 .section__title::after {
   content: "";
@@ -819,7 +831,7 @@ html[dir="rtl"] .hero__actions .btn:hover .hero-btn__icon { transform: scaleX(-1
 .contact__btn--email:hover { box-shadow: 0 10px 22px -10px rgba(122,75,46,0.5); }
 
 /* ---- Spotify: quiet pill that unfurls into its own playlist shutter ---- */
-:root { --font-spotify: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+:root { --font-spotify: var(--font-en); }
 .spotify-link {
   width: 100%;
   display: inline-flex; align-items: center; gap: 0.45rem;
@@ -842,7 +854,7 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
    RESUME PAGE — compact reading surface
    ========================================================================= */
 .page-header { padding: 4.5rem var(--edge) 1.5rem; max-width: var(--max-w); margin-inline: auto; }
-.page-header__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.page-header__eyebrow { font-family: var(--font-mono); font-weight: 600; color: var(--umber); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .page-header__title { font-size: calc(clamp(1.9rem, 5vw, 2.5rem) * var(--display-scale)); margin-top: 0.5rem; }
 .page-header__updated {
   font-size: 0.78rem; font-weight: 400; color: var(--ink-faint);
@@ -904,7 +916,7 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
   to   { transform: translate(500px, 500px); }
 }
 .interests-band__title {
-  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem;
+  font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.76rem;
   color: var(--umber); margin-bottom: 0.7rem;
 }
 .interests-band__text { color: #000; font-size: 0.98rem; font-weight: var(--w-prose); line-height: 1.68; }
@@ -925,7 +937,7 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .resume__block { padding-block: 1.4rem; border-top: 1px solid var(--hairline); }
 .resume__block:first-child { border-top: none; padding-bottom: 0.6rem; }
 .resume__block-title {
-  font-family: var(--font-mono); color: var(--olive);
+  font-family: var(--font-mono); font-weight: 700; color: var(--olive);
   text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem;
   margin-bottom: 0.9rem;
 }
@@ -939,14 +951,13 @@ body.lang-fa .spotify-link__label { font-family: var(--font-body); }
 .resume__entry-period { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; white-space: nowrap; }
 .resume__entry-org { color: var(--ink-dim); margin-top: 0.2rem; font-size: 0.92rem; }
 .resume__entry-org--heading { color: var(--ink); font-weight: 600; font-family: var(--font-title); font-size: 1rem; margin: 0 0 0.2rem; }
-.resume__entry--exp .resume__entry-role--sub { font-family: var(--font-display); font-weight: 400; font-style: italic; color: var(--ink-dim); font-size: 1.02rem; }
+.resume__entry--exp .resume__entry-role--sub { font-family: var(--font-display); font-weight: 500; color: var(--ink-dim); font-size: 1.02rem; }
 /* Employment-type badge sitting right next to the role title. Plain white
    fill and gray type — a quiet label, not a status chip — and Full-Time and
    Part-Time share the exact same look; the distinction lives in the word,
-   not the color. Reset out of the italic display-serif role font it sits
-   inside. */
+   not the color. */
 .resume__role-badge {
-  display: inline-flex; align-items: center; font-style: normal;
+  display: inline-flex; align-items: center;
   font-family: var(--font-mono); font-weight: 500;
   font-size: 0.6rem; line-height: 1;
   letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
@@ -973,7 +984,7 @@ body.lang-fa .resume__role-badge { font-size: 0.68rem; text-transform: none; let
 }
 .resume__entry--placeholder .resume__entry-role,
 .resume__entry--placeholder .resume__entry-period,
-.resume__entry--placeholder .resume__entry-org { color: var(--ink-faint); font-style: italic; }
+.resume__entry--placeholder .resume__entry-org { color: var(--ink-faint); }
 .resume__entry--placeholder .resume__entry-role { font-weight: 500; }
 
 .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -1221,9 +1232,8 @@ body.lang-fa .cert-chip__id {
 }
 /* A citation is not one flat string. The apparatus — authors, year, the
    closing period — is reference matter and is set small and light; the title
-   is the thing on the shelf and is the only part allowed the display serif,
-   in italic, which is what a bibliography does anyway. Dropping the apparatus
-   to 0.86/350 is what makes room for the title to be bigger without the card
+   is the thing on the shelf and takes DemiBold. Dropping the apparatus
+   to 0.86rem is what makes room for the title to be bigger without the card
    growing. */
 .pub-card__citation {
   color: var(--ink-dim); max-width: 62ch;
@@ -1244,17 +1254,11 @@ body.lang-fa .cert-chip__id {
   word-spacing: normal;
 }
 .pub-card__title {
-  font-family: var(--font-display); font-style: italic; font-weight: 400;
+  font-family: var(--font-display); font-weight: 600; font-style: normal;
   font-size: 1.12rem; line-height: 1.4;
   color: var(--ink);
-  letter-spacing: 0.004em;   /* italic serif at this size closes up slightly */
 }
-/* No serif twin in the Persian face, and no italic convention in Persian
-   typesetting either — the title takes weight instead. */
-body.lang-fa .pub-card__title {
-  font-family: var(--font-fa); font-style: normal; font-weight: 600;
-  font-size: 1rem; letter-spacing: 0;
-}
+body.lang-fa .pub-card__title { font-size: 1rem; }
 .pub-card__meta {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem;
   margin-top: 0.55rem;
@@ -1291,16 +1295,12 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
 .footer__ornament .footer__rule:last-child { background: linear-gradient(90deg, var(--hairline), transparent); }
 .footer__mark { flex: none; width: 54px; height: 54px; color: var(--umber); opacity: 0.55; }
 .footer__inner { max-width: var(--max-w); margin-inline: auto; display: flex; justify-content: center; text-align: center; }
-/* The one line on the site set in Geist's 200. Nothing else uses that weight,
-   which is the whole point: it is legally required text that should be the
-   quietest thing on the page, and the quiet is made with weight and tracking
-   rather than by washing the colour out — --ink-faint would have been 3.1:1.
-   At 200, --ink-dim's 6.18:1 still reads as a whisper. The name inside it
-   steps back up to 400 so the line has one thing in it worth reading. */
+/* The footer line is the quietest thing on the page: Light, with the name one
+   step up to Medium as its only emphasis. */
 .rights {
   font-family: var(--font-sans-en);
   font-size: 0.72rem;
-  font-weight: 200;
+  font-weight: 300;
   letter-spacing: 0.09em;
   line-height: 1.5;
   color: var(--ink-dim);
@@ -1312,16 +1312,15 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
    the whole emphasis — no colour change, because at this size a darker ink
    is what makes a legal line start pulling the eye. */
 .rights__name {
-  font-weight: 350;
+  font-weight: 500;
   letter-spacing: 0.05em;
 }
 .rights__mark { font-size: 0.92em; opacity: 0.7; }
 .rights__sep { margin-inline: 0.15em; color: var(--ink-faint); }
 /* The Persian pages sign off in Persian. Letter-spacing would pull the
-   joined letters apart, Vazirmatn is loaded from 300 up, and the line
-   reads right-to-left like the rest of the page. */
-.lang-fa .rights { font-family: var(--font-fa); font-weight: 300; letter-spacing: 0; direction: rtl; }
-.lang-fa .rights__name { letter-spacing: 0; font-weight: 500; }
+   joined letters apart, and the line reads right-to-left like the page. */
+.lang-fa .rights { font-family: var(--font-fa); letter-spacing: 0; direction: rtl; }
+.lang-fa .rights__name { letter-spacing: 0; }
 .rights__name a:hover, .rights__name a:focus-visible { text-decoration: underline; text-underline-offset: 0.18em; }
 
 /* =========================================================================
@@ -1424,7 +1423,7 @@ body.lang-fa .pub-card__role { letter-spacing: 0; text-transform: none; font-siz
           mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
 }
 .contact-hero { max-width: var(--max-w); margin-inline: auto; text-align: center; }
-.contact-hero__eyebrow { font-family: var(--font-mono); color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.contact-hero__eyebrow { font-family: var(--font-mono); font-weight: 600; color: var(--umber); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
 /* Tracking and caps are what carried the Latin eyebrow; with both gone the
    Persian one is just a very small line, so it takes the size back instead. */
 body.lang-fa .contact-hero__eyebrow { font-size: 0.88rem; letter-spacing: 0; text-transform: none; }
@@ -1438,11 +1437,9 @@ body.lang-fa .contact-hero__eyebrow { font-size: 0.88rem; letter-spacing: 0; tex
 .contact-hero__title {
   font-size: min(calc(clamp(2rem, 5vw, 3.2rem) * var(--display-scale)), 10.1vw);
   max-width: none; margin-inline: auto;
-  white-space: nowrap;
+  font-weight: 200;
 }
-/* Persian sets about 1.6x wider per em here — same sentence, more of it — so
-   it needs its own ceiling rather than the English one. */
-body.lang-fa .contact-hero__title { font-size: min(clamp(2rem, 5vw, 3.2rem), 6.4vw); }
+@media (min-width: 900px) { .contact-hero__title { font-weight: 100; } }
 .contact-hero__text { color: var(--ink-dim); max-width: 52ch; margin: 1.15rem auto 0; font-size: 1.02rem; font-weight: var(--w-prose); line-height: 1.78; }
 
 /* =========================================================================
@@ -1599,7 +1596,7 @@ body.lang-fa .contact-stack { --dir: -1; }
 .contact-card__label {
   grid-area: label; align-self: end; justify-self: start;
   max-inline-size: 100%;
-  font-family: var(--font-title); font-weight: 550;
+  font-family: var(--font-title); font-weight: 600;
   font-size: 1.06rem; line-height: 1.25; letter-spacing: -0.008em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -1610,10 +1607,8 @@ body.lang-fa .contact-stack { --dir: -1; }
   justify-self: start;
   max-inline-size: 100%;
   /* Pinned to the Latin mono in BOTH languages. Every one of these is a
-     Latin handle or address, and --font-mono resolves to Vazirmatn under
-     body.lang-fa — so the Persian page was rendering the same four strings
-     in a different face from the English page. 300 is the light end of
-     Geist Mono's axis: an address should sit under its own label, not
+     Latin handle or address, so it reads the same on both language pages.
+     300 is the light end of the axis: an address should sit under its own label, not
      compete with it. */
   font-family: var(--font-mono-en); font-weight: 300;
   font-size: 0.8rem; line-height: 1.4; letter-spacing: 0.005em;
@@ -1685,8 +1680,7 @@ body.lang-fa .contact-stack { --dir: -1; }
 }
 
 /* 0.59rem is a size for spaced Latin capitals. Persian has no capitals to
-   space, and Vazirmatn's dots and diacritics are the first thing to go at
-   9px, so the Persian badge is set larger — still the smallest thing on the
+   space, and dots and diacritics are the first thing to go at 9px, so the Persian badge is set larger — still the smallest thing on the
    card, but legible rather than merely present. */
 body.lang-fa .contact-card__badge { font-size: 0.7rem; text-transform: none; letter-spacing: 0; }
 /* On a 312px card the badge and the handle share one row, and the handle is the
@@ -1823,12 +1817,12 @@ body.lang-fa .contact-card__badge { font-size: 0.7rem; text-transform: none; let
   box-shadow: inset 0 0 0 1px var(--ink-faint);
 }
 .contact-chip__name {
-  font-family: var(--font-title); font-weight: 450;
+  font-family: var(--font-title); font-weight: 500;
   font-size: 0.84rem; line-height: 1.3; letter-spacing: -0.004em;
   color: var(--ink-dim);
 }
 .contact-chip__state {
-  font-family: var(--font-mono-en); font-weight: 300;
+  font-family: var(--font-mono-en); font-weight: 400;
   font-size: 0.6rem; line-height: 1;
   text-transform: uppercase; letter-spacing: 0.09em;
   color: var(--ink-dim);            /* not --ink-faint: 3.11:1 fails 1.4.3 */
@@ -1875,6 +1869,16 @@ body.lang-fa .contact-chip__name { font-size: 0.9rem; }
   .contact-chip__state { font-size: 0.56rem; }
   body.lang-fa .contact-chip__name { font-size: 0.83rem; }
   body.lang-fa .contact-chip__state { font-size: 0.66rem; }
+}
+/* On the narrowest phones the label takes its whole row and the badge moves
+   down next to the address, or "Telegram" gets cut off by "Fast response".
+   Icon size and the status dot give up the width the address still needs. */
+@media (max-width: 340px) {
+  .contact-card { --icon: 36px; grid-template-areas: "icon label label" "icon sub badge"; column-gap: 0.5rem; }
+  .contact-card__badge { font-size: 0.5rem; letter-spacing: 0.02em; padding-inline: 0.4rem; }
+  .contact-card__sub { font-size: 0.7rem; }
+  .contact-card__badge--live::before { display: none; }
+  body.lang-fa .contact-card__badge { font-size: 0.62rem; }
 }
 
 /* ---- reduced motion: keep the shingle, drop the travel ----------------- */
@@ -2048,6 +2052,7 @@ body.lang-fa .contact-chip__name { font-size: 0.9rem; }
   color: #8f8f8f; font-size: 0.68rem;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+@media (max-width: 420px) { .spotify-panel__tag { white-space: normal; line-height: 1.3; } }
 body.lang-fa .spotify-panel__head { direction: rtl; }
 body.lang-fa .spotify-panel__count,
 body.lang-fa .spotify-panel__tag { font-family: var(--font-body); }
@@ -2250,6 +2255,7 @@ body.lang-fa .spotify-panel__count { letter-spacing: 0; }
   --term-cyan: #67E8F9;
   --term-blue: #818CF8;
   --term-magenta: #A78BFA;
+  /* The terminal is the one place that keeps its own fonts. */
   --term-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "Geist Mono", monospace;
   --term-ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
 
@@ -2319,6 +2325,11 @@ body.lang-fa .spotify-panel__count { letter-spacing: 0; }
 .lab-terminal__fixed .lab-prompt-line {
   font-family: var(--term-font); font-size: 0.7rem; color: var(--term-dim);
   margin: 0 0 0.7rem;
+}
+.lab-section {
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans-en: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-family: var(--font-sans-en);
 }
 .lab-section__title {
   font-family: var(--term-font);

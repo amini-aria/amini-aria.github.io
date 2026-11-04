@@ -1,0 +1,5 @@
+IRANSansX is proprietary software by Moslem Ebrahimi, licensed through fontiran.com.
+The IRANSansX* files in this folder are here only so that amini.info can display them.
+They are not open source and are not covered by anything else in this repository.
+Do not copy, redistribute or reuse them. To use this font, get a license at
+https://fontiran.com/about-licenses
