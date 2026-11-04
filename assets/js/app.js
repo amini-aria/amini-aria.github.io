@@ -2,7 +2,7 @@
   "use strict";
 
   /* ---------- Keep the résumé download links permanent; fetch fresh on click ----------
-     The four files (Aria-CV-En / Aria-CV-Fa, .pdf and .docx) are rebuilt
+     The files (Aria-CV-En / -Fa / -Fr, .pdf and .docx) are rebuilt
      by CI in place, so their URLs never change and can be shared as-is.
      But GitHub Pages serves them with a 4-hour max-age, so a browser that
      downloaded one before can silently keep serving the stale copy for

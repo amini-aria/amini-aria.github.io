@@ -119,11 +119,41 @@ def check(lang, page_path, data):
     return problems
 
 
+def shape(value):
+    """The structure of a data value with the text taken out, so two languages
+    compare equal when they hold the same sections and entries. Skill
+    group names are translated, so check_french compares them by position."""
+    if isinstance(value, dict):
+        return {key: shape(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [shape(item) for item in value]
+    return None
+
+
+def check_french(data):
+    """There is no French page, so RESUME_FR is checked against RESUME_EN."""
+    spec = importlib.util.spec_from_file_location("resume_data_fr", ROOT / "scripts" / "resume_data_fr.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    en, fr = dict(data.RESUME_EN), dict(module.RESUME_FR)
+    en_skills, fr_skills = en.pop("skills"), fr.pop("skills")
+    problems = []
+    for key in en.keys() | fr.keys():
+        if key not in en or key not in fr:
+            problems.append("FR: section %r is only in one of RESUME_EN / RESUME_FR" % key)
+        elif shape(en[key]) != shape(fr[key]):
+            problems.append("FR: section %r has different entries from RESUME_EN" % key)
+    if [len(v) for v in en_skills.values()] != [len(v) for v in fr_skills.values()]:
+        problems.append("FR: section 'skills' has different entries from RESUME_EN")
+    return problems
+
+
 def main():
     data = load_data()
     problems = []
     problems += check("EN", ROOT / "resume" / "index.html", data.RESUME_EN)
     problems += check("FA", ROOT / "fa" / "resume" / "index.html", data.RESUME_FA)
+    problems += check_french(data)
 
     if problems:
         print("Resume page and resume_data.py are out of sync:\n")

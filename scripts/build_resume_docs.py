@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Builds Aria-CV-En.docx / Aria-CV-Fa.docx from scripts/resume_data.py, then
+Builds Aria-CV-En / -Fa / -Fr .docx from resume_data.py and resume_data_fr.py, then
 converts each to a matching .pdf with LibreOffice headless — so the PDF is
 literally an export of the Word file, guaranteeing the two are identical.
 
@@ -11,7 +11,7 @@ icons, no colored chips, no text boxes) — built to be parsed cleanly by
 applicant-tracking systems as well as read comfortably by a human.
 
 Fonts:
-  - English: Times New Roman (classic, ATS-safe, universally available).
+  - English and French: Times New Roman (classic, ATS-safe, universally available).
   - Persian: the Dana family, using its real weight files (Light /
     Regular / Medium / DemiBold / Bold / Black — see assets/fonts/) rather
     than synthetic bold, for a genuinely modern/minimalist weight
@@ -27,6 +27,7 @@ Usage:
 Output:
     assets/files/Aria-CV-En.docx / .pdf
     assets/files/Aria-CV-Fa.docx / .pdf
+    assets/files/Aria-CV-Fr.docx / .pdf
 """
 
 import subprocess
@@ -43,6 +44,7 @@ from docx.shared import Pt, Cm, RGBColor
 
 sys.path.insert(0, str(Path(__file__).parent))
 from resume_data import RESUME_EN, RESUME_FA  # noqa: E402
+from resume_data_fr import RESUME_FR, LABELS_FR  # noqa: E402
 from jalali import today_jalali_string  # noqa: E402
 
 OUT_DIR = Path(__file__).parent.parent / "assets" / "files"
@@ -54,6 +56,10 @@ OUT_DIR = Path(__file__).parent.parent / "assets" / "files"
 # as broken (or tries the local filesystem) once the file leaves the site.
 # absolute_url() is the one place that gap gets closed for the download.
 SITE_BASE_URL = "https://amini.info"
+
+
+MONTHS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+             "août", "septembre", "octobre", "novembre", "décembre"]
 
 
 def absolute_url(url):
@@ -168,14 +174,23 @@ def add_hyperlink(paragraph, text, url, font, size, color=INK, weight_bold=False
 class ResumeBuilder:
     """One instance per language. Call .build() then .save(path)."""
 
-    def __init__(self, data, is_fa):
+    def __init__(self, data, is_fa, lang=None):
         self.data = data
         self.is_fa = is_fa
+        self.lang = lang
         self.font = DANA["regular"] if is_fa else FONT_EN
         self.doc = Document()
         self._setup_page()
 
     # ---- low-level helpers -------------------------------------------------
+
+    def t(self, en, fa):
+        """The label in this document's language."""
+        if self.is_fa:
+            return fa
+        if self.lang == "fr":
+            return LABELS_FR[en]
+        return en
 
     def _setup_page(self):
         section = self.doc.sections[0]
@@ -205,6 +220,10 @@ class ResumeBuilder:
         rFonts.set(qn("w:cs"), self.font)
         rFonts.set(qn("w:ascii"), self.font)
         rFonts.set(qn("w:hAnsi"), self.font)
+        if self.lang == "fr":
+            lang = OxmlElement("w:lang")
+            lang.set(qn("w:val"), "fr-FR")
+            rpr.append(lang)
 
     def _para(self, align=None, space_before=0, space_after=1, rtl=None):
         p = self.doc.add_paragraph()
@@ -338,19 +357,19 @@ class ResumeBuilder:
                 self._run(p, part["text"], weight="light", size=SIZE_BODY, color=SECONDARY)
 
     def about(self):
-        self._section_title("About" if not self.is_fa else "\u062f\u0631\u0628\u0627\u0631\u0647\u200c\u0645\u0646")
+        self._section_title(self.t("About", "\u062f\u0631\u0628\u0627\u0631\u0647\u200c\u0645\u0646"))
         p = self._para(space_after=3)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         self._run(p, self.data["about"], weight="regular", size=SIZE_BODY)
 
     def interests(self):
-        self._section_title("Interests" if not self.is_fa else "\u0639\u0644\u0627\u0642\u0647\u200c\u0645\u0646\u062f\u06cc\u200c\u0647\u0627")
+        self._section_title(self.t("Interests", "\u0639\u0644\u0627\u0642\u0647\u200c\u0645\u0646\u062f\u06cc\u200c\u0647\u0627"))
         p = self._para(space_after=3)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         self._run(p, self.data["interests"], weight="regular", size=SIZE_BODY)
 
     def education(self):
-        self._section_title("Education" if not self.is_fa else "\u062a\u062d\u0635\u06cc\u0644\u0627\u062a")
+        self._section_title(self.t("Education", "\u062a\u062d\u0635\u06cc\u0644\u0627\u062a"))
         for e in self.data["education"]:
             self._entry_head_line(e["degree"], e["period"], left_weight="demibold")
             p = self._para(space_after=0)
@@ -360,7 +379,7 @@ class ResumeBuilder:
                 self._bullet(note)
 
     def experience(self):
-        title = "Professional Experience" if not self.is_fa else "\u062a\u062c\u0631\u0628\u0647 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"
+        title = self.t("Professional Experience", "\u062a\u062c\u0631\u0628\u0647 \u062d\u0631\u0641\u0647\u200c\u0627\u06cc")
         self._section_title(title)
         for e in self.data["experience"]:
             # org is the heading (demibold/medium weight); role + period
@@ -378,7 +397,7 @@ class ResumeBuilder:
                 self._entry_head_line(role_text, e["period"], left_weight="light", left_italic=not self.is_fa, left_color=SECONDARY)
             if e.get("url"):
                 p2 = self._para(space_after=2)
-                label = "Website: " if not self.is_fa else "وبسایت: "
+                label = self.t("Website: ", "وبسایت: ")
                 self._run(p2, label, weight="light", size=SIZE_SMALL, color=SECONDARY)
                 add_hyperlink(
                     p2, e.get("url_text", e["url"]), e["url"],
@@ -387,7 +406,7 @@ class ResumeBuilder:
                 )
 
     def research(self):
-        title = "Research & Investigative Experience" if not self.is_fa else "\u062a\u062c\u0631\u0628\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc \u0648 \u062a\u062d\u0642\u06cc\u0642\u0627\u062a\u06cc"
+        title = self.t("Research & Investigative Experience", "\u062a\u062c\u0631\u0628\u0647 \u067e\u0698\u0648\u0647\u0634\u06cc \u0648 \u062a\u062d\u0642\u06cc\u0642\u0627\u062a\u06cc")
         self._section_title(title)
         for r in self.data["research"]:
             self._entry_head_line(r["title"], r["period"], left_weight="demibold")
@@ -408,8 +427,8 @@ class ResumeBuilder:
                     )
 
     def books(self):
-        self._section_title("Books" if not self.is_fa else "\u06a9\u062a\u0627\u0628\u200c\u0647\u0627")
-        default_isbn_label = "ISBN: " if not self.is_fa else "\u0634\u0627\u0628\u06a9: "
+        self._section_title(self.t("Books", "\u06a9\u062a\u0627\u0628\u200c\u0647\u0627"))
+        default_isbn_label = self.t("ISBN: ", "\u0634\u0627\u0628\u06a9: ")
         for b in self.data["books"]:
             p = self._para(space_before=2, space_after=0)
             p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -425,10 +444,10 @@ class ResumeBuilder:
                 self._run(p2, b["isbn"], weight="light", size=SIZE_SMALL, color=SECONDARY, force_ltr=True)
 
     def conferences(self):
-        self._section_title("Conferences" if not self.is_fa else "کنفرانس‌ها")
-        id_label = "National Sci-Doc ID: " if not self.is_fa else "شناسه ملی سند علمی: "
-        link_label = "View on Civilica" if not self.is_fa else "مشاهده در سیویلیکا"
-        kicker = "Paper Title:" if not self.is_fa else "عنوان مقاله:"
+        self._section_title(self.t("Conferences", "کنفرانس‌ها"))
+        id_label = self.t("National Sci-Doc ID: ", "شناسه ملی سند علمی: ")
+        link_label = self.t("View on Civilica", "مشاهده در سیویلیکا")
+        kicker = self.t("Paper Title:", "عنوان مقاله:")
         for c in self.data["conferences"]:
             self._entry_head_line(c["title"], c["period"], left_weight="demibold", kicker=kicker)
             p = self._para(space_after=0)
@@ -450,8 +469,8 @@ class ResumeBuilder:
                 )
 
     def patents(self):
-        self._section_title("Patents" if not self.is_fa else "اختراعات")
-        link_label = "View on Iranian Patent Office" if not self.is_fa else "مشاهده در سامانه مالکیت صنعتی"
+        self._section_title(self.t("Patents", "اختراعات"))
+        link_label = self.t("View on Iranian Patent Office", "مشاهده در سامانه مالکیت صنعتی")
         for pt in self.data["patents"]:
             self._entry_head_line(pt["title"], pt["status"], left_weight="demibold")
             p = self._para(space_after=2)
@@ -471,7 +490,7 @@ class ResumeBuilder:
                     )
                 if pt.get("certificate_url"):
                     self._run(p2, "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
-                    certificate_label = "View Patent Registration Certificate" if not self.is_fa else "مشاهده گواهینامه ثبت اختراع"
+                    certificate_label = self.t("View Patent Registration Certificate", "مشاهده گواهینامه ثبت اختراع")
                     add_hyperlink(
                         p2, certificate_label, absolute_url(pt["certificate_url"]),
                         font=self._font_for("light"), size=SIZE_SMALL, color=ACCENT_BLUE,
@@ -483,7 +502,7 @@ class ResumeBuilder:
                 self._run(p3, pt["summary"], weight="light", size=SIZE_SMALL, color=SECONDARY)
 
     def teaching(self):
-        self._section_title("Teaching Activities" if not self.is_fa else "فعالیت‌های تدریس")
+        self._section_title(self.t("Teaching Activities", "فعالیت‌های تدریس"))
         for t in self.data["teaching"]:
             self._entry_head_line(t["title"], t["period"], left_weight="demibold")
             p = self._para(space_after=0)
@@ -503,7 +522,7 @@ class ResumeBuilder:
                     )
 
     def honors(self):
-        self._section_title("Honors & Awards" if not self.is_fa else "افتخارات و جوایز")
+        self._section_title(self.t("Honors & Awards", "افتخارات و جوایز"))
         for h in self.data["honors"]:
             self._entry_head_line(h["title"], h["period"], left_weight="demibold")
             p = self._para(space_after=0)
@@ -529,12 +548,12 @@ class ResumeBuilder:
             self._run(leaf, "  \u2022  ".join(terms), weight="regular", size=SIZE_BODY)
 
     def skills(self):
-        title = "Technical & Specialized Skills" if not self.is_fa else "\u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627\u06cc \u0641\u0646\u06cc \u0648 \u062a\u062e\u0635\u0635\u06cc"
+        title = self.t("Technical & Specialized Skills", "\u0645\u0647\u0627\u0631\u062a\u200c\u0647\u0627\u06cc \u0641\u0646\u06cc \u0648 \u062a\u062e\u0635\u0635\u06cc")
         self._section_title(title)
         self._skill_tree(self.data["skills"])
 
     def languages(self):
-        self._section_title("Languages" if not self.is_fa else "\u0632\u0628\u0627\u0646\u200c\u0647\u0627")
+        self._section_title(self.t("Languages", "\u0632\u0628\u0627\u0646\u200c\u0647\u0627"))
         p = self._para(space_after=1)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         for i, l in enumerate(self.data["languages"]):
@@ -552,7 +571,7 @@ class ResumeBuilder:
         self.doc.paragraphs[-1].paragraph_format.space_after = Pt(3)
 
     def memberships(self):
-        title = "Professional Memberships" if not self.is_fa else "\u0639\u0636\u0648\u06cc\u062a\u200c\u0647\u0627\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc"
+        title = self.t("Professional Memberships", "\u0639\u0636\u0648\u06cc\u062a\u200c\u0647\u0627\u06cc \u062d\u0631\u0641\u0647\u200c\u0627\u06cc")
         self._section_title(title)
         for m in self.data["memberships"]:
             self._entry_head_line(m["role"], m.get("period", ""), left_weight="demibold")
@@ -562,7 +581,7 @@ class ResumeBuilder:
                 self._run(p, m["org"], weight="light", italic=not self.is_fa, size=SIZE_BODY, color=SECONDARY)
 
     def volunteer(self):
-        title = "Voluntary & Social Activities" if not self.is_fa else "\u0633\u0648\u0627\u0628\u0642 \u062f\u0627\u0648\u0637\u0644\u0628\u0627\u0646\u0647 \u0648 \u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u0627\u062c\u062a\u0645\u0627\u0639\u06cc"
+        title = self.t("Voluntary & Social Activities", "\u0633\u0648\u0627\u0628\u0642 \u062f\u0627\u0648\u0637\u0644\u0628\u0627\u0646\u0647 \u0648 \u0641\u0639\u0627\u0644\u06cc\u062a\u200c\u0647\u0627\u06cc \u0627\u062c\u062a\u0645\u0627\u0639\u06cc")
         self._section_title(title)
         for v in self.data["volunteer"]:
             self._entry_head_line(v["role"], v["period"], left_weight="demibold")
@@ -575,13 +594,13 @@ class ResumeBuilder:
                 self._run(p2, note, weight="light", size=SIZE_SMALL, color=SECONDARY)
 
     def certifications(self):
-        title = "Certificates, Licenses & Courses" if not self.is_fa else "گواهی‌ها، مجوزها و دوره‌ها"
+        title = self.t("Certificates, Licenses & Courses", "گواهی‌ها، مجوزها و دوره‌ها")
         self._section_title(title)
-        view_cert = "View certificate" if not self.is_fa else "مشاهده گواهی"
+        view_cert = self.t("View certificate", "مشاهده گواهی")
 
         def group_title(en, fa):
             p = self._para(space_before=2, space_after=2)
-            self._run(p, en if not self.is_fa else fa, weight="demibold", size=SIZE_BODY)
+            self._run(p, self.t(en, fa), weight="demibold", size=SIZE_BODY)
 
         group_title("Certificates", "گواهی‌ها")
         for c in self.data["certifications"].get("certificates", []):
@@ -590,7 +609,7 @@ class ResumeBuilder:
             if c.get("org"):
                 self._run(p, c["org"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
             if c.get("standard_id"):
-                std_label = "Standard ID " if not self.is_fa else "شناسه استاندارد "
+                std_label = self.t("Standard ID ", "شناسه استاندارد ")
                 self._run(p, std_label + c["standard_id"] + "  ·  ", weight="light", size=SIZE_SMALL, color=SECONDARY)
             if c.get("period") and c.get("cert_no"):
                 self._run(p, c["period"] + " · ", weight="light", size=SIZE_SMALL, color=SECONDARY)
@@ -602,7 +621,7 @@ class ResumeBuilder:
                     weight_bold=False, rtl=self.is_fa,
                 )
 
-        view_license = "View license" if not self.is_fa else "مشاهده مجوز"
+        view_license = self.t("View license", "مشاهده مجوز")
         group_title("Licenses", "مجوزها")
         for lic in self.data["certifications"].get("licenses", []):
             p = self._para(space_after=0)
@@ -666,6 +685,10 @@ class ResumeBuilder:
             set_rtl_paragraph(p)
             label = "\u0622\u062e\u0631\u06cc\u0646 \u0648\u06cc\u0631\u0627\u06cc\u0634: "
             stamp = today_jalali_string()
+        elif self.lang == "fr":
+            label = LABELS_FR["Last updated: "]
+            today = date.today()
+            stamp = f"{'1er' if today.day == 1 else today.day} {MONTHS_FR[today.month - 1]} {today.year}"
         else:
             label = "Last updated: "
             stamp = date.today().strftime("%B %-d, %Y") if sys.platform != "win32" else date.today().strftime("%B %#d, %Y")
@@ -708,12 +731,13 @@ def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     jobs = [
-        (RESUME_EN, False, "Aria-CV-En"),
-        (RESUME_FA, True, "Aria-CV-Fa"),
+        (RESUME_EN, False, None, "Aria-CV-En"),
+        (RESUME_FA, True, None, "Aria-CV-Fa"),
+        (RESUME_FR, False, "fr", "Aria-CV-Fr"),
     ]
 
-    for data, is_fa, stem in jobs:
-        builder = ResumeBuilder(data, is_fa)
+    for data, is_fa, lang, stem in jobs:
+        builder = ResumeBuilder(data, is_fa, lang)
         builder.build()
         docx_path = OUT_DIR / f"{stem}.docx"
         builder.save(docx_path)

@@ -1,7 +1,7 @@
 name: Build resume documents
 
-# Regenerates assets/files/Aria-CV-En.docx/.pdf and Aria-CV-Fa.docx/.pdf
-# from scripts/resume_data.py using scripts/build_resume_docs.py. The PDF
+# Regenerates assets/files/Aria-CV-En, -Fa and -Fr (.docx and .pdf) from
+# scripts/resume_data.py and scripts/resume_data_fr.py using scripts/build_resume_docs.py. The PDF
 # is produced by converting the just-built .docx with LibreOffice headless,
 # so the two files are always identical in content — editing
 # scripts/resume_data.py and pushing is all that's needed to update both.
@@ -14,17 +14,20 @@ name: Build resume documents
 #
 # Only the .pdf files are linked from the resume pages' download buttons;
 # the .docx files are deliberately not shown in the UI but are built to the
-# same folder. All four are overwritten in place, so these URLs are permanent:
+# same folder. The French files have no button. All are overwritten in place, so these URLs are permanent:
 #   https://amini.info/assets/files/Aria-CV-En.pdf
 #   https://amini.info/assets/files/Aria-CV-En.docx
 #   https://amini.info/assets/files/Aria-CV-Fa.pdf
 #   https://amini.info/assets/files/Aria-CV-Fa.docx
+#   https://amini.info/assets/files/Aria-CV-Fr.pdf
+#   https://amini.info/assets/files/Aria-CV-Fr.docx
 
 on:
   push:
     branches: [main]
     paths:
       - "scripts/resume_data.py"
+      - "scripts/resume_data_fr.py"
       - "scripts/build_resume_docs.py"
       - "scripts/check_resume_sync.py"
       - "scripts/embed_docx_fonts.py"
@@ -89,7 +92,8 @@ jobs:
           mkdir -p backup/resume-docs
           ts=$(date -u +%Y%m%d-%H%M%S)
           for f in assets/files/Aria-CV-En.docx assets/files/Aria-CV-En.pdf \
-                   assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf; do
+                   assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf \
+                   assets/files/Aria-CV-Fr.docx assets/files/Aria-CV-Fr.pdf; do
             if [ -f "$f" ]; then
               base=$(basename "$f")
               cp "$f" "backup/resume-docs/${base%.*}-${ts}.${base##*.}"
@@ -102,7 +106,7 @@ jobs:
       - name: Embed fonts into the .docx files
         # Must run under the system python3 (not the actions/setup-python
         # one) — that's where apt's python3-uno installed the `uno` bindings.
-        run: /usr/bin/python3 scripts/embed_docx_fonts.py assets/files/Aria-CV-En.docx assets/files/Aria-CV-Fa.docx
+        run: /usr/bin/python3 scripts/embed_docx_fonts.py assets/files/Aria-CV-En.docx assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fr.docx
 
       - name: Commit updated files
         run: |
@@ -110,6 +114,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/files/Aria-CV-En.docx assets/files/Aria-CV-En.pdf \
                   assets/files/Aria-CV-Fa.docx assets/files/Aria-CV-Fa.pdf \
+                  assets/files/Aria-CV-Fr.docx assets/files/Aria-CV-Fr.pdf \
                   backup/resume-docs
           git diff --staged --quiet && exit 0
           git commit -m "chore: regenerate resume documents [skip ci]"
