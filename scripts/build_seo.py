@@ -153,7 +153,8 @@ def person_node(lang, data):
     schools = []
     for ed in data.get("education") or []:
         org = ed.get("org")
-        if org:
+        # alumniOf is for schools already finished, not a degree in progress
+        if org and not is_current(ed.get("period")):
             schools.append({"@type": "EducationalOrganization",
                             "name": re.split(r"[,،]", org)[0].strip()})
 

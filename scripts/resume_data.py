@@ -28,7 +28,7 @@ real content on the site.
 
 RESUME_EN = {
     "name": "Mohammad Aria Amini",
-    "role": "Geology Graduate",
+    "role": "M.Sc. Student in Petroleum Geology",
     "contact_parts": [
         {"text": "Tehran, Iran"},
         {"text": "aria@amini.info", "url": "mailto:aria@amini.info"},
@@ -36,7 +36,7 @@ RESUME_EN = {
         {"text": "amini.info", "url": "https://amini.info"},
     ],
     "about": (
-        "I am Mohammad Aria Amini, a Bachelor's graduate in Geology and a researcher, writer, and "
+        "I am Mohammad Aria Amini, an M.Sc. student in Petroleum Geology and a researcher, writer, and "
         "scientific editor in the field of Earth sciences. I am interested in research, scientific "
         "writing and editing, and continuously developing my knowledge and professional skills in "
         "Earth sciences."
@@ -52,6 +52,12 @@ RESUME_EN = {
         "and skills in these areas."
     ),
     "education": [
+        {
+            "degree": "M.Sc. in Petroleum Geology",
+            "period": "Oct 2026 \u2013 Present",
+            "org": "Shahid Beheshti University, Tehran, Iran",
+            "notes": [],
+        },
         {
             "degree": "B.Sc. in Geology",
             "period": "2022 \u2013 2026",
@@ -393,7 +399,7 @@ RESUME_EN = {
 
 RESUME_FA = {
     "name": "\u0645\u062d\u0645\u062f\u0622\u0631\u06cc\u0627 \u0627\u0645\u06cc\u0646\u06cc",
-    "role": "\u062f\u0627\u0646\u0634\u200c\u0622\u0645\u0648\u062e\u062a\u0647\u200c\u06cc \u0632\u0645\u06cc\u0646\u200c\u0634\u0646\u0627\u0633\u06cc",
+    "role": "دانشجوی کارشناسی ارشد زمین‌شناسی نفت",
     "contact_parts": [
         {"text": "\u062a\u0647\u0631\u0627\u0646\u060c \u0627\u06cc\u0631\u0627\u0646"},
         {"text": "aria@amini.info", "url": "mailto:aria@amini.info"},
@@ -401,7 +407,7 @@ RESUME_FA = {
         {"text": "amini.info", "url": "https://amini.info"},
     ],
     "about": (
-        "من محمدآریا امینی، فارغ‌التحصیل مقطع کارشناسی در رشته زمین‌شناسی و "
+        "من محمدآریا امینی، دانشجوی کارشناسی ارشد زمین‌شناسی نفت و "
         "پژوهشگر، نویسنده و ویراستار علمی در حوزه علوم زمین هستم. به "
         "فعالیت‌های پژوهشی، نگارش و ویرایش علمی و یادگیری در زمینه‌های "
         "مختلف علوم زمین علاقه‌مندم و در مسیر توسعه دانش و مهارت‌های "
@@ -419,6 +425,12 @@ RESUME_FA = {
         "و مهارت خود در این زمینه‌ها هستم."
     ),
     "education": [
+        {
+            "degree": "کارشناسی ارشد زمین‌شناسی نفت",
+            "period": "مهر ۱۴۰۵ – اکنون",
+            "org": "دانشگاه شهید بهشتی، تهران، ایران",
+            "notes": [],
+        },
         {
             "degree": "کارشناسی زمین‌شناسی",
             "period": "۱۴۰۱ – ۱۴۰۵",

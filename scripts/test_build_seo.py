@@ -235,6 +235,14 @@ class BuildSeoTests(unittest.TestCase):
         self.assertEqual(en["url"], "https://amini.info/")
         self.assertEqual(fa["url"], "https://amini.info/")
 
+    def test_a_degree_in_progress_is_not_listed_as_alumni(self):
+        data = {"education": [
+            {"degree": "M.Sc.", "period": "Oct 2026 \u2013 Present", "org": "Uni Z, City"},
+            {"degree": "B.Sc.", "period": "2022 \u2013 2026", "org": "Uni X, City"},
+        ]}
+        node = B.person_node("en", data)
+        self.assertEqual([o["name"] for o in node["alumniOf"]], ["Uni X"])
+
     def test_current_positions_become_job_titles_and_employers(self):
         out = self.render()
         en = node(jsonld_of(out["resume/index.html"]), "Person")[0]
