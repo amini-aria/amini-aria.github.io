@@ -78,11 +78,11 @@ body.lang-fa {
   }
 }
 
-/* The site's dot style is Dots 6. Weight is left to font-weight, which drives
+/* The site's dot style is Dots 4. Weight is left to font-weight, which drives
    the wght axis because @font-face declares the range. Set on everything, not
    just body: buttons and inputs do not inherit it, and any `font:` shorthand
    would reset an inherited value. */
-*, *::before, *::after { font-variation-settings: "DOTS" 6; }
+*, *::before, *::after { font-variation-settings: "DOTS" 4; }
 
 /* Safety net: if Persian text is ever marked up with lang="fa" inside an
    English-language page, it always renders at the Persian size of the
