@@ -553,8 +553,9 @@ html[dir="rtl"] .dock { direction: ltr; }
 }
 
 .hero__name { position: relative; z-index: 4; font-size: calc(clamp(1.5rem, 4vw, 1.9rem) * var(--display-scale)); }
-.hero__role { position: relative; z-index: 4; color: var(--umber); font-size: calc(0.98rem * var(--display-scale)); margin-top: 0.55rem; font-family: var(--font-display); font-style: italic; }
+.hero__role { position: relative; z-index: 4; color: var(--umber); font-size: calc(0.98rem * var(--display-scale)); margin-top: 0.55rem; font-family: var(--font-display); font-style: italic; line-height: 1.35; text-wrap: balance; }
 body.lang-fa .hero__role { font-style: normal; }
+.hero__school { position: relative; z-index: 4; color: var(--ink-dim); font-family: var(--font-body); font-size: 0.8rem; font-weight: 300; margin-top: 0.3rem; }
 .hero__bio { position: relative; z-index: 4; color: var(--ink-dim); font-size: 0.92rem; font-weight: var(--w-prose); line-height: 1.72; margin-top: 1rem; max-width: 34ch; margin-inline: auto; }
 
 .hero__divider { position: relative; z-index: 4; height: 1px; background: rgba(58,46,34,0.12); margin: 1.5rem 0; }
